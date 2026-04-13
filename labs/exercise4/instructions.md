@@ -163,7 +163,7 @@ http://localhost:3000/query-index.json
 
 Look for your page path in the `data` array (e.g. `/labs/<your-name>/my-session` or whatever you named the copied Exercise 1 page).
 
-**Validate index definition**: [Index Admin](https://tools.aem.live/tools/index-admin/index.html?org=cloudadoption&site=nycmasterclass) — use this tool to fetch and validate the index configuration (include/exclude paths, properties) for this org/site.
+**Validate index definition**: [Index Admin](https://tools.aem.live/tools/index-admin/index.html?org=edsmasterclass&site=labs) — use this tool to fetch and validate the index configuration (include/exclude paths, properties) for this org/site.
 
   ![Query Index Example](images/query-index.png)
 
@@ -185,7 +185,7 @@ blocks/
 
 On GitHub: [tree/main/blocks/search](https://github.com/adobe/aem-block-collection/tree/main/blocks/search).
 
-**In Step 3** , you will create `blocks/search/` under **this** project (nycmasterclass) — same relative layout as upstream, but your own files to extend.
+**In Step 3** , you will create `blocks/search/` under **this** project (labs) — same relative layout as upstream, but your own files to extend.
 
 Take a quick look at the upstream files. The Block Collection version has two variants:
 - **Default** — full search box with results rendered as cards
@@ -218,7 +218,7 @@ blocks/
 
 **File**: `blocks/search/search.js`
 
-> **Tip**: The full implementation is also available on the [answers branch on GitHub](https://github.com/cloudadoption/nycmasterclass/tree/answers/blocks/search) if you prefer to copy from there.
+> **Tip**: The full implementation is also available on the [answers branch on GitHub](https://github.com/edsmasterclass/labs/tree/answers/blocks/search) if you prefer to copy from there.
 
 Copy/Replace the contents of the file with this code:
 
@@ -526,7 +526,7 @@ export default async function decorate(block) {
 
 **File**: `blocks/search/search.css`
 
-> **Tip**: Also available on the [answers branch on GitHub](https://github.com/cloudadoption/nycmasterclass/tree/answers/blocks/search).
+> **Tip**: Also available on the [answers branch on GitHub](https://github.com/edsmasterclass/labs/tree/answers/blocks/search).
 
 Copy/Replace the contents of the file with this code:
 
@@ -621,7 +621,7 @@ Copy/Replace the contents of the file with this code:
 
 **In DA.live**, create a page at **`/drafts/<your-name>/search-test`** (same **`<your-name>`** folder as Exercises 1–3).
 
-1. Open the project’s **drafts** folder: [da.live/#/cloudadoption/nycmasterclass/drafts](https://da.live/#/cloudadoption/nycmasterclass/drafts)
+1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
 2. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase).
 3. **New** → **Document**, name it **`search-test`**.
 4. Add a **level-1 heading**: **Search**.
@@ -742,14 +742,14 @@ Replace `jsmith` with your branch name.
 
 - [AEM Block Collection — Search](https://github.com/adobe/aem-block-collection/tree/main/blocks/search)
 - [Indexing Reference](https://www.aem.live/docs/indexing-reference)
-- [Index Admin Tool](https://tools.aem.live/tools/index-admin/index.html?org=cloudadoption&site=nycmasterclass) — fetch and validate the index definition for this site
+- [Index Admin Tool](https://tools.aem.live/tools/index-admin/index.html?org=edsmasterclass&site=labs) — fetch and validate the index definition for this site
 - [EDS Indexing Concepts](https://www.aem.live/developer/indexing)
 
 ---
 
 ## Solution
 
-The complete solution for this exercise (search block) is on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise (search block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

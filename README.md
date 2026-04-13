@@ -1,9 +1,9 @@
-# NYC Masterclass
+# EDS Masterclass Labs
 Training materials and exercises for AEM Edge Delivery Services masterclass sessions.
 
 ## Environments
-- Preview: https://main--nycmasterclass--cloudadoption.aem.page/
-- Live: https://main--nycmasterclass--cloudadoption.aem.live/
+- Preview: https://main--labs--edsmasterclass.aem.page/
+- Live: https://main--labs--edsmasterclass.aem.live/
 
 ## Labs & Exercises
 - [Labs Overview](labs/README.md) - Complete guide to all exercises

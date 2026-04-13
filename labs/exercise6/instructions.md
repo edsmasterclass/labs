@@ -230,7 +230,7 @@ blocks/
     feedback.css
 ```
 
-**NOTE**: You can copy the `feedback` block from the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers/blocks/feedback) on GitHub.
+**NOTE**: You can copy the `feedback` block from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/blocks/feedback) on GitHub.
 
 ---
 
@@ -671,7 +671,7 @@ Form → Worker → [Validate + Transform] → [Service 1, Service 2, Service N]
 
 ## Solution
 
-The complete solution for this exercise (feedback block) is on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise (feedback block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 
