@@ -59,7 +59,7 @@ The instructor has pre-configured the entire JSON2HTML pipeline so you can focus
 
 1. **Open in browser**:
    ```
-   https://main--nycmasterclass--cloudadoption.aem.page/future-events.json
+   https://main--labs--edsmasterclass.aem.page/future-events.json
    ```
 
 2. **You should see**: JSON with event records (Sydney, London, Bangalore, Berlin, Singapore, Dubai) including city, date, venue, highlights, images, etc.
@@ -177,7 +177,7 @@ Understanding the entire flow — from first visit to cached edge delivery:
 
 The instructor has created a **Sheet in DA.live** at `/future-events` with upcoming masterclass events in 6 cities.
 
-**JSON endpoint**: `https://main--nycmasterclass--cloudadoption.aem.page/future-events.json`
+**JSON endpoint**: `https://main--labs--edsmasterclass.aem.page/future-events.json`
 
 **Key fields in each record**:
 
@@ -210,7 +210,7 @@ Everything is pre-configured. The instructor has already generated the pages on 
 
 **Open the list page** (replace `<your-name>` with your **Git feature branch** name from Prerequisites — usually the same as your `/drafts/<your-name>/` folder):
 ```
-https://<your-name>--nycmasterclass--cloudadoption.aem.page/events/list
+https://<your-name>--labs--edsmasterclass.aem.page/events/list
 ```
 
 **You should see**:
@@ -223,7 +223,7 @@ https://<your-name>--nycmasterclass--cloudadoption.aem.page/events/list
 
 **Open a detail page**:
 ```
-https://<your-name>--nycmasterclass--cloudadoption.aem.page/events/sydney
+https://<your-name>--labs--edsmasterclass.aem.page/events/sydney
 ```
 
 **You should see**:
@@ -318,12 +318,12 @@ The JSON2HTML worker has been configured with two path rules. Here's the configu
 [
   {
     "path": "/events/list",
-    "endpoint": "https://main--nycmasterclass--cloudadoption.aem.page/future-events.json",
+    "endpoint": "https://main--labs--edsmasterclass.aem.page/future-events.json",
     "template": "/labs/exercise5/events-template"
   },
   {
     "path": "/events/",
-    "endpoint": "https://main--nycmasterclass--cloudadoption.aem.page/future-events.json",
+    "endpoint": "https://main--labs--edsmasterclass.aem.page/future-events.json",
     "arrayKey": "data",
     "pathKey": "URL",
     "template": "/labs/exercise5/event-template"
@@ -352,7 +352,7 @@ Try the **JSON2HTML Simulator** to see exactly how templates are rendered.
 ### Test the Detail Template:
 
 1. **JSON Data** (left panel):
-   - Open `https://main--nycmasterclass--cloudadoption.aem.page/future-events.json` in browser
+   - Open `https://main--labs--edsmasterclass.aem.page/future-events.json` in browser
    - Copy the entire JSON response and paste into the panel
 
 2. **Simulator Options** (click ⚙ Options):
@@ -372,7 +372,7 @@ Try the **JSON2HTML Simulator** to see exactly how templates are rendered.
 ### Test the List Template:
 
 1. **JSON Data** (left panel - same as the previous step):
-   - Open `https://main--nycmasterclass--cloudadoption.aem.page/future-events.json` in browser
+   - Open `https://main--labs--edsmasterclass.aem.page/future-events.json` in browser
    - Copy the entire JSON response and paste into the panel
 2. **Mustache Template**: Paste the **events-template** content
 3. **Click "Render"**
@@ -389,7 +389,7 @@ Now prove the system is truly dynamic — add new events and watch the pages gen
 
 1. **In DA.live**, navigate to: `/future-events`
    ```
-   https://da.live/sheet#/cloudadoption/nycmasterclass/future-events
+   https://da.live/sheet#/edsmasterclass/labs/future-events
    ```
 
 2. You should see a spreadsheet with the existing events (Sydney, London, Bangalore, Berlin, Singapore, Dubai).
@@ -419,7 +419,7 @@ Add new rows to the sheet with new cities. For each row, fill in all columns to 
 2. Wait a few seconds for the JSON endpoint to update
 3. **Verify** the JSON includes your new records:
    ```
-   https://main--nycmasterclass--cloudadoption.aem.page/future-events.json
+   https://main--labs--edsmasterclass.aem.page/future-events.json
    ```
 
 ### 5d. Regenerate Pages with Sidekick "Update"
@@ -428,7 +428,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
 
 1. **Open the list page** in your browser (same `<your-name>` host as Step 1):
    ```
-   https://<your-name>--nycmasterclass--cloudadoption.aem.page/events/list
+   https://<your-name>--labs--edsmasterclass.aem.page/events/list
    ```
 
 2. **Open the AEM Sidekick** and click **"Update"** — this tells the JSON2HTML worker to regenerate the page with the latest data and store it on the edge.
@@ -437,7 +437,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
 
 4. **Generate a new detail page** — navigate to your new city's URL:
    ```
-   https://<your-name>--nycmasterclass--cloudadoption.aem.page/events/newyork
+   https://<your-name>--labs--edsmasterclass.aem.page/events/newyork
    ```
 
 5. The page will initially show **404** (it's never been generated before). Click **"Update"** in the Sidekick to trigger the worker to generate it.
@@ -450,7 +450,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
 
 ## Step 6: Add the Event Block to Your Branch
 
-The `event` block code exists on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). Copy it into your branch so EDS can load it.
+The `event` block code exists on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). Copy it into your branch so EDS can load it.
 
 ```bash
 # From your branch, copy the event block files from answers
@@ -643,7 +643,7 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 
 **New events don't appear on the list page**:
 - Verify you **previewed** the sheet in DA.live after adding rows (click the Preview button)
-- Check the JSON endpoint directly — open `https://main--nycmasterclass--cloudadoption.aem.page/future-events.json` and confirm your new records are in the `data` array
+- Check the JSON endpoint directly — open `https://main--labs--edsmasterclass.aem.page/future-events.json` and confirm your new records are in the `data` array
 - Verify the `URL` field in your new row follows the pattern `/events/cityname` (lowercase, no spaces)
 - Worker may cache briefly — wait 1-2 minutes and hard refresh and/or use *update* from sidekick
 
@@ -673,7 +673,7 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 
 ## Solution
 
-The complete solution for this exercise (event block, templates) is on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise (event block, templates) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

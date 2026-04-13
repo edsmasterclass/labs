@@ -31,11 +31,11 @@
 
 **Required:**
 - Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
-- DA.live access verified: [da.live/#/cloudadoption/nycmasterclass](https://da.live/#/cloudadoption/nycmasterclass)
+- DA.live access verified: [da.live/#/edsmasterclass/labs](https://da.live/#/edsmasterclass/labs)
 - Personal folder exists at `/drafts/<your-name>/` (first initial + last name, all lowercase — e.g. John Smith → `jsmith`)
 - AEM Sidekick installed and this project added — toolbar is visible when you open `localhost:3000`
 
-> **Your personal `jsmith--nycmasterclass--cloudadoption.aem.page` URL does not exist yet.**
+> **Your personal `jsmith--labs--edsmasterclass.aem.page` URL does not exist yet.**
 > It becomes active only after your first `git push` in Exercise 2.
 > In this exercise, use `localhost:3000` and the `main--` URLs shown below.
 
@@ -99,7 +99,7 @@ For a full overview of EDS authoring: [aem.live/docs/authoring](https://www.aem.
 
 Spend 2 minutes reviewing an existing page before creating your own. Open these side-by-side:
 
-- **In DA.live** (author's view): [sessions/architecture-deep-dive](https://da.live/edit#/cloudadoption/nycmasterclass/sessions/architecture-deep-dive)
+- **In DA.live** (author's view): [sessions/architecture-deep-dive](https://da.live/edit#/edsmasterclass/labs/sessions/architecture-deep-dive)
 - **Rendered** (visitor's view): [localhost:3000/sessions/architecture-deep-dive](http://localhost:3000/sessions/architecture-deep-dive)
 
 Notice how the tables you see in DA.live become the styled components on the rendered page. That transformation is what this exercise is about.
@@ -110,7 +110,7 @@ Notice how the tables you see in DA.live become the styled components on the ren
 
 ## Step 1: Create Your Page
 
-1. Go to [da.live/#/cloudadoption/nycmasterclass](https://da.live/#/cloudadoption/nycmasterclass)
+1. Go to [da.live/#/edsmasterclass/labs](https://da.live/#/edsmasterclass/labs)
 2. Navigate into `/drafts/<your-name>/`
 3. Click **New** → **Document**
 4. Name it `my-session` or `my-lab`
@@ -167,7 +167,7 @@ With the template inserted, replace each placeholder **in DA.live** — edit the
 3. In the link row, keep a link whose **text** is **View Schedule**. Set the link URL to the schedule page (copy the line below and paste it into the link URL field if DA asks for the address):
 
 ```text
-https://main--nycmasterclass--cloudadoption.aem.page/schedule
+https://main--labs--edsmasterclass.aem.page/schedule
 ```
 
 ![Hero block in DA.live editor](images/my-session-top.png)
@@ -218,13 +218,13 @@ http://localhost:3000/drafts/jsmith/my-session
 
 **Main preview** — uses main branch code + DA.live content, accessible without a running dev server:
 ```
-https://main--nycmasterclass--cloudadoption.aem.page/drafts/jsmith/my-session
+https://main--labs--edsmasterclass.aem.page/drafts/jsmith/my-session
 ```
 
 > **Note**: There is no `jsmith--` preview URL yet. That becomes available after `git push origin jsmith` in Exercise 2. Until then, `localhost:3000` is your working environment.
 
 Open your page on `localhost:3000`. Compare it against the reference live site:
-[main--nycmasterclass--cloudadoption.aem.live](https://main--nycmasterclass--cloudadoption.aem.live/)
+[main--labs--edsmasterclass.aem.live](https://main--labs--edsmasterclass.aem.live/)
 
 ---
 
@@ -254,7 +254,7 @@ Open in a new tab. Available on both local and the main preview environment:
 
 ```
 http://localhost:3000/drafts/jsmith/my-session.md
-https://main--nycmasterclass--cloudadoption.aem.page/drafts/jsmith/my-session.md
+https://main--labs--edsmasterclass.aem.page/drafts/jsmith/my-session.md
 ```
 
 **What you see**: Your content as Markdown — tables, headings, and lists in plain text format. This is the storage format EDS uses internally.
@@ -267,7 +267,7 @@ Next, open **`.plain.html`** in a new tab (same environments as above):
 
 ```
 http://localhost:3000/drafts/jsmith/my-session.plain.html
-https://main--nycmasterclass--cloudadoption.aem.page/drafts/jsmith/my-session.plain.html
+https://main--labs--edsmasterclass.aem.page/drafts/jsmith/my-session.plain.html
 ```
 
 **What you see**: EDS has transformed your Hero table into block divs:
@@ -303,7 +303,7 @@ Your content moves from preview (`.aem.page`) to production (`.aem.live`). Use *
 **Option 2 — From AEM Sidekick while previewing on `.aem.page`:**
 
 1. Open your page in the browser so the URL is on **`.aem.page`** — for example:  
-   `https://main--nycmasterclass--cloudadoption.aem.page/drafts/<your-name>/my-session` (same pattern as in Step 5; replace `<your-name>`).
+   `https://main--labs--edsmasterclass.aem.page/drafts/<your-name>/my-session` (same pattern as in Step 5; replace `<your-name>`).
 2. With **AEM Sidekick** visible on that tab, use **Publish** and complete the flow.
 3. **Observe the URL:** after a successful publish, the address should switch from **`.aem.page`** to **`.aem.live`** for the same content path.
 4. **Observe Sidekick:** toolbar options and actions often **differ** between preview (`.aem.page`) and live (`.aem.live`) — note what changed after publish.
@@ -311,15 +311,15 @@ Your content moves from preview (`.aem.page`) to production (`.aem.live`). Use *
 Your page is now on the **live** environment. Verify all three representations are accessible:
 
 ```
-https://main--nycmasterclass--cloudadoption.aem.live/drafts/jsmith/my-session
-https://main--nycmasterclass--cloudadoption.aem.live/drafts/jsmith/my-session.md
-https://main--nycmasterclass--cloudadoption.aem.live/drafts/jsmith/my-session.plain.html
+https://main--labs--edsmasterclass.aem.live/drafts/jsmith/my-session
+https://main--labs--edsmasterclass.aem.live/drafts/jsmith/my-session.md
+https://main--labs--edsmasterclass.aem.live/drafts/jsmith/my-session.plain.html
 ```
 
 **What happened**: The EDS Admin API promoted your content from `.aem.page` (preview) to `.aem.live` (production). The `.plain.html` and `.md` are identical across both environments — the only difference is *when* content appears: after Preview vs. after Publish.
 
 > **When does your `jsmith--` live URL appear?**
-> `https://jsmith--nycmasterclass--cloudadoption.aem.live/...` becomes active after you push your feature branch in Exercise 2. Content on `.aem.live` is the same regardless of branch — only the *code* (blocks, scripts, styles) differs between `main--` and `jsmith--`.
+> `https://jsmith--labs--edsmasterclass.aem.live/...` becomes active after you push your feature branch in Exercise 2. Content on `.aem.live` is the same regardless of branch — only the *code* (blocks, scripts, styles) differs between `main--` and `jsmith--`.
 
 ---
 
@@ -333,9 +333,9 @@ https://main--nycmasterclass--cloudadoption.aem.live/drafts/jsmith/my-session.pl
 - [ ] **Document source** viewed via Sidekick — tables visible, no `class="hero"`
 - [ ] **`.md`** opened on `localhost:3000` (and optionally on `main--`) — content confirmed
 - [ ] **`.plain.html`** opened on `localhost:3000` — Hero table is now `<div class="hero">`
-- [ ] **`.plain.html`** opened on `main--nycmasterclass--cloudadoption.aem.page` — matches local
+- [ ] **`.plain.html`** opened on `main--labs--edsmasterclass.aem.page` — matches local
 - [ ] Page published via DA.live
-- [ ] All three representations accessible on `main--nycmasterclass--cloudadoption.aem.live`
+- [ ] All three representations accessible on `main--labs--edsmasterclass.aem.live`
 
 ---
 

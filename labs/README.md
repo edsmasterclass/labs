@@ -12,11 +12,11 @@
 
 **Complete setup**: [SETUP.md](SETUP.md) — Git, development environment, access verification.
 
-**Solutions**: Complete solutions for code-oriented exercises are on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). Those exercises link to it from their **Solution** section; Exercise 1 is authoring-only in DA.live (no solution block there).
+**Solutions**: Complete solutions for code-oriented exercises are on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). Those exercises link to it from their **Solution** section; Exercise 1 is authoring-only in DA.live (no solution block there).
 
 **Your environment**:
-- Repository: https://github.com/cloudadoption/nycmasterclass
-- Branch: `jsmith` (your first initial + last name). URLs for **your** code on Preview / Live look like `https://<branch>--nycmasterclass--cloudadoption.aem.page/` and `https://<branch>--nycmasterclass--cloudadoption.aem.live/` — they work only **after** that branch is pushed to GitHub ([SETUP Step 8](SETUP.md#step-8-understand-your-branch-urls), [Exercise 2](exercise2/instructions.md)). Until then, use `localhost:3000` and `main--` preview in the exercises.
+- Repository: https://github.com/edsmasterclass/labs
+- Branch: `jsmith` (your first initial + last name). URLs for **your** code on Preview / Live look like `https://<branch>--labs--edsmasterclass.aem.page/` and `https://<branch>--labs--edsmasterclass.aem.live/` — they work only **after** that branch is pushed to GitHub ([SETUP Step 8](SETUP.md#step-8-understand-your-branch-urls), [Exercise 2](exercise2/instructions.md)). Until then, use `localhost:3000` and `main--` preview in the exercises.
 - Local: verify [http://localhost:3000](http://localhost:3000); if not, follow [SETUP Step 6](SETUP.md#step-6-start-development-server) — Day 2 exercises use `aem up`; the Day 1 AI lab uses `aem up --html-folder drafts`.
 
 ---
@@ -150,7 +150,7 @@
 
 ## Resources
 
-**Solutions**: [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers) — reference implementations for code-oriented exercises (Exercise 1 is DA.live authoring only).
+**Solutions**: [answers branch](https://github.com/edsmasterclass/labs/tree/answers) — reference implementations for code-oriented exercises (Exercise 1 is DA.live authoring only).
 
 **Documentation**:
 - [AEM.live Docs](https://www.aem.live/)

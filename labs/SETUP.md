@@ -47,7 +47,7 @@ Before arriving at the lab, ensure the following are installed:
 
 - **[Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) (do this first)** — Submit your **Adobe ID email** and **GitHub username**. This provisions lab access (including DA.live). Allow time for processing **before** you verify DA in Step 9; if you skip this step, sign-in may work but the project or folders may be unavailable.
 
-  **GitHub organization invitation:** After the form is processed, you will receive an **email** inviting you to join the **`cloudadoption`** organization on GitHub. **Accept that invitation** (use the link in the email) **before** you `git push` to this repository. If you have not joined the org, **push will fail** even if clone and commits work.
+  **GitHub organization invitation:** After the form is processed, you will receive an **email** inviting you to join the **`edsmasterclass`** organization on GitHub. **Accept that invitation** (use the link in the email) **before** you `git push` to this repository. If you have not joined the org, **push will fail** even if clone and commits work.
 
 - Git installed
 - Node.js v18 or higher
@@ -104,10 +104,10 @@ node -v   # expect v18.x.x or newer
 
 ## Step 1: Clone Repository
 
-Clone the repo and **change into the project folder** (the next steps assume your terminal is inside `nycmasterclass`):
+Clone the repo and **change into the project folder** (the next steps assume your terminal is inside `labs`):
 
 ```bash
-git clone https://github.com/cloudadoption/nycmasterclass.git && cd nycmasterclass
+git clone https://github.com/edsmasterclass/labs.git && cd labs
 ```
 
 ---
@@ -122,7 +122,7 @@ git checkout -b jsmith
 
 **Important**: Use lowercase, no spaces or special characters.
 
-**Before your first `git push`:** Confirm you **accepted the email invitation** to join the **`cloudadoption`** GitHub organization (see Prerequisites). Pushes are rejected until you are a member.
+**Before your first `git push`:** Confirm you **accepted the email invitation** to join the **`edsmasterclass`** GitHub organization (see Prerequisites). Pushes are rejected until you are a member.
 
 ---
 
@@ -179,16 +179,16 @@ The server starts at: http://localhost:3000
 
 - **For the AI lab (Day 1)**: `aem up --html-folder drafts` — serves the `drafts/` folder so the agent can create and view test pages (e.g. `drafts/tmp/speakers`, `drafts/tmp/schedule`). The `drafts/` folder is included in the repo; its `.gitignore` keeps any content you or the agent adds there **local** and out of commits.
 
-**Verify**: Open http://localhost:3000 — you should see the NYC Masterclass homepage (or the drafts index if using `--html-folder drafts`).
+**Verify**: Open http://localhost:3000 — you should see the EDS Masterclass Labs homepage (or the drafts index if using `--html-folder drafts`).
 
-![NYC Masterclass homepage at localhost:3000](images/nyc-masterclass-home.png)
+![EDS Masterclass Labs homepage at localhost:3000](images/nyc-masterclass-home.png)
 
-> **Note:**  
-> If you see a **403 error** when navigating to [http://localhost:3000](http://localhost:3000), check if a `.env` file exists in your project root.  
+> **Note:**
+> If you see a **403 error** when navigating to [http://localhost:3000](http://localhost:3000), check if a `.env` file exists in your project root.
 > If not, create a `.env` file containing:
 >
 > ```
-> AEM_PAGES_URL = https://main--nycmasterclass--cloudadoption.aem.page
+> AEM_PAGES_URL = https://main--labs--edsmasterclass.aem.page
 > ```
 >
 > After saving this file, **restart your local development server** (`aem up`).
@@ -228,14 +228,14 @@ This installs `playwright-cli` and  adds the `playwright-cli` skill to your proj
 
 EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
-- Preview: `https://{branch}--nycmasterclass--cloudadoption.aem.page/`
-- Live: `https://{branch}--nycmasterclass--cloudadoption.aem.live/`
+- Preview: `https://{branch}--labs--edsmasterclass.aem.page/`
+- Live: `https://{branch}--labs--edsmasterclass.aem.live/`
 
 **Main branch** (always available — use this as your reference throughout the lab):
-- Preview: https://main--nycmasterclass--cloudadoption.aem.page/
-- Live: https://main--nycmasterclass--cloudadoption.aem.live/
+- Preview: https://main--labs--edsmasterclass.aem.page/
+- Live: https://main--labs--edsmasterclass.aem.live/
 
-> Your personal branch URLs (e.g. `jsmith--nycmasterclass--cloudadoption.aem.page`) become active after your first `git push` in Exercise 2.
+> Your personal branch URLs (e.g. `jsmith--labs--edsmasterclass.aem.page`) become active after your first `git push` in Exercise 2.
 
 ---
 
@@ -243,12 +243,12 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
 > **Prerequisite:** Complete the [Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) (see Prerequisites) and allow time for access to be granted before this step.
 
-1. Go to https://da.live/#/cloudadoption/nycmasterclass
+1. Go to https://da.live/#/edsmasterclass/labs
 2. Complete the Sign In process using the Adobe ID provided to obtain access
    > If your Adobe ID is tied to a Personal Account, choose that instead of Corporate Account
 3. You should see the project and folder structure
 
-   ![NYC Masterclass homepage at da.live](images/da-nyc-masterclass-home.png)
+   ![EDS Masterclass Labs homepage at da.live](images/da-nyc-masterclass-home.png)
 
 4. Navigate into `/drafts`
 5. Create a folder: `/drafts/<yourname>` (e.g. `/drafts/jsmith`)
@@ -271,7 +271,7 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
 With your dev server running, add the NYC Masterclass project to your Sidekick extension so the toolbar appears on your pages.
 
-1. Open [main--nycmasterclass--cloudadoption.aem.page](https://main--nycmasterclass--cloudadoption.aem.page/) in Chrome or Edge
+1. Open [main--labs--edsmasterclass.aem.page](https://main--labs--edsmasterclass.aem.page/) in Chrome or Edge
 2. Click the **AEM Sidekick** icon in your browser toolbar
    > If this the first time that you are viewing sidekick extension , go through the overview
 3. Click **Add project** from sidekick extension
@@ -291,7 +291,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 - `preview:read`, `preview:write` (access to `.aem.page`)
 - `live:write` (publish to `.aem.live`)
 
-**Test**: In DA.live, open an existing page (e.g., [sessions/architecture-deep-dive](https://da.live/edit#/cloudadoption/nycmasterclass/sessions/architecture-deep-dive)) and click **Preview**. If it opens at `.aem.page`, permissions are correct.
+**Test**: In DA.live, open an existing page (e.g., [sessions/architecture-deep-dive](https://da.live/edit#/edsmasterclass/labs/sessions/architecture-deep-dive)) and click **Preview**. If it opens at `.aem.page`, permissions are correct.
 
 **If preview fails**: Ask your instructor to verify EDS Admin API permissions — **@mention them in the lab Slack channel** with what you tried (page path, Preview vs Publish, any error text).
 
@@ -302,7 +302,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 - **Day 1**: Once the AI lab checklist is complete, proceed to [AI-Assisted Development](ai-dev/instructions.md).
 - **Day 2**: Once the full checklist is complete, proceed to [Exercise 1](exercise1/instructions.md).
 
-**Solutions**: Complete solutions for all lab exercises are on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). Each exercise also links to this branch in its Solution section.
+**Solutions**: Complete solutions for all lab exercises are on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). Each exercise also links to this branch in its Solution section.
 
 ---
 
@@ -321,7 +321,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 **For Day 2 exercises** — add these before [Exercise 1](exercise1/instructions.md):
 
 - [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) submitted (Adobe ID + GitHub username); access processed before DA verification
-- [ ] **GitHub:** Email invitation to join **`cloudadoption`** org accepted **before** first `git push` (see Prerequisites)
+- [ ] **GitHub:** Email invitation to join **`edsmasterclass`** org accepted **before** first `git push` (see Prerequisites)
 - [ ] DA.live access verified (project loads, `/drafts/<yourname>/` folder, `hello` page previewed and published)
 - [ ] AEM Sidekick extension installed (Chrome/Edge)
 - [ ] Sidekick project added — toolbar visible on `localhost:3000`
@@ -355,7 +355,7 @@ git commit -m "feat: add block-name block"
 git push origin <your-branch>
 ```
 
-> **Push fails?** Confirm you accepted the **`cloudadoption`** GitHub org invitation (email after the lab access form). See [Git push rejected](#git-push-rejected).
+> **Push fails?** Confirm you accepted the **`edsmasterclass`** GitHub org invitation (email after the lab access form). See [Git push rejected](#git-push-rejected).
 
 ### Pull latest changes:
 
@@ -400,7 +400,7 @@ Pick a page that demonstrates your work (e.g., `/drafts/<your-name>/sessions` fr
 **3. Run PageSpeed Insights**:
 
 ```
-https://developers.google.com/speed/pagespeed/insights/?url=https://<your-branch>--nycmasterclass--cloudadoption.aem.page/drafts/<your-name>/sessions
+https://developers.google.com/speed/pagespeed/insights/?url=https://<your-branch>--labs--edsmasterclass.aem.page/drafts/<your-name>/sessions
 ```
 
 **Target**: 100 on both mobile and desktop.
@@ -419,7 +419,7 @@ https://developers.google.com/speed/pagespeed/insights/?url=https://<your-branch
 
 **4. Create PR on GitHub**:
 
-Go to: https://github.com/cloudadoption/nycmasterclass/pulls
+Go to: https://github.com/edsmasterclass/labs/pulls
 
 Click "New Pull Request"
 
@@ -433,10 +433,10 @@ Added blocks from lab exercises: page-list, dynamic-cards, etc.
 ## Test URLs
 
 **Before** (main branch):
-https://main--nycmasterclass--cloudadoption.aem.live/drafts/<your-name>/sessions
+https://main--labs--edsmasterclass.aem.live/drafts/<your-name>/sessions
 
 **After** (my branch):
-https://jsmith--nycmasterclass--cloudadoption.aem.live/drafts/<your-name>/sessions
+https://jsmith--labs--edsmasterclass.aem.live/drafts/<your-name>/sessions
 
 ## Lighthouse Scores
 
@@ -475,8 +475,8 @@ Assign the instructor as a reviewer.
 | Environment | URL pattern | When it updates |
 |---|---|---|
 | Local | `http://localhost:3000/<path>` | Immediately on file save |
-| Preview | `https://{branch}--nycmasterclass--cloudadoption.aem.page/<path>` | After DA.live Preview or `git push` |
-| Live | `https://{branch}--nycmasterclass--cloudadoption.aem.live/<path>` | After DA.live Publish |
+| Preview | `https://{branch}--labs--edsmasterclass.aem.page/<path>` | After DA.live Preview or `git push` |
+| Live | `https://{branch}--labs--edsmasterclass.aem.live/<path>` | After DA.live Publish |
 
 Use `main` as the branch for the reference site. Use your branch name (e.g. `jsmith`) for your own work — available after your first `git push` in Exercise 2.
 
@@ -498,7 +498,7 @@ aem up
 
 ### Git push rejected
 
-1. **Not a member of `cloudadoption` yet:** If you have **not** accepted the **GitHub organization invitation** (email sent after the lab access form), `git push` will fail. Find the invitation email, accept it, then push again. Check spam/junk if you do not see it.
+1. **Not a member of `edsmasterclass` yet:** If you have **not** accepted the **GitHub organization invitation** (email sent after the lab access form), `git push` will fail. Find the invitation email, accept it, then push again. Check spam/junk if you do not see it.
 
 2. **Wrong branch:** Branch may be protected or you may be on `main`. Verify you're on your feature branch:
 ```bash

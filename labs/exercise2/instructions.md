@@ -206,7 +206,7 @@ export default function decorate(block) {
 
 **In DA.live**, create a draft page at **`/drafts/<your-name>/cards-test`** (first initial + last name, lowercase — same folder pattern as [Exercise 1](../exercise1/instructions.md)).
 
-1. Open the project’s **drafts** folder: [da.live/#/cloudadoption/nycmasterclass/drafts](https://da.live/#/cloudadoption/nycmasterclass/drafts)
+1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
 2. In that view, go into your personal subfolder **`<your-name>`** (first initial + last name, lowercase). Create the folder here if it does not exist yet — same pattern as [Exercise 1](../exercise1/instructions.md).
 3. **New** → **Document**, name it **`cards-test`**.
 
@@ -657,7 +657,7 @@ grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
 
 ## Solution
 
-The complete solution for this exercise is available on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise is available on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

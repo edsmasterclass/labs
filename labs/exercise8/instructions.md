@@ -137,7 +137,7 @@ DA.live plugins are HTML + JavaScript applications hosted on your Edge Delivery 
 └─────────────────────────────────────────────────┘
                        │
                        │ Loads plugin from:
-                       │ https://jsmith--nycmasterclass--cloudadoption.aem.page/
+                       │ https://jsmith--labs--edsmasterclass.aem.page/
                        │         tools/plugins/embedwidget/embedwidget.html
                        ▼
            ┌───────────────────────────┐
@@ -159,9 +159,9 @@ DA.live plugins are HTML + JavaScript applications hosted on your Edge Delivery 
 7. DA.live receives message and inserts into document
 
 **URL Structure**:
-- **Your codebase**: `https://jsmith--nycmasterclass--cloudadoption.aem.page/tools/plugins/embedwidget/embedwidget.html`
-- **DA.live Plugin URL**: `https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embedwidget?ref=jsmith`
-- **Local development**: `https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embedwidget?ref=local`
+- **Your codebase**: `https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html`
+- **DA.live Plugin URL**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith`
+- **Local development**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local`
 
 **Key concept**: DA.live loads your plugin HTML from your AEM site into an iframe, then uses PostMessage for secure cross-origin communication.
 
@@ -180,8 +180,8 @@ Information about the current document being edited:
 ```javascript
 const { context } = await DA_SDK;
 
-console.log(context.org);      // "cloudadoption"
-console.log(context.repo);     // "nycmasterclass"
+console.log(context.org);      // "edsmasterclass"
+console.log(context.repo);     // "labs"
 console.log(context.ref);      // "main" or branch name
 console.log(context.path);     // "/drafts/jsmith/my-page"
 ```
@@ -263,12 +263,12 @@ tools/
 
 **URL accessed by authors**:
 ```
-https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embedwidget?ref=jsmith
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith
 ```
 
 This loads your HTML from:
 ```
-https://jsmith--nycmasterclass--cloudadoption.aem.page/tools/plugins/embedwidget/embedwidget.html
+https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html
 ```
 
 </details>
@@ -279,7 +279,7 @@ https://jsmith--nycmasterclass--cloudadoption.aem.page/tools/plugins/embedwidget
 
 **File**: `tools/plugins/embedwidget/embedwidget.html`
 
-**NOTE**: You can copy the `embedwidget` plugin from the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers/tools/plugins/embedwidget).
+**NOTE**: You can copy the `embedwidget` plugin from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/tools/plugins/embedwidget).
  branch in github
 
 Copy this code:
@@ -500,7 +500,7 @@ Create:
 - `blocks/tradingview/tradingview.js`
 - `blocks/tradingview/tradingview.css`
 
-**NOTE**: You can copy the `tradingview` block from the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers/blocks/tradingview).
+**NOTE**: You can copy the `tradingview` block from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/blocks/tradingview).
 
 Use the same pattern you implemented in this repo:
 - read block config with `readBlockConfig(block)`
@@ -539,14 +539,14 @@ Before pushing to your branch, test the plugin loads correctly from localhost.
 
 **Plugin URL for local testing**:
 ```
-https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embedwidget?ref=local
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local
 ```
 
 **To Test : EmbedWidget Plugin and TradingView Block**:
-1. **Open DA.live**: Go to `https://da.live/edit#/cloudadoption/nycmasterclass/drafts/jsmith/` (use your name)
+1. **Open DA.live**: Go to `https://da.live/edit#/edsmasterclass/labs/drafts/jsmith/` (use your name)
 2. **Open any existing page** (or create `/drafts/jsmith/plugin-test`)
 3. **Open library**: Click the library icon in the left sidebar (puzzle piece icon)
-4. **Load your plugin**: In a new browser tab, navigate to https://da.live/edit?ref=local#/cloudadoption/nycmasterclass/drafts/jsmith/plugin-test
+4. **Load your plugin**: In a new browser tab, navigate to https://da.live/edit?ref=local#/edsmasterclass/labs/drafts/jsmith/plugin-test
 
 5. **Think like an author**: Open the TradingView Company Profile widget page:
    - `https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/`
@@ -572,7 +572,7 @@ Once local testing works, access your plugin from your pushed branch.
 
 **Your plugin URL** (replace `jsmith` with your branch):
 ```
-https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embedwidget?ref=jsmith
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith
 ```
 
 **To test on your branch**:
@@ -582,7 +582,7 @@ https://da.live/app/cloudadoption/nycmasterclass/tools/plugins/embedwidget/embed
 4. **Load your plugin URL** with `?ref=jsmith` in a new tab
 5. **Plugin loads from**:
    ```
-   https://jsmith--nycmasterclass--cloudadoption.aem.page/tools/plugins/embedwidget/embedwidget.html
+   https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html
    ```
 6. **Test valid and invalid embed snippets** to verify parsing and validation behavior
 
@@ -616,11 +616,11 @@ For production use, plugins should be registered in the site configuration so au
 
 **To register your plugin** (instructor may do this):
 
-1. **Edit site config**: Open `https://da.live/config#/cloudadoption/nycmasterclass/`
+1. **Edit site config**: Open `https://da.live/config#/edsmasterclass/labs/`
 2. **Add to library sheet**:
    | title | path | experience |
    |-------|------|------------|
-   | EmbedWidget | https://content.da.live/cloudadoption/nycmasterclass/tools/plugins/embedwidget | dialog |
+   | EmbedWidget | https://content.da.live/edsmasterclass/labs/tools/plugins/embedwidget | dialog |
 
 3. Config auto-saves; **publish** the config when ready.
 
@@ -692,7 +692,7 @@ For production use, plugins should be registered in the site configuration so au
 **Problem**: DA.live doesn't let you load plugin URL
 
 **Fixes**:
-1. **Check permissions**: Ensure you have access to cloudadoption/nycmasterclass
+1. **Check permissions**: Ensure you have access to edsmasterclass/labs
 2. **Check URL format**: Must start with `https://da.live/app/`
 3. **Check ref parameter**: Must include `?ref=jsmith` or `?ref=local`
 4. **Try main branch**: Test with `?ref=main` to isolate branch issues
@@ -945,7 +945,7 @@ await actions.sendHTML(html);
 
 ## Solution
 
-The complete solution for this exercise (embedwidget plugin, tradingview block) is on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise (embedwidget plugin, tradingview block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

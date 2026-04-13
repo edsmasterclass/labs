@@ -121,7 +121,7 @@ You work in a **Sheet**. **Preview** turns that sheet into **JSON**, available a
 
 **JSON endpoint**:
 ```
-https://main--nycmasterclass--cloudadoption.aem.page/path/to/sheet.json
+https://main--labs--edsmasterclass.aem.page/path/to/sheet.json
 ```
 
 **JSON structure**:
@@ -156,10 +156,10 @@ To avoid conflicts with other participants, you'll create your own personal copy
 
 **In DA.live**:
 
-1. Go to the **nycmasterclass** project root.
+1. Go to the **labs** project root.
 2. Select the **`speakers`** sheet.
 3. Use **Copy** from the **pink action bar** at the **bottom** of the screen.
-4. Open the project's **drafts** folder: [da.live/#/cloudadoption/nycmasterclass/drafts](https://da.live/#/cloudadoption/nycmasterclass/drafts).
+4. Open the project's **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts).
 5. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase). Create the folder if it does not exist yet — same pattern as [Exercise 1](../exercise1/instructions.md).
 6. **Paste** from the same **pink action bar** at the bottom. That places the **speakers** sheet under **`/drafts/<your-name>/`**.
 7. **Open** the pasted sheet and click **Preview** so **`/drafts/<your-name>/speakers.json`** is available (replace **`<your-name>`** with your folder).
@@ -197,11 +197,11 @@ Make this exercise meaningful by adding yourself as a speaker!
 
 2. **Preview host (optional check)** — The same JSON is also served on preview, for example:
 
-   `https://main--nycmasterclass--cloudadoption.aem.page/drafts/<your-name>/speakers.json`
+   `https://main--labs--edsmasterclass.aem.page/drafts/<your-name>/speakers.json`
 
    Replace **`<your-name>`** with your drafts folder (first initial + last name, lowercase), matching Steps 1–2.
 
-   The site’s shared speakers JSON lives at [https://main--nycmasterclass--cloudadoption.aem.page/speakers.json](https://main--nycmasterclass--cloudadoption.aem.page/speakers.json). Yours is under **`/drafts/<your-name>/speakers.json`**.
+   The site’s shared speakers JSON lives at [https://main--labs--edsmasterclass.aem.page/speakers.json](https://main--labs--edsmasterclass.aem.page/speakers.json). Yours is under **`/drafts/<your-name>/speakers.json`**.
 
 ---
 
@@ -418,7 +418,7 @@ Copy this code:
 
 **In DA.live**, create a page at **`/drafts/<your-name>/speakers-test`** (same **`<your-name>`** folder as in Steps 1–2).
 
-1. Open the project’s **drafts** folder: [da.live/#/cloudadoption/nycmasterclass/drafts](https://da.live/#/cloudadoption/nycmasterclass/drafts)
+1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
 2. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase).
 3. **New** → **Document**, name it **`speakers-test`**.
 4. Add a **level-1 heading**: **Dynamic Speaker Directory**.
@@ -637,7 +637,7 @@ Note: In Exercise 4, you'll learn how query-index.json works and build a dedicat
 
 ## Solution
 
-The complete solution for this exercise is available on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise is available on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

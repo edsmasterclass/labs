@@ -44,7 +44,7 @@
 - Exercises 1–6 completed (if doing in sequence)
 - DA.live access
 - AEM Sidekick logged in (for Site Admin tool auth)
-- **Personal workspace**: your own site `cloudadoption/jsmith-mc` (use your name, lowercase)
+- **Personal workspace**: your own site `edsmasterclass/jsmith-mc` (use your name, lowercase)
 
 ---
 
@@ -70,10 +70,10 @@
 **The problem**: Do you duplicate the entire codebase for each site? Fork the repo? Copy all blocks?
 
 **The repoless solution**:
-- **One code repository** (blocks, scripts, styles) - `cloudadoption/nycmasterclass`
+- **One code repository** (blocks, scripts, styles) - `edsmasterclass/labs`
 - **Multiple sites** with different content - Each person's site in DA.live
 - **Configuration Service** manages which code repo each site uses
-- **Code updates** to `nycmasterclass` apply to all sites automatically
+- **Code updates** to `labs` apply to all sites automatically
 - **Zero code duplication** - Launch new sites in minutes
 
 **Multi-brand theming**:
@@ -95,16 +95,16 @@
 ### Traditional Model (Without Repoless)
 ```
 NYC Masterclass
-├── GitHub: cloudadoption/nycmasterclass (code)
-└── DA.live: cloudadoption/nycmasterclass (content)
+├── GitHub: edsmasterclass/labs (code)
+└── DA.live: edsmasterclass/labs (content)
 
 Boston Masterclass
-├── GitHub: cloudadoption/boston-mc (code - DUPLICATED!)
-└── DA.live: cloudadoption/boston-mc (content)
+├── GitHub: edsmasterclass/boston-mc (code - DUPLICATED!)
+└── DA.live: edsmasterclass/boston-mc (content)
 
 Chicago Masterclass  
-├── GitHub: cloudadoption/chicago-mc (code - DUPLICATED!)
-└── DA.live: cloudadoption/chicago-mc (content)
+├── GitHub: edsmasterclass/chicago-mc (code - DUPLICATED!)
+└── DA.live: edsmasterclass/chicago-mc (content)
 ```
 
 **Problem**: Update the hero block? Must change 3 GitHub repositories. Bug fix? Deploy to 3 places.
@@ -112,20 +112,20 @@ Chicago Masterclass
 ### Repoless Model (With Configuration Service)
 ```
 CODE (ONE place)
-GitHub: cloudadoption/nycmasterclass
+GitHub: edsmasterclass/labs
 ├── blocks/
 ├── scripts/
 └── styles/
 
 CONTENT (MANY places)
-DA.live Projects (each uses nycmasterclass code):
-├── cloudadoption/nycmasterclass (NYC content)
-├── cloudadoption/boston-mc (Boston content)
-├── cloudadoption/chicago-mc (Chicago content)
-└── cloudadoption/jsmith-mc (YOUR content)
+DA.live Projects (each uses labs code):
+├── edsmasterclass/labs (NYC content)
+├── edsmasterclass/boston-mc (Boston content)
+├── edsmasterclass/chicago-mc (Chicago content)
+└── edsmasterclass/jsmith-mc (YOUR content)
 ```
 
-**Solution**: Update hero block once in `nycmasterclass` → all 4 sites get it instantly.
+**Solution**: Update hero block once in `labs` → all 4 sites get it instantly.
 
 **Reference**: [Repoless Architecture](https://www.aem.live/docs/repoless)
 
@@ -141,17 +141,17 @@ Each site in DA.live can specify:
 2. **Code Source**: Where code lives (can point to a different GitHub repo)
 3. **Site Settings**: Permissions, custom configuration
 
-**Example**: Your site `cloudadoption/jsmith-mc`
-- Content from: `cloudadoption/jsmith-mc` in DA.live (YOUR pages)
-- Code from: `cloudadoption/nycmasterclass` in GitHub (SHARED blocks/scripts)
+**Example**: Your site `edsmasterclass/jsmith-mc`
+- Content from: `edsmasterclass/jsmith-mc` in DA.live (YOUR pages)
+- Code from: `edsmasterclass/labs` in GitHub (SHARED blocks/scripts)
 
 ### What Gets Loaded From Where
 
-When someone visits `https://main--jsmith-mc--cloudadoption.aem.page/`:
+When someone visits `https://main--jsmith-mc--edsmasterclass.aem.page/`:
 
-1. EDS checks `jsmith-mc` configuration → sees code source is `nycmasterclass`
-2. Gets **content** (index.html) from `cloudadoption/jsmith-mc` in DA.live
-3. Gets **code** (hero.js, hero.css, scripts.js) from `cloudadoption/nycmasterclass` in GitHub
+1. EDS checks `jsmith-mc` configuration → sees code source is `labs`
+2. Gets **content** (index.html) from `edsmasterclass/jsmith-mc` in DA.live
+3. Gets **code** (hero.js, hero.css, scripts.js) from `edsmasterclass/labs` in GitHub
 4. Combines them → your page with your content, shared functionality
 
 **Reference**: [Configuration Service Setup](https://www.aem.live/docs/config-service-setup)
@@ -169,16 +169,16 @@ The Site Admin tool lets you clone an existing site's configuration to create a 
 2. **IMPORTANT**: You must be logged in via AEM Sidekick extension first
 
 3. In the form:
-   - **Organization**: `cloudadoption`
+   - **Organization**: `edsmasterclass`
    - Click **List** to load the existing configuration
 
-4. Clone the configuration for `nycmasterclass` to create your new site (click the three dots icon from the site card, then choose "clone site config"):
+4. Clone the configuration for `labs` to create your new site (click the three dots icon from the site card, then choose "clone site config"):
    - **New site name**: `jsmith-mc` (your first initial + last name + `-mc`)
    - Example: John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
 
 5. Confirm the clone
 
-**What you just did**: Created a new site entry in the Configuration Service that inherits the basic configuration from `nycmasterclass` — including the code source. Your new site already knows to load code from the shared `nycmasterclass` repository.
+**What you just did**: Created a new site entry in the Configuration Service that inherits the basic configuration from `labs` — including the code source. Your new site already knows to load code from the shared `labs` repository.
 
 ---
 
@@ -186,13 +186,13 @@ The Site Admin tool lets you clone an existing site's configuration to create a 
 
 Now create a place for your site's content in DA.live.
 
-1. Go to DA.live: [https://da.live/#/cloudadoption](https://da.live/#/cloudadoption)
+1. Go to DA.live: [https://da.live/#/edsmasterclass](https://da.live/#/edsmasterclass)
 
-2. You should see the `cloudadoption` org with its existing sites (including `nycmasterclass`)
+2. You should see the `edsmasterclass` org with its existing sites (including `labs`)
 
 3. Create a new folder called `jsmith-mc` (your name)
 
-**Result**: You now have an empty content folder at `cloudadoption/jsmith-mc`.
+**Result**: You now have an empty content folder at `edsmasterclass/jsmith-mc`.
 
 ---
 
@@ -204,7 +204,7 @@ Instead of creating content from scratch, use the DA.live tools to copy all exis
 
 1. Open the **Traverse** tool: [https://da.live/apps/traverse](https://da.live/apps/traverse)
 
-2. Enter the source site path: `cloudadoption/nycmasterclass`
+2. Enter the source site path: `edsmasterclass/labs`
 
 3. Run the traverse — this crawls the site and builds a list of all content pages and assets
 
@@ -218,7 +218,7 @@ Instead of creating content from scratch, use the DA.live tools to copy all exis
 
 2. Paste all the URLs gathered from the traverse tool into the `By URL` field.
 
-3. In the `Into` section, enter the org `cloudadoption` and your site name: `jsmith-mc`
+3. In the `Into` section, enter the org `edsmasterclass` and your site name: `jsmith-mc`
 
 4. Run the import — this copies all content (pages, images, metadata) to your site
 
@@ -244,15 +244,15 @@ Imported content needs to be previewed and published before it's available on yo
 
 ## Step 4: Preview Your Site
 
-1. Open your site: `https://main--jsmith-mc--cloudadoption.aem.page/`
+1. Open your site: `https://main--jsmith-mc--edsmasterclass.aem.page/`
 
 2. **Test on desktop and mobile**: Use Chrome DevTools responsive view (F12 → device toolbar Cmd+Shift+M / Ctrl+Shift+M) to verify the site at different widths.
 
 3. **You should see**: The full NYC Masterclass homepage — same hero, same cards, same styling
 
 **What's happening**:
-- **Content** is coming from `cloudadoption/jsmith-mc` (your DA.live folder)
-- **Code** is coming from `cloudadoption/nycmasterclass` (shared GitHub repo)
+- **Content** is coming from `edsmasterclass/jsmith-mc` (your DA.live folder)
+- **Code** is coming from `edsmasterclass/labs` (shared GitHub repo)
 - The site looks identical to NYC because you copied the content and share the code
 
 ---
@@ -261,7 +261,7 @@ Imported content needs to be previewed and published before it's available on yo
 
 Prove that code is loading from the shared repository, not your site.
 
-1. On your site (`https://main--jsmith-mc--cloudadoption.aem.page/`), open browser **DevTools** (F12)
+1. On your site (`https://main--jsmith-mc--edsmasterclass.aem.page/`), open browser **DevTools** (F12)
 
 2. Go to the **Network** tab
 
@@ -271,16 +271,16 @@ Prove that code is loading from the shared repository, not your site.
 
 **You should see**:
 ```
-https://main--nycmasterclass--cloudadoption.aem.page/blocks/hero/hero.js
-https://main--nycmasterclass--cloudadoption.aem.page/scripts/scripts.js  
-https://main--nycmasterclass--cloudadoption.aem.page/styles/styles.css
+https://main--labs--edsmasterclass.aem.page/blocks/hero/hero.js
+https://main--labs--edsmasterclass.aem.page/scripts/scripts.js  
+https://main--labs--edsmasterclass.aem.page/styles/styles.css
 ```
 
-**KEY OBSERVATION**: URLs say `nycmasterclass`, NOT `jsmith-mc`!
+**KEY OBSERVATION**: URLs say `labs`, NOT `jsmith-mc`!
 
 **This proves**:
-- Your **content** comes from `cloudadoption/jsmith-mc` (your DA.live project)
-- Your **code** comes from `cloudadoption/nycmasterclass` (shared GitHub repo)
+- Your **content** comes from `edsmasterclass/jsmith-mc` (your DA.live project)
+- Your **code** comes from `edsmasterclass/labs` (shared GitHub repo)
 - **Repoless is working!**
 
 ---
@@ -289,7 +289,7 @@ https://main--nycmasterclass--cloudadoption.aem.page/styles/styles.css
 
 Now make the site yours by editing content. This proves that each site's content is independent.
 
-1. In DA.live, navigate to your site: [https://da.live/#/cloudadoption/jsmith-mc](https://da.live/#/cloudadoption/jsmith-mc)
+1. In DA.live, navigate to your site: [https://da.live/#/edsmasterclass/jsmith-mc](https://da.live/#/edsmasterclass/jsmith-mc)
 
 2. Open the homepage (`index`)
 
@@ -299,7 +299,7 @@ Now make the site yours by editing content. This proves that each site's content
 
 **Verify**:
 - Your site (`jsmith-mc`) shows YOUR heading
-- NYC site (`nycmasterclass`) still shows the original heading
+- NYC site (`labs`) still shows the original heading
 - Both sites have identical styling, blocks, and functionality
 
 **This proves**: Content is completely independent between sites while all code is shared.
@@ -325,7 +325,7 @@ The NYC Masterclass site currently uses `theme: masterclass`, which produces the
 
 In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata values for all pages on a site using a spreadsheet. This is how you apply a theme site-wide without editing every page individually.
 
-1. In DA.live, navigate to your site: [https://da.live/#/cloudadoption/jsmith-mc](https://da.live/#/cloudadoption/jsmith-mc)
+1. In DA.live, navigate to your site: [https://da.live/#/edsmasterclass/jsmith-mc](https://da.live/#/edsmasterclass/jsmith-mc)
 
 2. Open the **sheet** called `metadata` at the root of your site
 
@@ -373,7 +373,7 @@ body.jsmith {
 Before pushing, test your theme locally. Use the `--pagesUrl` flag to tell the local dev server to load **content** from your new site while using your **local code**:
 
 ```bash
-aem up --pagesUrl https://main--jsmith-mc--cloudadoption.aem.page/
+aem up --pagesUrl https://main--jsmith-mc--edsmasterclass.aem.page/
 ```
 
 Replace `jsmith-mc` with your site name.
@@ -387,7 +387,7 @@ Open `http://localhost:3000/` and **you should see**:
 
 > **Pro tip**: You can run both sites in parallel by using the `--port` flag. In one terminal run the original site (`aem up`) on the default port 3000, and in another run your new site on a different port:
 > ```bash
-> aem up --port 3001 --pagesUrl https://main--jsmith-mc--cloudadoption.aem.page/
+> aem up --port 3001 --pagesUrl https://main--jsmith-mc--edsmasterclass.aem.page/
 > ```
 > Now compare `http://localhost:3000/` (original) and `http://localhost:3001/` (your theme) side by side.
 
@@ -403,14 +403,14 @@ Replace `jsmith` with your branch name.
 
 ### 7e: Verify Your Theme
 
-Open your site: `https://jsmith--jsmith-mc--cloudadoption.aem.page/`
+Open your site: `https://jsmith--jsmith-mc--edsmasterclass.aem.page/`
 
 **You should see**:
 - Your custom heading ("Jsmith's Masterclass")
 - Your custom brand colors (cyan/blue instead of orange/purple)
 - Same blocks, same layout, same functionality — your content with your visual identity
 
-**Compare with NYC**: Open `https://main--nycmasterclass--cloudadoption.aem.page/` side by side. Same codebase, different content, different brand.
+**Compare with NYC**: Open `https://main--labs--edsmasterclass.aem.page/` side by side. Same codebase, different content, different brand.
 
 If this was a real project, at this point, you'd raise a pull request to merge `jsmith` into `main` and once completed, you'd have a basic multi-brand setup powered by a singular codebase.
 
@@ -441,7 +441,7 @@ Ask other participants to share their site URLs and compare.
 - All sites have different content (names, headings)
 - All sites have different brand colors (if they completed the theming step)
 - All sites use the same blocks and functionality
-- All sites load code from `nycmasterclass` (check DevTools Network tab)
+- All sites load code from `labs` (check DevTools Network tab)
 
 **Result**: Multiple unique branded sites from one codebase!
 
@@ -522,12 +522,12 @@ Ask other participants to share their site URLs and compare.
 
 ## Verification Checklist
 
-- [ ] Cloned `nycmasterclass` site config to create `jsmith-mc` (Site Admin)
-- [ ] Created content folder in DA.live (`cloudadoption/jsmith-mc`)
+- [ ] Cloned `labs` site config to create `jsmith-mc` (Site Admin)
+- [ ] Created content folder in DA.live (`edsmasterclass/jsmith-mc`)
 - [ ] Copied content using Traverse and Import tools
 - [ ] Previewed your site and saw it working
 - [ ] **Tested in Chrome DevTools responsive view** (desktop and mobile)
-- [ ] Verified code loading from `nycmasterclass` (DevTools Network tab)
+- [ ] Verified code loading from `labs` (DevTools Network tab)
 - [ ] Customized the homepage heading (content independence)
 - [ ] Created metadata sheet in DA.live to set theme site-wide
 - [ ] Added theme CSS in `styles/styles.css` with body class selector
@@ -541,8 +541,8 @@ Ask other participants to share their site URLs and compare.
 
 A working implementation of this exercise is available for the site `ukhalid-mc`.
 
-- Site: [https://answers--ukhalid-mc--cloudadoption.aem.page/](https://answers--ukhalid-mc--cloudadoption.aem.page/)
-- Metadata sheet: [https://da.live/sheet#/cloudadoption/ukhalid-mc/metadata](https://da.live/sheet#/cloudadoption/ukhalid-mc/metadata)
+- Site: [https://answers--ukhalid-mc--edsmasterclass.aem.page/](https://answers--ukhalid-mc--edsmasterclass.aem.page/)
+- Metadata sheet: [https://da.live/sheet#/edsmasterclass/ukhalid-mc/metadata](https://da.live/sheet#/edsmasterclass/ukhalid-mc/metadata)
 
 ---
 
@@ -564,4 +564,4 @@ A working implementation of this exercise is available for the site `ukhalid-mc`
 
 ## Solution
 
-The complete solution for this exercise is available on the [answers branch](https://github.com/cloudadoption/nycmasterclass/tree/answers). The same branch contains solutions for all lab exercises.
+The complete solution for this exercise is available on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
