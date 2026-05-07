@@ -40,5 +40,17 @@
       "text",
       "image"
     ]
+  },
+  {
+    "id": "schedule",
+    "components": [
+      "schedule-item"
+    ]
+  },
+  {
+    "id": "speakers",
+    "components": [
+      "speaker"
+    ]
   }
 ]

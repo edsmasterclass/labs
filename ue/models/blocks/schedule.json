@@ -1,0 +1,76 @@
+{
+  "definitions": [
+    {
+      "title": "Schedule",
+      "id": "schedule",
+      "model": "schedule",
+      "filter": "schedule",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 4
+        }
+      }
+    },
+    {
+      "title": "Schedule Item",
+      "id": "schedule-item",
+      "model": "schedule-item",
+      "plugins": {
+        "da": {
+          "rows": 1,
+          "columns": 4,
+          "fields": [
+            { "name": "time", "selector": "div:nth-child(1)" },
+            { "name": "title", "selector": "div:nth-child(2)" },
+            { "name": "speaker", "selector": "div:nth-child(3)" },
+            { "name": "trackRoom", "selector": "div:nth-child(4)" }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "schedule-item",
+      "fields": [
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "time",
+          "label": "Time",
+          "multi": false
+        },
+        {
+          "component": "richtext",
+          "name": "title",
+          "value": "",
+          "label": "Session title",
+          "valueType": "string"
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "speaker",
+          "label": "Speaker",
+          "multi": false
+        },
+        {
+          "component": "text",
+          "valueType": "string",
+          "name": "trackRoom",
+          "label": "Track or room",
+          "multi": false
+        }
+      ]
+    }
+  ],
+  "filters": [
+    {
+      "id": "schedule",
+      "components": [
+        "schedule-item"
+      ]
+    }
+  ]
+}
