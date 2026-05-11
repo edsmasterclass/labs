@@ -361,12 +361,11 @@ Try the **JSON2HTML Simulator** to see exactly how templates are rendered.
    - **arrayKey**: `data`
    - **pathKey**: `URL`
    - **testPath**: `/events/sydney`
-  
 
-4. **Mustache Template** (middle panel):
+3. **Mustache Template** (middle panel):
    - Paste the **event-template** content from `labs/exercise5/event-template.html`
 
-5. **Click "Render"** or press `Cmd+Enter`
+4. **Click "Render"** or press `Cmd+Enter`
 
 **You should see**: Fully rendered HTML for the Sydney event.
 
