@@ -83,7 +83,7 @@ In Exercise 2, you built blocks where authors manually create each card. But wha
 - Block fetches and renders that data
 - Update the data once → all pages update automatically
 
-**Real-world scenario**: The NYC Masterclass has a `/speakers` page that currently shows placeholder text. You saw it in the navigation. The speaker data is maintained as a Sheet and exposed as **`/speakers.json`**. Rather than manually authoring cards for each speaker, you'll build a dynamic-cards block that fetches and renders this data automatically.
+**Real-world scenario**: This lab site has a `/speakers` page that currently shows placeholder text. You saw it in the navigation. The speaker data is maintained as a Sheet and exposed as **`/speakers.json`**. Rather than manually authoring cards for each speaker, you'll build a dynamic-cards block that fetches and renders this data automatically.
 
 **What you'll build**: A reusable dynamic-cards block that can fetch speaker data, product catalogs, article listings, or any JSON endpoint and render it as cards.
 

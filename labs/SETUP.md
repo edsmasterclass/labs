@@ -269,7 +269,7 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
 ## Step 10: Add This Project to Sidekick
 
-With your dev server running, add the NYC Masterclass project to your Sidekick extension so the toolbar appears on your pages.
+With your dev server running, add the EDS Masterclass Labs project (this repo) to your Sidekick extension so the toolbar appears on your pages.
 
 1. Open [main--labs--edsmasterclass.aem.page](https://main--labs--edsmasterclass.aem.page/) in Chrome or Edge
 2. Click the **AEM Sidekick** icon in your browser toolbar
