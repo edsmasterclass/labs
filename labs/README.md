@@ -1,4 +1,4 @@
-# NYC Masterclass 2026 - Lab Guide
+# EDS Masterclass Labs — Lab Guide
 
 **Theme**: Build pages and features for a Masterclass event series that can scale to future meetup sites.
 

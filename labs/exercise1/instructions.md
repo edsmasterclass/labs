@@ -187,7 +187,7 @@ The template includes a Metadata block at the bottom of the page. Fill in the pl
 
 **For a session**, update these rows (names are in the first column, your values in the second):
 
-- **Title** — your session title, then ` - NYC Masterclass` (or follow the template wording).
+- **Title** — your session title, then ` - EDS Masterclass Labs` (or follow the template wording).
 - **Description** — a short description for SEO.
 - **speaker-name** — speaker name.
 - **category** — e.g. `technical` (or another value your template suggests).
@@ -195,7 +195,7 @@ The template includes a Metadata block at the bottom of the page. Fill in the pl
 
 **For a lab**, update these rows:
 
-- **Title** — `Lab: ` plus your lab title and ` - NYC Masterclass` (or follow the template).
+- **Title** — `Lab: ` plus your lab title and ` - EDS Masterclass Labs` (or follow the template).
 - **Description** — a short description for SEO.
 - **instructor-name** — instructor name.
 - **category** — e.g. `development`, `authoring`, or `configuration` as appropriate.

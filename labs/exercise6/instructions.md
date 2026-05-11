@@ -266,7 +266,7 @@ If you need to adjust cells after insert, match this shape:
     <div>
       <p><strong><u>New York City</u></strong></p>
       <p>1540 Broadway, 18th floor<br>New York, NY 10036</p>
-      <h2>AEM Master Class - NYC | Feedback</h2>
+      <h2>Feedback | EDS Masterclass Labs</h2>
       <p>Thank you for attending — we'd love your feedback.</p>
     </div>
   </div>
@@ -395,7 +395,7 @@ const slackMessage = {
       elements: [
         {
           type: 'mrkdwn',
-          text: `Submitted from NYC Masterclass | ${new Date().toISOString()}`
+          text: `Submitted from EDS Masterclass Labs | ${new Date().toISOString()}`
         }
       ]
     }

@@ -951,7 +951,7 @@ The complete solution for this exercise (embedwidget plugin, tradingview block) 
 
 ## Congratulations!
 
-You've completed all 8 exercises of the NYC Masterclass 2026 lab.
+You've completed all 8 exercises of EDS Masterclass Labs.
 
 You now know how to:
 - Author content in DA.live
@@ -970,4 +970,4 @@ You now know how to:
 - Create pull request with before/after URLs
 - Share Lighthouse scores (target: 100)
 
-Thank you for participating in NYC Masterclass 2026!
+Thank you for participating in EDS Masterclass Labs!
