@@ -45,7 +45,7 @@ Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on e
 
 Before arriving at the lab, ensure the following are installed:
 
-- **[Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) (do this first)** — Submit your **Adobe ID email** and **GitHub username**. This provisions lab access (including DA.live). Allow time for processing **before** you verify DA in Step 9; if you skip this step, sign-in may work but the project or folders may be unavailable.
+- **[Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) (do this first)** — Submit your **Adobe ID email** and **GitHub username**. This provisions lab access (including DA.live). Allow time for processing **before** you verify DA in Step 9; if you skip this step, sign-in may work but the project or folders may be unavailable.
 
   **GitHub organization invitation:** After the form is processed, you will receive an **email** inviting you to join the **`edsmasterclass`** organization on GitHub. **Accept that invitation** (use the link in the email) **before** you `git push` to this repository. If you have not joined the org, **push will fail** even if clone and commits work.
 
@@ -241,7 +241,7 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
 ## Step 9: Verify DA.live Access
 
-> **Prerequisite:** Complete the [Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) (see Prerequisites) and allow time for access to be granted before this step.
+> **Prerequisite:** Complete the [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) (see Prerequisites) and allow time for access to be granted before this step.
 
 1. Go to https://da.live/#/edsmasterclass/labs
 2. Complete the Sign In process using the Adobe ID provided to obtain access
@@ -261,7 +261,7 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 9. **Publish** the page and confirm it is available on `.aem.live`.
 
 **If you cannot access**:
-- Confirm you submitted the [Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) with the **same** Adobe ID and GitHub username you are using for the lab
+- Confirm you submitted the [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) with the **same** Adobe ID and GitHub username you are using for the lab
 - Verify you're logged in with your Adobe IMS account
 - Ask your instructor to verify permissions — **@mention them in the lab Slack channel** so they can grant or fix access quickly
 
@@ -320,7 +320,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 
 **For Day 2 exercises** — add these before [Exercise 1](exercise1/instructions.md):
 
-- [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup) submitted (Adobe ID + GitHub username); access processed before DA verification
+- [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) submitted (Adobe ID + GitHub username); access processed before DA verification
 - [ ] **GitHub:** Email invitation to join **`edsmasterclass`** org accepted **before** first `git push` (see Prerequisites)
 - [ ] DA.live access verified (project loads, `/drafts/<yourname>/` folder, `hello` page previewed and published)
 - [ ] AEM Sidekick extension installed (Chrome/Edge)

@@ -133,7 +133,7 @@ In the page editor:
 
   ![Select Library option from the menu in DA.live](images/slash-command-select-library.png)
 
-> **If you do not see Templates or Blocks after you open Library**, your account may not have library access in DA.live yet. **@mention your instructor in the lab Slack channel** and include your **Adobe ID email** (the one you used on the [lab access form](https://main--aem-rockstar-website--adobe.aem.live/en/masterclass/nyc-setup)) so they can verify or fix permissions. Confirm you submitted that form with the **same** Adobe ID and GitHub username you use in the lab — see [SETUP.md — Step 9: Verify DA.live Access](../SETUP.md#step-9-verify-dalive-access).
+> **If you do not see Templates or Blocks after you open Library**, your account may not have library access in DA.live yet. **@mention your instructor in the lab Slack channel** and include your **Adobe ID email** (the one you used on the [lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request)) so they can verify or fix permissions. Confirm you submitted that form with the **same** Adobe ID and GitHub username you use in the lab — see [SETUP.md — Step 9: Verify DA.live Access](../SETUP.md#step-9-verify-dalive-access).
 
 3. Select **Templates**
 
