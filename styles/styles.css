@@ -103,6 +103,17 @@ body.appear {
   display: block;
 }
 
+body.mjaoshvili {
+  --brand-1: #06b6d4;
+  --brand-2: #2563eb;
+
+  background: radial-gradient(1200px 600px at 80% -10%, #06b6d4 0%, transparent 60%),
+              radial-gradient(900px 600px at 10% 10%, #2563eb 0%, transparent 60%),
+              linear-gradient(180deg, var(--masterclass-bg-2), var(--masterclass-bg-1) 55%);
+  background-attachment: fixed;
+  color: var(--ink);
+}
+
 header {
   height: var(--nav-height);
   background-color: var(--dark-background-color);
@@ -374,3 +385,4 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
