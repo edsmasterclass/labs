@@ -356,14 +356,17 @@ Try the **JSON2HTML Simulator** to see exactly how templates are rendered.
    - Copy the entire JSON response and paste into the panel
 
 2. **Simulator Options** (click ⚙ Options):
+        <img width="1474" height="654" alt="Screenshot 2026-05-11 at 1 22 49 PM" src="https://github.com/user-attachments/assets/7d1af827-ef6b-4387-b806-c34402c59998" />
+
    - **arrayKey**: `data`
    - **pathKey**: `URL`
    - **testPath**: `/events/sydney`
+  
 
-3. **Mustache Template** (middle panel):
+4. **Mustache Template** (middle panel):
    - Paste the **event-template** content from `labs/exercise5/event-template.html`
 
-4. **Click "Render"** or press `Cmd+Enter`
+5. **Click "Render"** or press `Cmd+Enter`
 
 **You should see**: Fully rendered HTML for the Sydney event.
 
