@@ -10,7 +10,7 @@
 - [Prerequisites](#prerequisites)
 - **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [Understanding Repoless](#understanding-repoless) · [How it works](#how-it-works))
 - **Exercise steps**
-  - [Step 1: Clone the Site Configuration](#step-1-clone-the-site-configuration)
+  - [Step 1: Clone the Site Configuration (or request one)](#step-1-clone-the-site-configuration-or-request-one)
   - [Step 2: Create Your Content Folder](#step-2-create-your-content-folder)
   - [Step 3: Copy Content from NYC Masterclass](#step-3-copy-content-from-nyc-masterclass)
   - [Step 4: Preview Your Site](#step-4-preview-your-site)
@@ -45,6 +45,7 @@
 - DA.live access
 - AEM Sidekick logged in (for Site Admin tool auth)
 - **Personal workspace**: your own site `edsmasterclass/jsmith-mc` (use your name, lowercase)
+- **Org Admin for this lab**: if you need a site cloned or permissions adjusted, contact **murugull@adobe.com** (Slack, Microsoft Teams, or email), as described in [Step 1](#step-1-clone-the-site-configuration-or-request-one).
 
 ---
 
@@ -55,7 +56,7 @@
 
 - How repoless architecture works in Edge Delivery Services
 - How to share code across multiple sites (one codebase, many sites)
-- How to use the Site Admin tool to clone site configurations
+- How site configuration cloning works in Site Admin (self-service for Org Admins, or by request for everyone else)
 - How to use DA.live Traverse and Import tools to copy content
 - How to create your own branded site in minutes
 - How multi-brand theming works with body class selectors and CSS custom properties
@@ -160,25 +161,49 @@ When someone visits `https://main--jsmith-mc--edsmasterclass.aem.page/`:
 
 ---
 
-## Step 1: Clone the Site Configuration
+## Step 1: Clone the Site Configuration (or request one)
 
-The Site Admin tool lets you clone an existing site's configuration to create a new site instantly.
+The Site Admin tool is how new site entries are created in the Configuration Service. **Cloning a site requires Org Admin permissions** on the organization. In this lab, most participants are **not** provisioned as Org Admins, so the **Clone site** / **clone site config** action on the site card is **disabled** for them.
+
+### High-level flow (everyone)
+
+1. **Get a cloned site configuration** — either you self-clone (Org Admins only) or an Org Admin does it for you.
+2. **Get admin permissions** on *your* cloned site so you can open it in Site Admin and adjust settings for the rest of the exercise.
+3. **Change the content path** (or equivalent site settings) so preview/production load **your** DA.live content folder (`edsmasterclass/<your-site>`).
+4. **Leave the code path as-is** — keep the shared code source pointing at **`edsmasterclass/labs`** (GitHub) so the exercise stays repoless.
+
+If an Org Admin created the site for you, they should grant you the access you need to complete steps 2–4 yourself; if anything is still wrong after that, follow up with the same contact.
+
+### If you are not an Org Admin (typical lab path)
+
+1. **Request a clone** from an Org Admin: **murugull@adobe.com** (use your class Slack channel, Microsoft Teams, or email—whichever the instructors asked you to use).
+
+   Include at least:
+   - **Organization**: `edsmasterclass`
+   - **Source site to clone**: `labs`
+   - **New site name**: `jsmith-mc` (first initial + last name + `-mc`, all lowercase) — e.g. John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
+   - Ask to be granted **admin (or equivalent) on the new site’s configuration** so you can verify paths in Site Admin.
+
+2. Wait until you are told the site exists and you have access, then continue from [Step 2](#step-2-create-your-content-folder). You can still open Site Admin to **list** sites and inspect your site once you have permissions.
+
+### If you are an Org Admin (self-service)
 
 1. Open **Site Admin**: [https://tools.aem.live/tools/site-admin/index.html](https://tools.aem.live/tools/site-admin/index.html)
 
-2. **IMPORTANT**: You must be logged in via AEM Sidekick extension first
+2. **IMPORTANT**: You must be logged in via AEM Sidekick extension first.
 
 3. In the form:
    - **Organization**: `edsmasterclass`
    - Click **List** to load the existing configuration
 
-4. Clone the configuration for `labs` to create your new site (click the three dots icon from the site card, then choose "clone site config"):
+4. Clone the configuration for `labs` to create your new site (three dots on the site card → **clone site config**):
    - **New site name**: `jsmith-mc` (your first initial + last name + `-mc`)
-   - Example: John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
 
-5. Confirm the clone
+5. Confirm the clone.
 
-**What you just did**: Created a new site entry in the Configuration Service that inherits the basic configuration from `labs` — including the code source. Your new site already knows to load code from the shared `labs` repository.
+6. Ensure **participants who requested the clone** receive **admin permissions on the cloned site** (not only on the org) so they can complete the exercise.
+
+**What this step achieves**: A new site entry in the Configuration Service that inherits from `labs`, including the **code** source pointed at the shared **`labs`** repository. After you or an admin align **content** with your DA folder (see high-level flow above), your previews load your content with shared code — the repoless pattern used in the rest of this exercise.
 
 ---
 
@@ -193,6 +218,8 @@ Now create a place for your site's content in DA.live.
 3. Create a new folder called `jsmith-mc` (your name)
 
 **Result**: You now have an empty content folder at `edsmasterclass/jsmith-mc`.
+
+**If your site was cloned by an Org Admin**: In Site Admin, open **your** site’s configuration and confirm **content** resolves to this DA path (`edsmasterclass/jsmith-mc` — same as your site name in the exercise). **Leave the code source** pointed at the shared **`labs`** repository; do not repoint code to a fork unless an instructor tells you to.
 
 ---
 
@@ -508,7 +535,7 @@ Ask other participants to share their site URLs and compare.
 ## Key Takeaways
 
 - **Repoless** separates code from content — one codebase, many sites
-- **Site Admin** clones site configurations to launch new sites in minutes
+- **Site Admin** clones site configurations (Org Admins) or **Org Admins clone on request**; you then align **content** with your DA folder and keep **code** on `labs`
 - **DA.live tools** (Traverse + Import) copy content between sites instantly
 - **Configuration Service** manages which code each site uses
 - **Multi-brand theming** uses body class selectors + CSS custom properties
@@ -522,7 +549,8 @@ Ask other participants to share their site URLs and compare.
 
 ## Verification Checklist
 
-- [ ] Cloned `labs` site config to create `jsmith-mc` (Site Admin)
+- [ ] Have a `jsmith-mc` site config cloned from `labs` (self-service in Site Admin **or** requested via **murugull@adobe.com** / class Slack or Teams)
+- [ ] Can open your site in Site Admin and confirm **content** → your DA folder; **code** → shared `labs`
 - [ ] Created content folder in DA.live (`edsmasterclass/jsmith-mc`)
 - [ ] Copied content using Traverse and Import tools
 - [ ] Previewed your site and saw it working

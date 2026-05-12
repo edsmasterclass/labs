@@ -677,4 +677,4 @@ The complete solution for this exercise (feedback block) is on the [answers bran
 
 ## Next Exercise
 
-**Exercise 7**: [Repoless Multi-Site & Multi-Brand](../exercise7/instructions.md) — Point a second DA site at this repo’s code and explore multi-brand theming.
+**Exercise 7**: [Repoless Multi-Site & Multi-Brand](../exercise7/instructions.md) — Point a second DA site at this repo’s code and explore multi-brand theming. *Site Admin “clone site” needs Org Admin; if it is disabled for you, Step 1 explains how to request a clone (e.g. via class Slack or Teams) and site permissions, then align content to your DA folder while keeping code on `labs`.*

@@ -114,7 +114,7 @@
 
 ---
 
-**Exercise 7**: [Repoless Multi-Site & Multi-Brand](exercise7/instructions.md)
+**Exercise 7**: [Repoless Multi-Site & Multi-Brand](exercise7/instructions.md) — *Site Admin “clone site” requires Org Admin; if it is disabled for you, Step 1 explains how to request a clone and permissions.*
 
 **What you'll learn**:
 - **Repoless** as “many sites, one codebase” via configuration—not copy-paste repos
