@@ -133,7 +133,13 @@ node labs/product-bus/generate-products.mjs --api <token>
 Expected output:
 
 ```
-Batch 1: ✓ 6 product(s) saved (HTTP 200)
+Creating index: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/index/products-jsmith/index.json
+  ✓ Index created/updated (HTTP 200)
+
+Calling bulk API: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/*
+Ingesting 6 products (1 batch(es))...
+  Batch 1: ✓ 6 product(s) saved (HTTP 200)
+
 Done. 6 saved, 0 failed.
 ```
 
