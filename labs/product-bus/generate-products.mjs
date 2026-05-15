@@ -462,4 +462,10 @@ if (dryRun) {
   }
 
   console.log(`\nDone. ${successCount} saved, ${failCount} failed.`);
+
+  if (successCount > 0) {
+    const mainBase = `https://main--${site}--${org}.aem.page`;
+    console.log('\nProduct pages (may take 30–60 s for feeds to populate):');
+    products.forEach((p) => console.log(`  ${mainBase}${p.path}`));
+  }
 }
