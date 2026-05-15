@@ -150,7 +150,7 @@ Done. 6 saved, 0 failed.
 Open this URL in your browser (replace `jsmith` with your branch name):
 
 ```
-https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/products-jsmith/swag/masterclass-hoodie
+https://main--labs--edsmasterclass.aem.network/products-jsmith/swag/masterclass-hoodie
 ```
 
 You should see the full product JSON including name, price, images, and attributes.
