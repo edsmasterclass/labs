@@ -133,8 +133,10 @@ node labs/product-bus/generate-products.mjs --api <token>
 Expected output:
 
 ```
-Creating index: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/index/products-jsmith/index.json
-  ✓ Index created/updated (HTTP 200)
+Creating indexes...
+  ✓ /products-jsmith/index.json (HTTP 200)
+  ✓ /products-jsmith/swag/index.json (HTTP 200)
+  ✓ /products-jsmith/guides/index.json (HTTP 200)
 
 Calling bulk API: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/*
 Ingesting 6 products (1 batch(es))...
@@ -161,9 +163,11 @@ You should see the full product JSON including name, price, images, and attribut
 
 Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `jsmith` with your branch):
 
-**Query index** — powers product listing grids:
+**Query indexes** — power product listing grids (one per scope):
 ```
 https://main--labs--edsmasterclass.aem.page/products-jsmith/index.json
+https://main--labs--edsmasterclass.aem.page/products-jsmith/swag/index.json
+https://main--labs--edsmasterclass.aem.page/products-jsmith/guides/index.json
 ```
 
 **Product sitemap** — for search engines:
@@ -178,7 +182,7 @@ https://main--labs--edsmasterclass.aem.page/products-jsmith/merchant-center-feed
 
 > **Note**: Feeds may take 30–60 seconds to generate after ingest. If you see a 404, wait a moment and refresh.
 
-**Key concept**: You get three formats for free from a single ingest. The indexer runs asynchronously — you don't trigger it, you don't configure it per-student, and it scopes itself to your namespace automatically.
+**Key concept**: You get scoped indexes, a sitemap, and a Merchant Center feed from a single ingest. The indexer scopes itself to your namespace — and to sub-paths like `/swag` — automatically.
 
 ---
 
@@ -209,27 +213,43 @@ https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag/masterclass-h
 
 ---
 
-### Part B: Add a product grid listing page (~4 min)
+### Part B: Add product grid listing pages (~4 min)
 
-The `product-grid` block renders a responsive card grid from the index JSON. Copy it to your branch from the answers branch:
+The `product-grid` block renders a responsive card grid from any index JSON. Copy it to your branch from the answers branch:
 
 ```bash
 git checkout answers -- blocks/product-grid
 ```
 
-Create a listing page in DA.live at `/products-jsmith` (replace `jsmith` with your branch). Add a `product-grid` block that points at your index:
+Create three pages in DA.live (replace `jsmith` with your branch in all paths):
+
+**`/products-jsmith`** — all products:
 
 | product-grid |
 |---|
 | /products-jsmith/index.json |
 
-Preview and publish the document. Open it on your branch:
+**`/products-jsmith/swag`** — swag only:
+
+| product-grid |
+|---|
+| /products-jsmith/swag/index.json |
+
+**`/products-jsmith/guides`** — guides only:
+
+| product-grid |
+|---|
+| /products-jsmith/guides/index.json |
+
+Preview and publish all three. Open them on your branch:
 
 ```
 https://jsmith--labs--edsmasterclass.aem.page/products-jsmith
+https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag
+https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/guides
 ```
 
-You should see all 6 products in a responsive card grid. Click a card to navigate to the product detail page.
+**Key concept**: The same block, pointed at different index URLs, scopes the grid automatically. This is how production sites build locale or category landing pages — one block, many scopes.
 
 ---
 
@@ -303,14 +323,18 @@ Marketing authors product stories in DA.live without ever touching the commerce 
 ## Verification Checklist
 
 - [ ] Dry-run shows correct prefix (`products-<your-branch>`) for all 6 products
-- [ ] Ingest succeeds: `6 saved, 0 failed`
+- [ ] Ingest succeeds: 3 indexes created, `6 saved, 0 failed`
 - [ ] `GET` one product from the API returns full JSON
-- [ ] `index.json` shows all 6 products
+- [ ] `/products-<branch>/index.json` shows all 6 products
+- [ ] `/products-<branch>/swag/index.json` shows 3 swag products
+- [ ] `/products-<branch>/guides/index.json` shows 3 guide products
 - [ ] `sitemap.xml` lists all 6 product URLs
 - [ ] `merchant-center-feed.xml` is present
 - [ ] Product detail page renders at `/products-<branch>/swag/masterclass-hoodie`
 - [ ] Appending `.json` to the product URL returns raw product data
-- [ ] Product grid listing page renders all 6 cards
+- [ ] All-products grid at `/products-<branch>` renders all 6 cards
+- [ ] Swag grid at `/products-<branch>/swag` renders 3 cards
+- [ ] Guides grid at `/products-<branch>/guides` renders 3 cards
 - [ ] Clicking a card navigates to the correct product detail page
 - [ ] Authored enrichment appears on the product detail page alongside structured data
 

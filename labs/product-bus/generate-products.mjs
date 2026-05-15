@@ -62,12 +62,12 @@ const prefix = (() => {
 // Images — replace with actual hosted assets before going live.
 // Using placehold.co for lab/demo purposes.
 const IMG = {
-  hoodie:   'https://placehold.co/800x600/002060/ffffff?text=Masterclass+Hoodie',
-  stickers: 'https://placehold.co/800x600/eb1000/ffffff?text=Developer+Sticker+Pack',
-  deskkit:  'https://placehold.co/800x600/1473e6/ffffff?text=Masterclass+Desk+Kit',
-  blocks:   'https://placehold.co/800x600/002060/ffffff?text=EDS+Block+Dev+Field+Guide',
-  workers:  'https://placehold.co/800x600/f38020/ffffff?text=Cloudflare+Workers+for+AEM',
-  complete: 'https://placehold.co/800x600/eb1000/ffffff?text=EDS+Complete+Reference',
+  hoodie:   'https://content.da.live/edsmasterclass/labs/media/masterclass-hoodie.png',
+  stickers: 'https://content.da.live/edsmasterclass/labs/media/developer-sticker-pack.png',
+  deskkit:  'https://content.da.live/edsmasterclass/labs/media/masterclass-desk-kit.png',
+  blocks:   'https://content.da.live/edsmasterclass/labs/media/block-dev-field-guide.png',
+  workers:  'https://content.da.live/edsmasterclass/labs/media/cloudflare-workers-for-aem.png',
+  complete: 'https://content.da.live/edsmasterclass/labs/media/complete-reference.png',
 };
 
 const SITE_BASE_URL = `https://${prefix}--labs--edsmasterclass.aem.page`;
@@ -403,18 +403,28 @@ if (dryRun) {
     console.log('\nNo --api token provided. Run with --api <token> to ingest into the Product Bus.');
   }
 } else {
-  // Create (or update) the index for this namespace before ingesting products.
-  const indexEndpoint = `${API_BASE_URL}/${org}/sites/${site}/index/products-${prefix}/index.json`;
-  console.log(`\nCreating index: POST ${indexEndpoint}`);
-  const indexRes = await fetch(indexEndpoint, {
-    method: 'POST',
-    headers: { Authorization: `Bearer ${apiToken}` },
-  });
-  if (indexRes.ok) {
-    console.log(`  ✓ Index created/updated (HTTP ${indexRes.status})`);
-  } else {
-    const errText = await indexRes.text();
-    console.warn(`  ⚠ Index creation returned HTTP ${indexRes.status} — ${errText} (continuing anyway)`);
+  // Create (or update) indexes for this namespace before ingesting products.
+  // One root index (all products) + one per category (scoped by path prefix).
+  const indexPaths = [
+    `products-${prefix}`,
+    `products-${prefix}/swag`,
+    `products-${prefix}/guides`,
+  ];
+  console.log('\nCreating indexes...');
+  for (const indexPath of indexPaths) {
+    const indexEndpoint = `${API_BASE_URL}/${org}/sites/${site}/index/${indexPath}/index.json`;
+    // eslint-disable-next-line no-await-in-loop
+    const indexRes = await fetch(indexEndpoint, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${apiToken}` },
+    });
+    if (indexRes.ok) {
+      console.log(`  ✓ /${indexPath}/index.json (HTTP ${indexRes.status})`);
+    } else {
+      // eslint-disable-next-line no-await-in-loop
+      const errText = await indexRes.text();
+      console.warn(`  ⚠ /${indexPath}/index.json HTTP ${indexRes.status} — ${errText} (continuing anyway)`);
+    }
   }
 
   const endpoint = `${API_BASE_URL}/${org}/sites/${site}/catalog/*`;
