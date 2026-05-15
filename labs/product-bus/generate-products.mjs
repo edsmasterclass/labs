@@ -403,17 +403,8 @@ if (dryRun) {
     console.log('\nNo --api token provided. Run with --api <token> to ingest into the Product Bus.');
   }
 } else {
-  // Create (or update) indexes for this namespace before ingesting products.
-  // One root index (all products) + one per category (scoped by path prefix).
-  const indexPaths = [
-    `labs/${prefix}/products`,
-    `labs/${prefix}/products/swag`,
-    `labs/${prefix}/products/guides`,
-  ];
-  console.log('\nCreating indexes...');
-  for (const indexPath of indexPaths) {
+  async function createIndex(indexPath) {
     const indexEndpoint = `${API_BASE_URL}/${org}/sites/${site}/index/${indexPath}/index.json`;
-    // eslint-disable-next-line no-await-in-loop
     const indexRes = await fetch(indexEndpoint, {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiToken}` },
@@ -421,12 +412,18 @@ if (dryRun) {
     if (indexRes.ok) {
       console.log(`  ✓ /${indexPath}/index.json (HTTP ${indexRes.status})`);
     } else {
-      // eslint-disable-next-line no-await-in-loop
       const errText = await indexRes.text();
       console.warn(`  ⚠ /${indexPath}/index.json HTTP ${indexRes.status} — ${errText} (continuing anyway)`);
     }
   }
 
+  // Step 1: Create root index only — so all products land there on first ingest.
+  // Category indexes are created AFTER ingest so the API re-queues those products
+  // into the category indexes while leaving the root intact (same pattern as scdemos).
+  console.log('\nCreating root index...');
+  await createIndex(`labs/${prefix}/products`);
+
+  // Step 2: Ingest products — all land in root (only registered index).
   const endpoint = `${API_BASE_URL}/${org}/sites/${site}/catalog/*`;
   console.log(`\nCalling bulk API: POST ${endpoint}`);
   console.log(`Ingesting ${products.length} products (${Math.ceil(products.length / 50)} batch(es))...`);
@@ -462,6 +459,12 @@ if (dryRun) {
   }
 
   console.log(`\nDone. ${successCount} saved, ${failCount} failed.`);
+
+  // Step 3: Create category indexes — the API re-queues matching products into each,
+  // while the root index retains all products.
+  console.log('\nCreating category indexes...');
+  await createIndex(`labs/${prefix}/products/swag`);
+  await createIndex(`labs/${prefix}/products/guides`);
 
   if (successCount > 0) {
     const mainBase = `https://main--${site}--${org}.aem.network`;

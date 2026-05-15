@@ -133,16 +133,22 @@ node labs/product-bus/generate-products.mjs --api <token>
 Expected output:
 
 ```
-Creating indexes...
-  ✓ /labs/jsmith/products/index.json (HTTP 200)
-  ✓ /labs/jsmith/products/swag/index.json (HTTP 200)
-  ✓ /labs/jsmith/products/guides/index.json (HTTP 200)
+Creating root index...
+  ✓ /labs/jsmith/products/index.json (HTTP 201)
 
 Calling bulk API: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/*
 Ingesting 6 products (1 batch(es))...
   Batch 1: ✓ 6 product(s) saved (HTTP 200)
 
 Done. 6 saved, 0 failed.
+
+Creating category indexes...
+  ✓ /labs/jsmith/products/swag/index.json (HTTP 201)
+  ✓ /labs/jsmith/products/guides/index.json (HTTP 201)
+
+Product pages (may take 30–60 s for feeds to populate):
+  https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+  ...
 ```
 
 ### 1c. Verify one product was stored
