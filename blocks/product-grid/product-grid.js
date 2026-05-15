@@ -1,11 +1,15 @@
 /**
  * Product Grid block.
  *
- * Authoring: add a link to a product index JSON in the block.
- *   | product-grid                              |
- *   | /products-<branch>/index.json             |
+ * Authoring:
+ *   | product-grid               |   (all products)
+ *   | /labs/<branch>/products/index.json |
  *
- * Fetches the index, resolves image URLs, and renders a responsive product card grid.
+ *   | product-grid               |   (filtered by category)
+ *   | /labs/<branch>/products/index.json |
+ *   | swag                       |
+ *
+ * Fetches the index, optionally filters by URL path segment, and renders a card grid.
  */
 
 import { createOptimizedPicture } from '../../scripts/aem.js';
@@ -65,11 +69,12 @@ function buildCard(product, indexUrl) {
 }
 
 export default async function decorate(block) {
-  const anchor = block.querySelector('a[href]');
-  const text = block.textContent.trim();
+  const rows = [...block.querySelectorAll(':scope > div > div')];
+  const anchor = rows[0]?.querySelector('a[href]');
   const indexUrl = anchor
     ? anchor.href
-    : new URL(text, window.location.origin).href;
+    : new URL(rows[0]?.textContent.trim() || '', window.location.origin).href;
+  const category = rows[1]?.textContent.trim().toLowerCase() || null;
 
   if (!indexUrl) return;
 
@@ -77,7 +82,13 @@ export default async function decorate(block) {
   block.setAttribute('aria-busy', 'true');
 
   try {
-    const products = await fetchProductIndex(indexUrl);
+    let products = await fetchProductIndex(indexUrl);
+
+    if (category) {
+      products = products.filter((p) => {
+        try { return new URL(p.url).pathname.split('/').includes(category); } catch { return false; }
+      });
+    }
 
     if (!products.length) {
       block.append(createTag('p', { class: 'product-grid-empty' }, 'No products found.'));
