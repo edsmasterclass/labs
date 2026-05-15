@@ -161,6 +161,23 @@ You should see the full product JSON including name, price, images, and attribut
 
 *~5 minutes*
 
+### 2a. Peek under the hood — site configuration
+
+Before you look at the feeds, open the site's config to see what's wired up:
+
+```
+https://main--labs--edsmasterclass.aem.network/config.json
+```
+
+Look for two sections:
+
+- **`mixerConfig`** — the routing rule that sends `/products-*/**` requests to the Product Bus pipeline worker. One pattern covers every student namespace.
+- **`productIndexerConfig`** — tells the indexer which fields to include in the generated feeds, and which catalog roots to watch.
+
+This is the entire infrastructure configuration for Product Bus on this site. No per-student setup required — your namespace was covered the moment you picked a branch name.
+
+### 2b. Open the auto-generated feeds
+
 Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `jsmith` with your branch):
 
 **Query indexes** — power product listing grids (one per scope):
