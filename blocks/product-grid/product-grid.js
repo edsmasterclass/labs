@@ -45,12 +45,12 @@ function formatPrice(price) {
     : price;
 }
 
-function buildCard(product, indexUrl) {
+function buildCard(product) {
   const li = createTag('li', { class: 'product-grid-item' });
   const link = createTag('a', { href: product.url, class: 'product-grid-link' });
 
   if (product.image) {
-    const src = resolveImage(product.image, indexUrl);
+    const src = resolveImage(product.image, product.url);
     const picture = createOptimizedPicture(src, product.title || '', false, [
       { width: '400' },
       { media: '(min-width: 900px)', width: '600' },
@@ -96,7 +96,7 @@ export default async function decorate(block) {
     }
 
     const ul = createTag('ul', { class: 'product-grid-list' });
-    products.forEach((product) => ul.append(buildCard(product, indexUrl)));
+    products.forEach((product) => ul.append(buildCard(product)));
     block.append(ul);
   } catch {
     block.append(createTag('p', { class: 'product-grid-empty' }, 'Unable to load products right now.'));
