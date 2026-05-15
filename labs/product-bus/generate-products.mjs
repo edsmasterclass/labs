@@ -338,7 +338,7 @@ const catalog = [
 
 const products = catalog.flatMap(({ category, products: categoryProducts }) =>
   categoryProducts.map((p) => {
-    const path = `/products-${prefix}/${category}/${p.sku}`;
+    const path = `/labs/products-${prefix}/${category}/${p.sku}`;
     const images = p.image ? [{ url: p.image, label: p.name }] : [];
 
     return {
@@ -406,9 +406,9 @@ if (dryRun) {
   // Create (or update) indexes for this namespace before ingesting products.
   // One root index (all products) + one per category (scoped by path prefix).
   const indexPaths = [
-    `products-${prefix}`,
-    `products-${prefix}/swag`,
-    `products-${prefix}/guides`,
+    `labs/products-${prefix}`,
+    `labs/products-${prefix}/swag`,
+    `labs/products-${prefix}/guides`,
   ];
   console.log('\nCreating indexes...');
   for (const indexPath of indexPaths) {
