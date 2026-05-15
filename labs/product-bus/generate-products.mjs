@@ -403,6 +403,20 @@ if (dryRun) {
     console.log('\nNo --api token provided. Run with --api <token> to ingest into the Product Bus.');
   }
 } else {
+  // Create (or update) the index for this namespace before ingesting products.
+  const indexEndpoint = `${API_BASE_URL}/${org}/sites/${site}/index/products-${prefix}/index.json`;
+  console.log(`\nCreating index: POST ${indexEndpoint}`);
+  const indexRes = await fetch(indexEndpoint, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${apiToken}` },
+  });
+  if (indexRes.ok) {
+    console.log(`  ✓ Index created/updated (HTTP ${indexRes.status})`);
+  } else {
+    const errText = await indexRes.text();
+    console.warn(`  ⚠ Index creation returned HTTP ${indexRes.status} — ${errText} (continuing anyway)`);
+  }
+
   const endpoint = `${API_BASE_URL}/${org}/sites/${site}/catalog/*`;
   console.log(`\nCalling bulk API: POST ${endpoint}`);
   console.log(`Ingesting ${products.length} products (${Math.ceil(products.length / 50)} batch(es))...`);
