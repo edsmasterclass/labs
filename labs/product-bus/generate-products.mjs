@@ -12,6 +12,8 @@
  *   --api <token>           Call the Product Bus bulk API to ingest all products
  *   --org <org>             Organization slug          (default: edsmasterclass)
  *   --site <site>           Site slug                  (default: labs)
+ *   --prefix <prefix>       Catalog root prefix        (default: current git branch)
+ *                           Products land at /products-<prefix>/<category>/<slug>
  *   --dry-run               Write JSON and print payloads, but skip the API call
  *                           (this is the default when --api is omitted)
  *
@@ -22,6 +24,7 @@
 import { writeFileSync } from 'fs';
 import { resolve, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import { execFileSync } from 'child_process';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -46,6 +49,16 @@ const site = (() => {
 
 const dryRun = process.argv.includes('--dry-run') || !apiToken;
 
+const prefix = (() => {
+  const i = process.argv.indexOf('--prefix');
+  if (i !== -1) return process.argv[i + 1];
+  try {
+    return execFileSync('git', ['branch', '--show-current'], { encoding: 'utf-8' }).trim();
+  } catch {
+    return 'main';
+  }
+})();
+
 // Images — replace with actual hosted assets before going live.
 // Using placehold.co for lab/demo purposes.
 const IMG = {
@@ -57,7 +70,7 @@ const IMG = {
   complete: 'https://placehold.co/800x600/eb1000/ffffff?text=EDS+Complete+Reference',
 };
 
-const SITE_BASE_URL = 'https://main--labs--edsmasterclass.aem.live';
+const SITE_BASE_URL = `https://${prefix}--labs--edsmasterclass.aem.page`;
 const API_BASE_URL = 'https://api.adobecommerce.live';
 
 // ---------------------------------------------------------------------------
@@ -325,7 +338,7 @@ const catalog = [
 
 const products = catalog.flatMap(({ category, products: categoryProducts }) =>
   categoryProducts.map((p) => {
-    const path = `/products/${category}/${p.sku}`;
+    const path = `/products-${prefix}/${category}/${p.sku}`;
     const images = p.image ? [{ url: p.image, label: p.name }] : [];
 
     return {
@@ -362,7 +375,7 @@ const sep = `+-${'-'.repeat(nameWidth)}-+-${'-'.repeat(pathWidth)}-+-${'-'.repea
 const row = (name, path, price) =>
   `| ${name.padEnd(nameWidth)} | ${path.padEnd(pathWidth)} | ${price.padEnd(priceWidth)} |`;
 
-console.log('\nEDS Masterclass — Product Bus Payloads\n');
+console.log(`\nEDS Masterclass — Product Bus Payloads  [prefix: products-${prefix}]\n`);
 console.log(sep);
 console.log(row('Name', 'Path', 'Price (USD)'));
 console.log(sep);
