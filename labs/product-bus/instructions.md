@@ -254,12 +254,14 @@ Create three pages in DA.live (replace `jsmith` with your branch in all paths) a
 
 **`/labs/jsmith/products`** — all products:
 
+h1: All Products
 | product-grid |
 |---|
 | /labs/jsmith/products/index.json |
 
 **`/labs/jsmith/products/swag`** — swag only:
 
+h1: Swag
 | product-grid |
 |---|
 | /labs/jsmith/products/index.json |
@@ -267,6 +269,7 @@ Create three pages in DA.live (replace `jsmith` with your branch in all paths) a
 
 **`/labs/jsmith/products/guides`** — guides only:
 
+h1: Guides
 | product-grid |
 |---|
 | /labs/jsmith/products/index.json |
