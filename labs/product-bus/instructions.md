@@ -133,7 +133,7 @@ node labs/product-bus/generate-products.mjs --api <token>
 Expected output:
 
 ```
-Creating root index...
+Creating index: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/index/labs/jsmith/products/index.json
   ✓ /labs/jsmith/products/index.json (HTTP 201)
 
 Calling bulk API: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/*
@@ -141,10 +141,6 @@ Ingesting 6 products (1 batch(es))...
   Batch 1: ✓ 6 product(s) saved (HTTP 200)
 
 Done. 6 saved, 0 failed.
-
-Creating category indexes...
-  ✓ /labs/jsmith/products/swag/index.json (HTTP 201)
-  ✓ /labs/jsmith/products/guides/index.json (HTTP 201)
 
 Product pages (may take 30–60 s for feeds to populate):
   https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
@@ -266,13 +262,15 @@ Create three pages in DA.live (replace `jsmith` with your branch in all paths) a
 
 | product-grid |
 |---|
-| /labs/jsmith/products/swag/index.json |
+| /labs/jsmith/products/index.json |
+| swag |
 
 **`/labs/jsmith/products/guides`** — guides only:
 
 | product-grid |
 |---|
-| /labs/jsmith/products/guides/index.json |
+| /labs/jsmith/products/index.json |
+| guides |
 
 Preview and publish all three. Open them on your branch:
 
@@ -282,7 +280,7 @@ https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/swag
 https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/guides
 ```
 
-**Key concept**: The same block, pointed at different index URLs, scopes the grid automatically. This is how production sites build locale or category landing pages — one block, many scopes.
+**Key concept**: All three pages share one index. The optional second row filters by URL path segment client-side — no separate indexes needed per category.
 
 ---
 
@@ -355,12 +353,10 @@ Marketing authors product stories in DA.live without ever touching the commerce 
 
 ## Verification Checklist
 
-- [ ] Dry-run shows correct prefix (`products-<your-branch>`) for all 6 products
-- [ ] Ingest succeeds: 3 indexes created, `6 saved, 0 failed`
+- [ ] Dry-run shows correct prefix (`jsmith`) for all 6 products
+- [ ] Ingest succeeds: index created, `6 saved, 0 failed`
 - [ ] `GET` one product from the API returns full JSON
 - [ ] `/labs/<branch>/products/index.json` shows all 6 products
-- [ ] `/labs/<branch>/products/swag/index.json` shows 3 swag products
-- [ ] `/labs/<branch>/products/guides/index.json` shows 3 guide products
 - [ ] `sitemap.xml` lists all 6 product URLs
 - [ ] `merchant-center-feed.xml` is present
 - [ ] Product detail page renders at `/labs/<branch>/products/swag/masterclass-hoodie`
