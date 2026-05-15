@@ -50,7 +50,7 @@ function buildCard(product) {
   const link = createTag('a', { href: product.url, class: 'product-grid-link' });
 
   if (product.image) {
-    const src = resolveImage(product.image, product.url);
+    const src = resolveImage(product.image, new URL(product.url, window.location.origin).href);
     const picture = createOptimizedPicture(src, product.title || '', false, [
       { width: '400' },
       { media: '(min-width: 900px)', width: '600' },
@@ -85,9 +85,7 @@ export default async function decorate(block) {
     let products = await fetchProductIndex(indexUrl);
 
     if (category) {
-      products = products.filter((p) => {
-        try { return new URL(p.url).pathname.split('/').includes(category); } catch { return false; }
-      });
+      products = products.filter((p) => (p.url || '').split('/').includes(category));
     }
 
     if (!products.length) {
