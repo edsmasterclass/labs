@@ -165,19 +165,19 @@ Indexing happens automatically after ingest — no action required. Open each of
 
 **Query indexes** — power product listing grids (one per scope):
 ```
-https://main--labs--edsmasterclass.aem.page/products-jsmith/index.json
-https://main--labs--edsmasterclass.aem.page/products-jsmith/swag/index.json
-https://main--labs--edsmasterclass.aem.page/products-jsmith/guides/index.json
+https://main--labs--edsmasterclass.aem.network/products-jsmith/index.json
+https://main--labs--edsmasterclass.aem.network/products-jsmith/swag/index.json
+https://main--labs--edsmasterclass.aem.network/products-jsmith/guides/index.json
 ```
 
 **Product sitemap** — for search engines:
 ```
-https://main--labs--edsmasterclass.aem.page/products-jsmith/sitemap.xml
+https://main--labs--edsmasterclass.aem.network/products-jsmith/sitemap.xml
 ```
 
 **Google Merchant Center feed** — for shopping ads:
 ```
-https://main--labs--edsmasterclass.aem.page/products-jsmith/merchant-center-feed.xml
+https://main--labs--edsmasterclass.aem.network/products-jsmith/merchant-center-feed.xml
 ```
 
 > **Note**: Feeds may take 30–60 seconds to generate after ingest. If you see a 404, wait a moment and refresh.
@@ -195,7 +195,7 @@ https://main--labs--edsmasterclass.aem.page/products-jsmith/merchant-center-feed
 Open a product detail page on your branch (replace `jsmith` with your branch):
 
 ```
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag/masterclass-hoodie
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith/swag/masterclass-hoodie
 ```
 
 You should see a fully rendered product page with:
@@ -206,7 +206,7 @@ You should see a fully rendered product page with:
 Now append `.json` to the URL to see the raw product data:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag/masterclass-hoodie.json
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith/swag/masterclass-hoodie.json
 ```
 
 **Key concept**: The pipeline worker renders product pages at the edge — combining Product Bus data with any authored content at the same path. Right now there is no authored content, so you're seeing pure Product Bus output.
@@ -244,9 +244,9 @@ Create three pages in DA.live (replace `jsmith` with your branch in all paths):
 Preview and publish all three. Open them on your branch:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/guides
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith/swag
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith/guides
 ```
 
 **Key concept**: The same block, pointed at different index URLs, scopes the grid automatically. This is how production sites build locale or category landing pages — one block, many scopes.
@@ -266,7 +266,7 @@ Add a short paragraph of editorial copy — for example:
 Preview and publish. Reload the product page on your branch:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.page/products-jsmith/swag/masterclass-hoodie
+https://jsmith--labs--edsmasterclass.aem.network/products-jsmith/swag/masterclass-hoodie
 ```
 
 Your authored content should appear on the page alongside the structured product data.
