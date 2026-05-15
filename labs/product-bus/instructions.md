@@ -207,6 +207,16 @@ https://main--labs--edsmasterclass.aem.network/products-jsmith/merchant-center-f
 
 *~12 minutes*
 
+### Push your branch first
+
+The branch preview URL (`jsmith--labs--edsmasterclass.aem.page`) only works once your branch exists on the remote. Push it now if you haven't already:
+
+```bash
+git push -u origin jsmith
+```
+
+AEM Code Sync picks up the branch automatically — no extra configuration needed.
+
 ### Part A: Explore a rendered product page (~5 min)
 
 Open a product detail page on your branch (replace `jsmith` with your branch):
