@@ -338,7 +338,7 @@ const catalog = [
 
 const products = catalog.flatMap(({ category, products: categoryProducts }) =>
   categoryProducts.map((p) => {
-    const path = `/labs/products-${prefix}/${category}/${p.sku}`;
+    const path = `/labs/${prefix}/products/${category}/${p.sku}`;
     const images = p.image ? [{ url: p.image, label: p.name }] : [];
 
     return {
@@ -375,7 +375,7 @@ const sep = `+-${'-'.repeat(nameWidth)}-+-${'-'.repeat(pathWidth)}-+-${'-'.repea
 const row = (name, path, price) =>
   `| ${name.padEnd(nameWidth)} | ${path.padEnd(pathWidth)} | ${price.padEnd(priceWidth)} |`;
 
-console.log(`\nEDS Masterclass — Product Bus Payloads  [prefix: products-${prefix}]\n`);
+console.log(`\nEDS Masterclass — Product Bus Payloads  [prefix: ${prefix}]\n`);
 console.log(sep);
 console.log(row('Name', 'Path', 'Price (USD)'));
 console.log(sep);
@@ -406,9 +406,9 @@ if (dryRun) {
   // Create (or update) indexes for this namespace before ingesting products.
   // One root index (all products) + one per category (scoped by path prefix).
   const indexPaths = [
-    `labs/products-${prefix}`,
-    `labs/products-${prefix}/swag`,
-    `labs/products-${prefix}/guides`,
+    `labs/${prefix}/products`,
+    `labs/${prefix}/products/swag`,
+    `labs/${prefix}/products/guides`,
   ];
   console.log('\nCreating indexes...');
   for (const indexPath of indexPaths) {
