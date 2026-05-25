@@ -86,7 +86,24 @@ The repository provides the basic structure, blocks, and configuration needed to
 
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
-If no authored content exists to test against, you can create static HTML files in a `drafts/` folder at the project root. Pass `--html-folder drafts` when starting the dev server. Follow the aem markup structure and save files with `.html` or `.plain.html` extensions.
+If no authored content exists to test against, use the `aem content` CLI to create and upload test content directly to DA:
+
+```bash
+# Clone your working folder from DA (first time only)
+aem content clone --path /drafts/<yourname>
+
+# Create your test HTML file in the cloned content/ directory
+# e.g. content/drafts/<yourname>/my-block.html
+
+# Upload to DA
+aem content add content/drafts/<yourname>/my-block.html
+aem content commit -m "add test content for my-block"
+aem content push
+```
+
+**Path mapping:** Files in `content/` map directly to dev server URLs — `content/drafts/foo/bar.html` is accessible at `http://localhost:3000/drafts/foo/bar`.
+
+**Important:** Do not use DA MCP tools for content operations. Use the `aem content` CLI commands above.
 
 Background on content and markup structure can be found at https://www.aem.live/developer/markup-sections-blocks and https://www.aem.live/developer/markup-reference respectively.
 

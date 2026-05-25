@@ -66,7 +66,8 @@ What's already out there that we can borrow or steal as a starting point?
 
 ```
 I need a speakers block for displaying conference speaker cards with a
-headshot, name, role, and bio.
+headshot, name, role, and bio. For test content, use aem content (add,
+commit, push) to upload to DA rather than creating local HTML files.
 ```
 
 ---
@@ -77,7 +78,8 @@ headshot, name, role, and bio.
 Let's make a plan to build a schedule block for displaying a conference agenda
 with time slots, session titles, speakers, and a track or room. The content
 model here could get complex, so think it through carefully and let's review
-before we kick off the CDD process.
+before we kick off the CDD process. For test content, use aem content (add,
+commit, push) to upload to DA rather than creating local HTML files.
 ```
 
 ---

@@ -23,7 +23,7 @@
 **Complete [Lab Setup](../SETUP.md) through Step 7 before starting.**
 
 - AI coding agent installed and authenticated (Claude Code, Cursor, Codex CLI, or GitHub Copilot)
-- Dev server running: `aem up --html-folder drafts`
+- Dev server running: `aem up`
 - `localhost:3000` open in browser
 - Terminal visible alongside editor
 
@@ -151,11 +151,11 @@ Hand the agent the goal and let it run the workflow. It decides the content mode
 **What happens:**
 1. The agent invokes the CDD skill
 2. It designs a content model (how authors will structure the block)
-3. It creates test content at `drafts/tmp/speakers.plain.html`
+3. It creates test content and pushes it to DA via `aem content`
 4. It implements `blocks/speakers/speakers.js` and `blocks/speakers/speakers.css`
 5. It validates — linting, self-review
 
-**When it finishes**, open `http://localhost:3000/drafts/tmp/speakers` to see the result.
+**When it finishes**, open the previewed page on `.aem.page` to see the result.
 
 **What to evaluate:**
 - Does the content model make sense for authors?
@@ -172,7 +172,7 @@ Same CDD workflow, but this time you review the plan before any code is written.
 
 The agent will propose a content model and approach before writing any code. Review it — does the content model make sense for authors? Would you change anything? Approve (or steer) before letting it proceed with the full CDD workflow.
 
-**When it finishes**, open `http://localhost:3000/drafts/tmp/schedule` to see the result.
+**When it finishes**, open the previewed page on `.aem.page` to see the result.
 
 ---
 
