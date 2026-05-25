@@ -45,7 +45,39 @@
 
 *10 minutes — Demo Only*
 
-The [Experience Modernization Agent](https://aemcoder.adobe.io/) is Adobe's AI-powered console for modernizing web experiences with Edge Delivery Services. It migrates content and styles from existing sites, connects to your GitHub repo, and provides a built-in code editor with preview — all in the browser.
+The [Experience Modernization Agent](https://aemcoder.adobe.io/) is Adobe's AI-powered console for modernizing web experiences with Edge Delivery Services. It connects to your GitHub repo and provides a built-in code editor with preview — all in the browser.
+
+**Demo setup:** The site at https://main--aemcoder-lab--shsteimer.aem.live/ already has content imported from [wknd-adventures.com](https://wknd-adventures.com/) — the index page, header, and footer are live. The agent is connected to its GitHub repo with full read/write access.
+
+**Prompt:** Use [**1.1** from Prompts.md](Prompts.md#11--rebrand-the-site)
+
+The task: rebrand from WKND Adventures to Rockstar Adventures, taking design inspiration from [rockstar.adobeevents.com/en/masterclass](https://rockstar.adobeevents.com/en/masterclass).
+
+**What to look for:**
+- The agent reads the existing codebase — styles, blocks, import scripts — to understand the starting point
+- It fetches the reference site to extract brand colors, typography, and layout patterns
+- It updates CSS custom properties, color tokens, and font choices to match the new brand
+- It replaces WKND content references (copy, nav labels) with Rockstar equivalents
+- It touches multiple files in a single pass — this is cross-concern work, not just one block
+- It checks its own output for accessibility and visual consistency before finishing
+
+**The contrast with Parts 2–4:** This is a *retheme* — the agent interprets design intent from a URL and applies it across the whole codebase. Parts 2–4 show a different mode: building net-new blocks from scratch with the Content Driven Development workflow.
+
+**More info:** The full AEMCoder lab from Summit is at https://adobelabs.dev/brand-visibility/l335/ — it covers the agent in more depth and is a good reference if you want to explore further after the session.
+
+---
+
+### Step 2: Bulk Import + Rebrand
+
+**Prompt:** Use [**1.2** from Prompts.md](Prompts.md#12--bulk-import-and-rebrand-remaining-pages)
+
+One prompt to import the rest of wknd-adventures.com and apply the new brand across all of it.
+
+**What to look for:**
+- The agent crawls the source site to discover all remaining pages
+- It runs the import in bulk — multiple pages in a single pass rather than one at a time
+- It applies the Rockstar Adventures brand to the imported content as it goes, not as a separate step
+- The result is a fully themed site, not a raw import that still needs cleanup
 
 ---
 
