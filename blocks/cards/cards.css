@@ -122,3 +122,11 @@
     margin-bottom: 8px;
     color: var(--brand-1);
 }
+
+.cards.list > ul {
+    grid-template-columns: 1fr;
+}
+
+.cards.list .cards-card-body {
+    text-align: center;
+}
