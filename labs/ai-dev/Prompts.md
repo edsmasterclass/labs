@@ -6,11 +6,22 @@
 
 ---
 
-### 1.1 — Migrate a page
+### 1.1 — Rebrand the site
 
 ```
-Let's migrate https://summit.adobe.com/na/ to /drafts/shsteimer/summit.
-Match the original design as close as possible, but with our color scheme.
+We are rebranding from WKND Adventures to Rockstar Adventures.
+Take design inspiration from https://rockstar.adobeevents.com/en/masterclass
+and update content, styles, blocks, import scripts, etc. to match the new brand.
+Make sure everything still looks good, is accessible, etc.
+```
+
+---
+
+### 1.2 — Bulk import and rebrand remaining pages
+
+```
+Now let's import the rest of the pages from https://wknd-adventures.com/ in bulk,
+then update their content to match our new Rockstar Adventures theme and branding.
 ```
 
 ---
@@ -55,7 +66,8 @@ What's already out there that we can borrow or steal as a starting point?
 
 ```
 I need a speakers block for displaying conference speaker cards with a
-headshot, name, role, and bio.
+headshot, name, role, and bio. For test content, use aem content (add,
+commit, push) to upload to DA rather than creating local HTML files.
 ```
 
 ---
@@ -66,7 +78,8 @@ headshot, name, role, and bio.
 Let's make a plan to build a schedule block for displaying a conference agenda
 with time slots, session titles, speakers, and a track or room. The content
 model here could get complex, so think it through carefully and let's review
-before we kick off the CDD process.
+before we kick off the CDD process. For test content, use aem content (add,
+commit, push) to upload to DA rather than creating local HTML files.
 ```
 
 ---
