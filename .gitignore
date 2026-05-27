@@ -9,14 +9,15 @@ helix-importer-ui
 .idea
 .claude/settings.local.json
 .claude/skills/**/.cache/
-
+.certs
 # Ensure these files are tracked
 !CLAUDE.md
 !AGENTS.md
 
 .playwright-mcp/
 .playwright-cli/
-
+.claude/skills/playwright-mcp/
+.claude/skills/playwright-cli/
 .hlx/.da-token.json
 
 content
