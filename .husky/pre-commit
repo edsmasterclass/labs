@@ -1,1 +1,1 @@
-node .husky/pre-commit.mjs
+. "$HOME/.nvm/nvm.sh" && nvm use 20 --silent && node .husky/pre-commit.mjs
