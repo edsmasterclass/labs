@@ -1,4 +1,4 @@
-# EDS Masterclass Labs
+# EDS Masterclass Labs.
 Training materials and exercises for AEM Edge Delivery Services masterclass sessions.
 
 ## Environments
