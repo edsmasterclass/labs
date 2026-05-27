@@ -1,0 +1,38 @@
+.plugin-shell {
+  box-sizing: border-box;
+  padding: 16px;
+  margin: 0;
+  font-family: adobe-clean, "Segoe UI", sans-serif;
+  color: #2c2c2c;
+}
+
+.plugin-shell h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.plugin-intro {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.plugin-shell label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#embed-code-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+  font-family: SFMono-Regular, Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
