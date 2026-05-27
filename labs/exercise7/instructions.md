@@ -44,7 +44,7 @@
 - Exercises 1–6 completed (if doing in sequence)
 - DA.live access
 - AEM Sidekick logged in (for Site Admin tool auth)
-- **Personal workspace**: your own site `edsmasterclass/jsmith-mc` (use your name, lowercase)
+- **Personal workspace**: your own site `/edsmasterclass/jsmith-mc` (use your name, lowercase)
 - **Org Admin for this lab**: if you need a site cloned or permissions adjusted, contact **murugull@adobe.com** (Slack, Microsoft Teams, or email), as described in [Step 1](#step-1-clone-the-site-configuration-or-request-one).
 
 ---
@@ -142,17 +142,17 @@ Each site in DA.live can specify:
 2. **Code Source**: Where code lives (can point to a different GitHub repo)
 3. **Site Settings**: Permissions, custom configuration
 
-**Example**: Your site `edsmasterclass/jsmith-mc`
-- Content from: `edsmasterclass/jsmith-mc` in DA.live (YOUR pages)
-- Code from: `edsmasterclass/labs` in GitHub (SHARED blocks/scripts)
+**Example**: Your site `/edsmasterclass/jsmith-mc`
+- Content from: `/edsmasterclass/jsmith-mc` in DA.live (YOUR pages)
+- Code from: `/edsmasterclass/labs` in GitHub (SHARED blocks/scripts)
 
 ### What Gets Loaded From Where
 
 When someone visits `https://main--jsmith-mc--edsmasterclass.aem.page/`:
 
 1. EDS checks `jsmith-mc` configuration → sees code source is `labs`
-2. Gets **content** (index.html) from `edsmasterclass/jsmith-mc` in DA.live
-3. Gets **code** (hero.js, hero.css, scripts.js) from `edsmasterclass/labs` in GitHub
+2. Gets **content** (index.html) from `/edsmasterclass/jsmith-mc` in DA.live
+3. Gets **code** (hero.js, hero.css, scripts.js) from `/edsmasterclass/labs` in GitHub
 4. Combines them → your page with your content, shared functionality
 
 **Reference**: [Configuration Service Setup](https://www.aem.live/docs/config-service-setup)
@@ -169,8 +169,8 @@ The Site Admin tool is how new site entries are created in the Configuration Ser
 
 1. **Get a cloned site configuration** — either you self-clone (Org Admins only) or an Org Admin does it for you.
 2. **Get admin permissions** on *your* cloned site so you can open it in Site Admin and adjust settings for the rest of the exercise.
-3. **Change the content path** (or equivalent site settings) so preview/production load **your** DA.live content folder (`edsmasterclass/<your-site>`).
-4. **Leave the code path as-is** — keep the shared code source pointing at **`edsmasterclass/labs`** (GitHub) so the exercise stays repoless.
+3. **Change the content path** (or equivalent site settings) so preview/production load **your** DA.live content folder (`/edsmasterclass/<your-site>`).
+4. **Leave the code path as-is** — keep the shared code source pointing at **`/edsmasterclass/labs`** (GitHub) so the exercise stays repoless.
 
 If an Org Admin created the site for you, they should grant you the access you need to complete steps 2–4 yourself; if anything is still wrong after that, follow up with the same contact.
 
@@ -231,7 +231,7 @@ Instead of creating content from scratch, use the DA.live tools to copy all exis
 
 1. Open the **Traverse** tool: [https://da.live/apps/traverse](https://da.live/apps/traverse)
 
-2. Enter the source site path: `edsmasterclass/labs`
+2. Enter the source site path: `/edsmasterclass/labs`
 
 3. Run the traverse — this crawls the site and builds a list of all content pages and assets
 
@@ -278,8 +278,8 @@ Imported content needs to be previewed and published before it's available on yo
 3. **You should see**: The full NYC Masterclass homepage — same hero, same cards, same styling
 
 **What's happening**:
-- **Content** is coming from `edsmasterclass/jsmith-mc` (your DA.live folder)
-- **Code** is coming from `edsmasterclass/labs` (shared GitHub repo)
+- **Content** is coming from `/edsmasterclass/jsmith-mc` (your DA.live folder)
+- **Code** is coming from `/edsmasterclass/labs` (shared GitHub repo)
 - The site looks identical to NYC because you copied the content and share the code
 
 ---
@@ -306,8 +306,8 @@ https://main--labs--edsmasterclass.aem.page/styles/styles.css
 **KEY OBSERVATION**: URLs say `labs`, NOT `jsmith-mc`!
 
 **This proves**:
-- Your **content** comes from `edsmasterclass/jsmith-mc` (your DA.live project)
-- Your **code** comes from `edsmasterclass/labs` (shared GitHub repo)
+- Your **content** comes from `/edsmasterclass/jsmith-mc` (your DA.live project)
+- Your **code** comes from `/edsmasterclass/labs` (shared GitHub repo)
 - **Repoless is working!**
 
 ---
