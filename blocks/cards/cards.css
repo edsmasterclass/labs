@@ -113,3 +113,56 @@
     padding: 2rem;
   }
 }
+
+.cards .cards-card-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  color: var(--brand-1);
+}
+
+/* List layout — used by Cards (List) variant and View Switcher toggle */
+.cards.list > ul {
+  grid-template-columns: 1fr;
+}
+
+.cards.list .cards-card-body {
+  text-align: center;
+}
+
+/* View switcher toolbar — hidden on narrow viewports, shown from 600px up */
+.cards.view-switcher .cards-toolbar {
+  display: none;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 1rem;
+}
+
+@media (width >= 600px) {
+  .cards.view-switcher .cards-toolbar {
+    display: flex;
+  }
+}
+
+.cards.view-switcher .cards-toolbar-btn {
+  background: transparent;
+  border: 1px solid rgb(255 255 255 / 20%);
+  color: var(--muted);
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.cards.view-switcher .cards-toolbar-btn:hover {
+  border-color: rgb(255 255 255 / 40%);
+}
+
+.cards.view-switcher .cards-toolbar-btn.active {
+  background: var(--brand-1);
+  color: white;
+  border-color: var(--brand-1);
+}
