@@ -71,7 +71,7 @@
 **The problem**: Do you duplicate the entire codebase for each site? Fork the repo? Copy all blocks?
 
 **The repoless solution**:
-- **One code repository** (blocks, scripts, styles) - `edsmasterclass/labs`
+- **One code repository** (blocks, scripts, styles) - `/edsmasterclass/labs`
 - **Multiple sites** with different content - Each person's site in DA.live
 - **Configuration Service** manages which code repo each site uses
 - **Code updates** to `labs` apply to all sites automatically
