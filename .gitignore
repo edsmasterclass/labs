@@ -7,9 +7,9 @@ helix-importer-ui
 .DS_Store
 *.bak
 .idea
+.claude/settings.json
 .claude/settings.local.json
-.claude/skills/**/.cache/
-
+.claude/skills/** 
 # Ensure these files are tracked
 !CLAUDE.md
 !AGENTS.md
@@ -20,3 +20,4 @@ helix-importer-ui
 .hlx/.da-token.json
 
 content
+.env
