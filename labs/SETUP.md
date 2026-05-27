@@ -50,7 +50,7 @@ Before arriving at the lab, ensure the following are installed:
   **GitHub organization invitation:** After the form is processed, you will receive an **email** inviting you to join the **`edsmasterclass`** organization on GitHub. **Accept that invitation** (use the link in the email) **before** you `git push` to this repository. If you have not joined the org, **push will fail** even if clone and commits work.
 
 - Git installed
-- Node.js v18 or higher
+- Node.js v20 or higher
 - Code editor (Cursor / Claude Code / VS Code)
 - Web browser (Chrome or Edge — required for AEM Sidekick)
 - **GitHub CLI** — so your AI coding agent can manage branches and PRs. Install: `brew install gh` (macOS) or `winget install GitHub.cli` (Windows). Then run `gh auth login`.
@@ -89,16 +89,16 @@ On **Intel** Macs, Homebrew usually lives under `/usr/local`; the installer’s 
 
 ### Installing Node.js
 
-You need **Node.js v18 or higher** before `npm install` and the AEM CLI steps.
+You need **Node.js v20 or higher** before `npm install` and the AEM CLI steps.
 
 **macOS — with Homebrew:**
 
 ```bash
 brew install node
-node -v   # expect v18.x.x or newer
+node -v   # expect v20.x.x or newer
 ```
 
-**Other options:** Download the **LTS** installer from [nodejs.org](https://nodejs.org/) (choose v18 or newer), or use another version manager your team prefers.
+**Other options:** Download the **LTS** installer from [nodejs.org](https://nodejs.org/) (choose v20 or newer), or use another version manager your team prefers.
 
 ---
 
@@ -175,11 +175,9 @@ The server starts at: http://localhost:3000
 
 **Keep this running** throughout the lab. Open a new terminal for Git commands.
 
-- **For Day 2 exercises**: From the **repository root**, run **`aem up`** — content comes from EDS/DA.
+Run **`aem up`** from the repository root for both Day 1 and Day 2. Content comes from EDS/DA; the agent pushes test pages directly to DA via `aem content`.
 
-- **For the AI lab (Day 1)**: `aem up --html-folder drafts` — serves the `drafts/` folder so the agent can create and view test pages (e.g. `drafts/tmp/speakers`, `drafts/tmp/schedule`). The `drafts/` folder is included in the repo; its `.gitignore` keeps any content you or the agent adds there **local** and out of commits.
-
-**Verify**: Open http://localhost:3000 — you should see the EDS Masterclass Labs homepage (or the drafts index if using `--html-folder drafts`).
+**Verify**: Open http://localhost:3000 — you should see the EDS Masterclass Labs homepage.
 
 ![EDS Masterclass Labs homepage at localhost:3000](images/nyc-masterclass-home.png)
 
@@ -193,6 +191,20 @@ The server starts at: http://localhost:3000
 >
 > After saving this file, **restart your local development server** (`aem up`).
 
+
+---
+
+## Step 6b: Clone Your DA Content Folder
+
+The AI coding agent pushes test content directly to DA.live using `aem content`. Clone your personal drafts folder so the agent has a local working copy to add and push from.
+
+```bash
+aem content clone --path /drafts/<yourname>
+```
+
+Replace `<yourname>` with your DA folder name (e.g. `jsmith`). This opens a browser login — authenticate with your Adobe ID, then wait for the clone to complete. Files land in `content/drafts/<yourname>/`.
+
+> **Token is saved** to `.hlx/.da-token.json` — you only need to authenticate once per session.
 
 ---
 
@@ -315,7 +327,8 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 - [ ] AEM CLI installed (`aem --version` works)
 - [ ] Dependencies installed (`npm install` completed)
 - [ ] Linting runs clean (`npm run lint` no errors)
-- [ ] Dev server running with drafts: `aem up --html-folder drafts` — `http://localhost:3000` loads
+- [ ] Dev server running: `aem up` — `http://localhost:3000` loads
+- [ ] DA content cloned: `aem content clone --path /drafts/<yourname>` — authenticated and `content/drafts/<yourname>/` exists
 - [ ] AI coding agent set up (Cursor, Claude Code, Codex, or Copilot) and project opened in it
 
 **For Day 2 exercises** — add these before [Exercise 1](exercise1/instructions.md):

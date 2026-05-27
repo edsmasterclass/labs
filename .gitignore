@@ -17,5 +17,8 @@ helix-importer-ui
 .playwright-mcp/
 
 .hlx\.da-token.json
+.playwright-cli/
+
+.hlx/.da-token.json
 
 content
