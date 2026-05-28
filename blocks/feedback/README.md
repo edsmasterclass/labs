@@ -16,7 +16,7 @@ The block submits JSON to the configured endpoint:
 
 ## Authoring model
 
-- Row 1: Worker endpoint URL
+- Row 1: Edge Worker endpoint URL
 - Row 2: Rich content containing location, address, heading, description
 
 Example:
