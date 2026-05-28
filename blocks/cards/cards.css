@@ -122,3 +122,12 @@
   margin-bottom: 8px;
   color: var(--brand-1);
 }
+
+/* List layout — used by Cards (List) variant and View Switcher toggle */
+.cards.list > ul {
+  grid-template-columns: 1fr;
+}
+
+.cards.list .cards-card-body {
+  text-align: center;
+}
