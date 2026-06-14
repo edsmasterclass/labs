@@ -202,7 +202,9 @@ The AI coding agent pushes test content directly to DA.live using `aem content`.
 aem content clone --path /drafts/<yourname>
 ```
 
-Replace `<yourname>` with your DA folder name (e.g. `jsmith`). This opens a browser login — authenticate with your Adobe ID, then wait for the clone to complete. Files land in `content/drafts/<yourname>/`.
+Replace `<yourname>` with your DA folder name (e.g. `jsmith`). This opens a browser login — authenticate with your Adobe ID, then wait for the clone to complete.
+
+> **The folder doesn't need to exist in DA yet.** DA folders are virtual, so cloning a brand-new path reports `Found 0 file(s)` and downloads nothing — that's expected. The clone still creates the local `content/` working copy and saves your auth token; your agent's first `aem content push` creates the folder in DA. (The `content/drafts/<yourname>/` subfolder only appears once a file lands in it.)
 
 > **Token is saved** to `.hlx/.da-token.json` — you only need to authenticate once per session.
 
@@ -328,7 +330,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 - [ ] Dependencies installed (`npm install` completed)
 - [ ] Linting runs clean (`npm run lint` no errors)
 - [ ] Dev server running: `aem up` — `http://localhost:3000` loads
-- [ ] DA content cloned: `aem content clone --path /drafts/<yourname>` — authenticated and `content/drafts/<yourname>/` exists
+- [ ] DA content cloned: `aem content clone --path /drafts/<yourname>` — authenticated and `content/.da-config.json` exists (an empty clone reports `Found 0 file(s)`; that's expected — the `drafts/<yourname>/` subfolder appears later)
 - [ ] AI coding agent set up (Cursor, Claude Code, Codex, or Copilot) and project opened in it
 
 **For Day 2 exercises** — add these before [Exercise 1](exercise1/instructions.md):
