@@ -6,7 +6,10 @@
   padding: 0;
   display: grid;
   gap: 2rem;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+
+  /* deterministic column counts so "grid is multi-column" lines up exactly
+     with the breakpoint where the view switcher appears (>= 600px) */
+  grid-template-columns: 1fr;
 }
 
 .cards > ul > li {
@@ -49,6 +52,8 @@
 /* Card body */
 .cards .cards-card-body {
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .cards .cards-card-body p {
@@ -60,6 +65,18 @@
 
 .cards .cards-card-body > *:first-child {
   margin-top: 0;
+}
+
+/* Eyebrow - first fully-italic paragraph, rendered as a label above the title */
+.cards .cards-card-eyebrow {
+  order: -1;
+  margin: 0 0 0.5rem;
+  color: var(--brand-1);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  line-height: 1.2;
 }
 
 .cards h3,
@@ -92,7 +109,7 @@
 /* Responsive adjustments */
 @media (width >= 600px) {
   .cards > ul {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .cards .cards-card-image {
@@ -111,5 +128,76 @@
 
   .cards .cards-card-body {
     padding: 2rem;
+  }
+}
+
+.cards.list > ul {
+  grid-template-columns: 1fr;
+}
+
+.cards.list .cards-card-body {
+  text-align: center;
+}
+
+/* View switcher - toggle above the cards (only with the view-switcher variant) */
+.cards .cards-toolbar {
+  /* hidden on mobile: grid and list both collapse to one column there */
+  display: none;
+  justify-content: flex-end;
+  margin-bottom: 1.5rem;
+}
+
+.cards .cards-view-switcher {
+  display: inline-flex;
+  gap: 2px;
+  padding: 4px;
+  border-radius: 12px;
+  background-color: var(--card);
+  border: 1px solid rgb(255 255 255 / 10%);
+  box-shadow: var(--shadow);
+}
+
+.cards .cards-view-switcher button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0.45rem 0.85rem;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.cards .cards-view-switcher button:hover {
+  color: var(--ink);
+}
+
+.cards .cards-view-switcher button[aria-pressed='true'] {
+  background-color: var(--brand-1);
+  color: var(--masterclass-bg-1);
+}
+
+.cards .cards-view-switcher button:focus-visible {
+  outline: 2px solid var(--brand-1);
+  outline-offset: 2px;
+}
+
+.cards .cards-view-icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: none;
+}
+
+/* show the switcher once the grid can actually become multi-column */
+@media (width >= 600px) {
+  .cards .cards-toolbar {
+    display: flex;
   }
 }
