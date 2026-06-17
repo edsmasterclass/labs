@@ -14,7 +14,9 @@
   border-radius: 16px;
   padding: 0;
   overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   box-shadow: var(--shadow);
   border: 1px solid rgb(255 255 255 / 5%);
 }
@@ -87,6 +89,15 @@
 .cards a:not(.button):hover {
   color: var(--brand-2);
   text-decoration: underline;
+}
+
+.cards .cards-card-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  color: var(--brand-1);
 }
 
 /* Responsive adjustments */
