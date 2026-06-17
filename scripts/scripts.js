@@ -175,6 +175,8 @@ async function loadEager(doc) {
 async function loadLazy(doc) {
   loadHeader(doc.querySelector('header'));
 
+  doc.body.insertAdjacentHTML('beforeend', '<div class="checkerboard-bg"></div>');
+
   const main = doc.querySelector('main');
   await loadSections(main);
 

@@ -1,1 +1,49 @@
 /* add global styles that can be loaded post LCP here */
+
+
+.checkerboard-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+
+  /* Size of each square */
+  --square-size: 40px;
+
+  background:
+    linear-gradient(
+      45deg,
+      #222 25%,
+      transparent 25%,
+      transparent 75%,
+      #222 75%
+    ),
+    linear-gradient(
+      45deg,
+      #222 25%,
+      transparent 25%,
+      transparent 75%,
+      #222 75%
+    );
+  background-color: #111;
+  background-size:
+    calc(var(--square-size) * 2)
+    calc(var(--square-size) * 2);
+  background-position:
+    0 0,
+    var(--square-size) var(--square-size);
+  animation: checker-scroll 8s linear infinite;
+}
+
+@keyframes checker-scroll {
+  from {
+    background-position:
+      0 0,
+      var(--square-size) var(--square-size);
+  }
+
+  to {
+    background-position:
+      0 calc(var(--square-size) * 2),
+      var(--square-size) calc(var(--square-size) * 3);
+  }
+}
