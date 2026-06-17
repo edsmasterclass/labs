@@ -58,6 +58,26 @@
     ]
   },
   {
+    "id": "cards",
+    "fields": [
+      {
+        "component": "select",
+        "name": "style",
+        "label": "Style",
+        "options": [
+          {
+            "name": "View Switcher",
+            "value": "view-switcher"
+          },
+          {
+            "name": "List",
+            "value": "list"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": "card",
     "fields": [
       {
