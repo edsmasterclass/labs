@@ -5,7 +5,7 @@ Training materials and exercises for AEM Edge Delivery Services masterclass sess
 - Preview: https://main--labs--edsmasterclass.aem.page/
 - Live: https://main--labs--edsmasterclass.aem.live/
 
-## Labs & Exercises
+## Labs & Exercisess
 - [Labs Overview](labs/README.md) - Complete guide to all exercises
 - [Setup Instructions](labs/SETUP.md) - Get started with the labs
 
