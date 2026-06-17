@@ -77,6 +77,12 @@
   margin-bottom: 0;
 }
 
+.cards .cards-highlight {
+  color: red;
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
 /* Links in cards (non-button) */
 .cards a:not(.button) {
   color: var(--brand-1);

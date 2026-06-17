@@ -13,5 +13,11 @@ export default function decorate(block) {
     ul.append(li);
   });
   ul.querySelectorAll('picture > img').forEach((img) => img.closest('picture').replaceWith(createOptimizedPicture(img.src, img.alt, false, [{ width: '750' }])));
+  ul.querySelectorAll('em').forEach((em) => {
+    const span = document.createElement('span');
+    span.className = 'cards-highlight';
+    span.append(...em.childNodes);
+    em.replaceWith(span);
+  });
   block.replaceChildren(ul);
 }
