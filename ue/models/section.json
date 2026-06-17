@@ -36,6 +36,7 @@
       "components": [
         "cards",
         "columns",
+        "eyebrow",
         "fragment",
         "hero",
         "image",

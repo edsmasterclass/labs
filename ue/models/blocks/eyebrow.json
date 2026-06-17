@@ -1,0 +1,35 @@
+{
+  "definitions": [
+    {
+      "title": "Eyebrow",
+      "id": "eyebrow",
+      "model": "eyebrow",
+      "plugins": {
+        "da": {
+          "unsafeHTML": "<div class=\"eyebrow\"><div><div></div></div></div>",
+          "fields": [
+            {
+              "name": "text",
+              "selector": "div>div"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "models": [
+    {
+      "id": "eyebrow",
+      "fields": [
+        {
+          "component": "richtext",
+          "name": "text",
+          "value": "",
+          "label": "Text",
+          "valueType": "string"
+        }
+      ]
+    }
+  ],
+  "filters": []
+}

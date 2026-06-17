@@ -1,0 +1,48 @@
+.eyebrow {
+  display: flex;
+  margin: 0 0 0.75rem;
+}
+
+.eyebrow.center {
+  justify-content: center;
+}
+
+.eyebrow.right {
+  justify-content: flex-end;
+}
+
+.eyebrow .eyebrow-label {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  margin: 0;
+  border: 1px solid rgb(249 115 22 / 45%);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  background: rgb(249 115 22 / 12%);
+  color: #ffd6bd;
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: uppercase;
+  overflow-wrap: anywhere;
+}
+
+.eyebrow.subtle .eyebrow-label {
+  border-color: rgb(238 240 244 / 24%);
+  background: rgb(238 240 244 / 8%);
+  color: var(--muted);
+}
+
+.eyebrow .eyebrow-label a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+@media (width >= 900px) {
+  .eyebrow {
+    margin-bottom: 1rem;
+  }
+}

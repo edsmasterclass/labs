@@ -135,6 +135,22 @@
           }
         },
         {
+          "title": "Eyebrow",
+          "id": "eyebrow",
+          "model": "eyebrow",
+          "plugins": {
+            "da": {
+              "unsafeHTML": "<div class=\"eyebrow\"><div><div></div></div></div>",
+              "fields": [
+                {
+                  "name": "text",
+                  "selector": "div>div"
+                }
+              ]
+            }
+          }
+        },
+        {
           "title": "Hero",
           "id": "hero",
           "model": "hero",
