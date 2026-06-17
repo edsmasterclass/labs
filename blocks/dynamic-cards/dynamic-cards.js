@@ -20,7 +20,7 @@ export default async function decorate(block) {
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const json = await response.json();
-    const speakers = Array.isArray(json.data) ? json.data : [];
+    const speakers = Array.isArray(json.data) ? json.data : json.data?.data || [];
 
     block.innerHTML = '';
 

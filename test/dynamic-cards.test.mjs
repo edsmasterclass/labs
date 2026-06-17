@@ -137,6 +137,41 @@ test('renders a speaker card for each row from the linked JSON data source', asy
   assert.match(firstCard.innerHTML, /loading="lazy"/);
 });
 
+test('renders speaker cards from DA multi-sheet JSON data', async () => {
+  const decorate = await loadDecorate({
+    fetchImpl: async () => ({
+      ok: true,
+      json: async () => ({
+        data: {
+          total: 1,
+          offset: 0,
+          limit: 1,
+          data: [
+            {
+              Name: 'Multi Sheet Speaker',
+              Title: 'Content Author',
+              Company: 'DA Live',
+              Bio: 'Rendered from the default data sheet.',
+              Image: 'https://i.pravatar.cc/400?img=52',
+            },
+          ],
+        },
+        ':names': ['data'],
+        ':version': 3,
+        ':type': 'multi-sheet',
+      }),
+    }),
+  });
+  const block = createBlock('/drafts/etemplesmithson/data.json');
+
+  await decorate(block);
+
+  const [card] = block.children[0].children;
+  assert.match(card.innerHTML, /<h3>Multi Sheet Speaker<\/h3>/);
+  assert.match(card.innerHTML, /Content Author/);
+  assert.doesNotMatch(card.innerHTML, /No speakers found/);
+});
+
 test('shows an author-facing error when no data source link is authored', async () => {
   const decorate = await loadDecorate({
     fetchImpl: async () => {
