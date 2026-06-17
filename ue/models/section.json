@@ -41,7 +41,8 @@
         "image",
         "mc-register",
         "table",
-        "text"
+        "text",
+        "sheets"
       ]
     }
   ]
