@@ -46,7 +46,7 @@
 | Component | Status |
 |---|---|
 | **Product Bus API** (`api.adobecommerce.live`) | Live — accepts your ingest |
-| **Mixer routing** — `/labs/*/products*/*` → pipeline | Configured for `edsmasterclass/labs` |
+| **Mixer routing** — `/labs/*/products/*/*` → pipeline | Configured for `edsmasterclass/labs` |
 | **Indexer** — auto-generates feeds per namespace | Configured |
 | **product-grid block** — renders a card grid from index JSON | On `answers` branch |
 
