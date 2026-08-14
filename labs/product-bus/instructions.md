@@ -188,11 +188,9 @@ This is the entire infrastructure configuration for Product Bus on this site. No
 
 Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `jsmith` with your branch):
 
-**Query indexes** — power product listing grids (one per scope):
+**Query index** — power product listing grids (one per scope):
 ```
 https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/index.json
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/index.json
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/guides/index.json
 ```
 
 **Product sitemap** — for search engines:
