@@ -149,10 +149,16 @@ Product pages (may take 30–60 s for feeds to populate):
 
 ### 1c. Verify one product was stored
 
-Open this URL in your browser (replace `jsmith` with your branch name):
+Open these URLs in your browser (replace `jsmith` with your branch name):
 
 ```
 https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+```
+
+You should see a web page showing the product information.
+
+```
+https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie.json
 ```
 
 You should see the full product JSON including name, price, images, and attributes.
