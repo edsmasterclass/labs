@@ -1,0 +1,129 @@
+#!/usr/bin/env node
+
+import { spawn } from 'node:child_process';
+import process from 'node:process';
+
+const BASE_URL = 'https://www.sliccy.ai/handoff';
+
+function usage() {
+  return `Usage: slicc-handoff [--open] <instruction>
+
+Build a SLICC handoff URL. When visited, the response advertises a
+RFC 8288 \`Link\` header with a SLICC handoff or upskill rel. SLICC
+observes the header on main-frame navigations and shows the user an
+approval prompt.
+
+Arguments:
+  <instruction>   A verb-prefixed instruction string:
+                    "handoff:<free-text>"            — continue a task
+                    "upskill:https://github.com/o/r" — install a skill
+                  If the instruction does not start with a known verb,
+                  \`handoff:\` is prepended.
+
+Options:
+  --open          Open the generated URL in the local browser
+  -h, --help      Show this help text
+
+Examples:
+  slicc-handoff "Continue the signup test in the browser"
+  slicc-handoff --open "upskill:https://github.com/slicc/skills-extra"
+`;
+}
+
+function fail(message) {
+  console.error(message);
+  process.exit(1);
+}
+
+function openUrl(url) {
+  return new Promise((resolve, reject) => {
+    const opener =
+      process.platform === 'darwin' ? 'open' : process.platform === 'win32' ? 'cmd' : 'xdg-open';
+    const args = process.platform === 'win32' ? ['/c', 'start', '', url] : [url];
+    const child = spawn(opener, args, {
+      detached: process.platform !== 'win32',
+      stdio: 'ignore',
+    });
+    child.on('error', () =>
+      reject(new Error('Could not find a browser opener command (open/xdg-open/start).'))
+    );
+    child.on('spawn', () => {
+      child.unref();
+      resolve();
+    });
+  });
+}
+
+const KNOWN_VERBS = ['handoff', 'upskill'];
+
+/**
+ * Parse the instruction into { verb, payload }. Defaults to verb=handoff
+ * and the whole input as payload when no recognised verb prefix is found.
+ */
+function parseInstruction(raw) {
+  const trimmed = raw.trim();
+  if (!trimmed) fail('Instruction must not be empty.');
+  const colonIdx = trimmed.indexOf(':');
+  if (colonIdx > 0) {
+    const verb = trimmed.slice(0, colonIdx);
+    if (KNOWN_VERBS.includes(verb)) {
+      return { verb, payload: trimmed.slice(colonIdx + 1) };
+    }
+  }
+  return { verb: 'handoff', payload: trimmed };
+}
+
+async function main() {
+  let openOnSuccess = false;
+  const positional = [];
+
+  for (const arg of process.argv.slice(2)) {
+    switch (arg) {
+      case '--open':
+        openOnSuccess = true;
+        break;
+      case '-h':
+      case '--help':
+        process.stdout.write(usage());
+        return;
+      default:
+        positional.push(arg);
+    }
+  }
+
+  if (positional.length === 0) fail(usage());
+  const { verb, payload } = parseInstruction(positional.join(' '));
+
+  // Build the convenience URL with the dedicated query param so the worker
+  // can synthesise the right `Link` header without inferring the verb.
+  const url = `${BASE_URL}?${verb}=${encodeURIComponent(payload)}`;
+  process.stdout.write(`${url}\n`);
+
+  // Notify a local SLICC node-server. Profile-independent fallback that
+  // works even when the user's default browser profile is not the one
+  // SLICC controls.
+  const port = process.env['SLICC_PORT'] ?? '5710';
+  try {
+    await fetch(`http://localhost:${port}/api/handoff`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        verb,
+        // For upskill, the target IS the github URL. For handoff, the
+        // page is the target (mirrors the empty `<>` self-anchor used in
+        // the Link header form).
+        target: verb === 'upskill' ? payload : url,
+        instruction: verb === 'handoff' ? payload : undefined,
+        url,
+        title: 'SLICC handoff',
+      }),
+      signal: AbortSignal.timeout(2000),
+    });
+  } catch {
+    // No local SLICC server running — fall through to --open.
+  }
+
+  if (openOnSuccess) await openUrl(url);
+}
+
+void main().catch((err) => fail(err instanceof Error ? err.message : String(err)));

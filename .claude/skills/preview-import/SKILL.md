@@ -1,6 +1,9 @@
 ---
 name: preview-import
 description: Preview and verify imported content in local AEM Edge Delivery Services dev server. Validates rendering, compares with original page, and troubleshoots common issues.
+license: Apache-2.0
+metadata:
+  version: "2.0.0"
 ---
 
 # Preview Import
@@ -114,7 +117,7 @@ Use `paths.documentPath` from metadata.json, but for index files ensure the path
 **Blocks don't render correctly:**
 - Check HTML structure matches expected format
 - Verify block names match exactly (case-sensitive)
-- Review `../page-import/resources/html-structure.md` for format guidance
+- Review [../content-driven-development/references/html-structure.md](../content-driven-development/references/html-structure.md) for format guidance
 
 **Images not loading:**
 - Verify images folder is in same directory as HTML file

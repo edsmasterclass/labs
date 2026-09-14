@@ -447,7 +447,7 @@ Add this code at the end of the `decorate` function, **after** `block.replaceChi
 
 **What this does**:
 - Checks for the `view-switcher` variation class
-- Detects whether `list` is already on the block (e.g. `Cards (List, View Switcher)`) and highlights the correct default button
+- Detects whether `list` is already on the block (e.g. `Cards (List, View Switcher)` or `Cards (list, view-switcher)`) and highlights the correct default button
 - Grid button removes the `list` class → grid layout
 - List button adds the `list` class → single column layout (same CSS as `Cards (List)`)
 - Active button is highlighted
