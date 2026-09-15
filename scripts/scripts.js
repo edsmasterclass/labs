@@ -79,7 +79,7 @@ function buildAutoBlocks(main) {
 
 /**
  * Decorates all sections in a container element.
- * Overrides aem.js version to support UE richtext class handling.
+ * Overrides aem.js version to support richtext class handling.
  * @param {Element} main The container element
  */
 function decorateSections(main) {
@@ -152,10 +152,7 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await loadSection(main.querySelector('.section'), (section) => {
-      if (document.body.classList.contains('quick-edit')) return Promise.resolve();
-      return waitForFirstImage(section);
-    });
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   try {
@@ -186,27 +183,6 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
-
-  const loadQuickEdit = async (...args) => {
-    // eslint-disable-next-line import/no-cycle
-    const { default: initQuickEdit } = await import('../tools/quick-edit/quick-edit.js');
-    initQuickEdit(...args);
-  };
-
-  const addSidekickListeners = (sk) => {
-    sk.addEventListener('custom:quick-edit', loadQuickEdit);
-  };
-
-  const sk = document.querySelector('aem-sidekick');
-  if (sk) {
-    addSidekickListeners(sk);
-  } else {
-    // wait for sidekick to be loaded
-    document.addEventListener('sidekick-ready', () => {
-    // sidekick now loaded
-      addSidekickListeners(document.querySelector('aem-sidekick'));
-    }, { once: true });
-  }
 }
 
 /**
@@ -223,12 +199,6 @@ export async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
-}
-
-// UE Editor support before page load
-if (/\.(stage-ue|ue)\.da\.live$/.test(window.location.hostname)) {
-  // eslint-disable-next-line import/no-unresolved
-  await import(`${window.hlx.codeBasePath}/ue/scripts/ue.js`).then(({ default: ue }) => ue());
 }
 
 loadPage();

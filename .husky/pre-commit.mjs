@@ -40,11 +40,3 @@ if (cssFiles.length > 0) {
   const output = await run(`npx stylelint ${fileList}`);
   if (output) console.log(output);
 }
-
-// Rebuild UE JSON bundles when model files are staged
-const modifiedPartials = modifiedFiles.filter((file) => file.match(/^ue\/models\/.*\.json/));
-if (modifiedPartials.length > 0) {
-  const output = await run('npm run build:json --silent');
-  console.log(output);
-  await run('git add component-definition.json component-models.json component-filters.json');
-}
