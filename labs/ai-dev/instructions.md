@@ -47,7 +47,7 @@
 
 The [Experience Modernization Agent](https://aemcoder.adobe.io/) is Adobe's AI-powered console for modernizing web experiences with Edge Delivery Services. It connects to your GitHub repo and provides a built-in code editor with preview — all in the browser.
 
-**Demo setup:** The site at https://main--aemcoder-lab--shsteimer.aem.live/ already has content imported from [wknd-adventures.com](https://wknd-adventures.com/) — the index page, header, and footer are live. The agent is connected to its GitHub repo with full read/write access.
+**Demo setup:** The site at https://main--ema-masterclass--sagarsane.aem.live/ already has content imported from [wknd-adventures.com](https://wknd-adventures.com/) — the index page, header, and footer are live. The agent is connected to its GitHub repo with full read/write access.
 
 **Prompt:** Use [**1.1** from Prompts.md](Prompts.md#11--rebrand-the-site)
 

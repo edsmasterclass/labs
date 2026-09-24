@@ -33,7 +33,7 @@ then update their content to match our new Rockstar Adventures theme and brandin
 ### 2.1 — What do you know about this project?
 
 ```
-What do you know about this project and what tools do you have to help me
+What do you know about this project and what tools & skills do you have to help me
 work on it?
 ```
 

@@ -4,6 +4,7 @@ This project is a website built with Edge Delivery Services in Adobe Experience 
 
 ## Skills
 
+Skills live in `.claude/skills/`, each with its own `SKILL.md`.
 **For ALL development work involving blocks, core scripts, or functionality, you MUST start with the content-driven-development skill.** It will orchestrate other skills as needed throughout the development workflow.
 
 Two skills serve as primary entry points for common workflows:
