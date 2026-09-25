@@ -6,22 +6,15 @@
 
 ---
 
-### 1.1 — Rebrand the site
+### 1.1 — Rebrand and import the site
 
 ```
 We are rebranding from WKND Adventures to Rockstar Adventures.
 Take design inspiration from https://rockstar.adobeevents.com/en/masterclass
 and update content, styles, blocks, import scripts, etc. to match the new brand.
+Then import the rest of the pages from https://wknd-adventures.com/ and apply
+the same Rockstar Adventures theme and branding to them.
 Make sure everything still looks good, is accessible, etc.
-```
-
----
-
-### 1.2 — Bulk import and rebrand remaining pages
-
-```
-Now let's import the rest of the pages from https://wknd-adventures.com/ in bulk,
-then update their content to match our new Rockstar Adventures theme and branding.
 ```
 
 ---
