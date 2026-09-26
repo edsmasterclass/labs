@@ -1,0 +1,76 @@
+/* Search block — extended from AEM Block Collection */
+
+.search .search-box {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1ch;
+  align-items: center;
+}
+
+.search .search-box .icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+}
+
+.search .search-box .icon img {
+  filter: invert(1) opacity(0.5);
+}
+
+.search .search-box input {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid rgb(255 255 255 / 20%);
+  background: rgb(255 255 255 / 5%);
+  color: var(--ink);
+  font-size: var(--body-font-size-s);
+  font-family: var(--body-font-family);
+  outline: none;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.search .search-box input::placeholder {
+  color: var(--muted);
+}
+
+.search .search-box input:focus {
+  border-color: var(--brand-1);
+  background: rgb(255 255 255 / 8%);
+}
+
+/* search results wrapper — Cards block handles individual card styles */
+.search .search-results {
+  display: block;
+  margin-top: 2rem;
+}
+
+/* ensure cards grid is visible when nested in search */
+.search .search-results .cards {
+  display: block;
+}
+
+/* status messages (no results, errors) */
+.search .search-status {
+  text-align: center;
+  color: var(--muted);
+  font-size: var(--body-font-size-s);
+  padding: 2rem 0;
+}
+
+/* highlight matched terms */
+.search mark {
+  background: transparent;
+  color: var(--brand-1);
+  font-weight: 700;
+}
+
+@media (width >= 600px) {
+  .search .search-box input {
+    font-size: var(--body-font-size-m);
+    padding: 0.875rem 1.25rem;
+  }
+}
