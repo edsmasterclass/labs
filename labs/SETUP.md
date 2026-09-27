@@ -1,6 +1,6 @@
 # Lab Setup Instructions
 
-Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on exercises)**. Steps 1–7 (including AI coding agent setup) are enough for the AI lab; Steps 8–11 add DA, Sidekick, and EDS for Day 2.
+Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on exercises)**. Steps 1–7 (including AI coding agent setup) are enough for the AI lab; Steps 8–11 add Experience Workspace, Sidekick, and EDS for Day 2.
 
 > **Tip:** On GitHub (and most Markdown viewers), links usually open in the **same tab**. **⌘-click** (Mac) or **Ctrl-click** (Windows/Linux) a link to open it in a **new tab** so you can keep this page open.
 
@@ -19,9 +19,9 @@ Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on e
   - [Step 6: Start Development Server](#step-6-start-development-server)
   - [Step 7: AI Coding Agent Setup](#step-7-ai-coding-agent-setup)
   - [Step 8: Understand Your Branch URLs](#step-8-understand-your-branch-urls)
-  - [Step 9: Verify DA.live Access](#step-9-verify-dalive-access)
+  - [Step 9: Verify Experience Workspace Access](#step-9-verify-experience-workspace-access)
   - [Step 10: Add This Project to Sidekick](#step-10-add-this-project-to-sidekick)
-  - [Step 11: Verify EDS, DA Permissions](#step-11-verify-eds-da-permissions)
+  - [Step 11: Verify EDS and Experience Workspace Permissions](#step-11-verify-eds-and-experience-workspace-permissions)
   - [Ready to Start](#ready-to-start)
   - [Validation Checklist](#validation-checklist)
   - [Git Workflow](#git-workflow)
@@ -34,7 +34,7 @@ Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on e
   - [Troubleshooting](#troubleshooting)
     - [Port 3000 in use](#port-3000-in-use)
     - [Git push rejected](#git-push-rejected)
-    - [DA.live "Permission denied"](#dalive-permission-denied)
+    - [Experience Workspace "Permission denied"](#experience-workspace-permission-denied)
     - [AEM CLI not found](#aem-cli-not-found)
 
 </details>
@@ -45,7 +45,7 @@ Complete these steps in one go before **Day 1 (AI lab)** and **Day 2 (hands-on e
 
 Before arriving at the lab, ensure the following are installed:
 
-- **[Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) (do this first)** — Submit your **Adobe ID email** and **GitHub username**. This provisions lab access (including DA.live). Allow time for processing **before** you verify DA in Step 9; if you skip this step, sign-in may work but the project or folders may be unavailable.
+- **[Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) (do this first)** — Submit your **Adobe ID email** and **GitHub username**. This provisions lab access (including Experience Workspace). Allow time for processing **before** you verify access in Step 9; if you skip this step, sign-in may work but the project or folders may be unavailable.
 
   **GitHub organization invitation:** After the form is processed, you will receive an **email** inviting you to join the **`edsmasterclass`** organization on GitHub. **Accept that invitation** (use the link in the email) **before** you `git push` to this repository. If you have not joined the org, **push will fail** even if clone and commits work.
 
@@ -175,11 +175,11 @@ The server starts at: http://localhost:3000
 
 **Keep this running** throughout the lab. Open a new terminal for Git commands.
 
-Run **`aem up`** from the repository root for both Day 1 and Day 2. Content comes from EDS/DA; the agent pushes test pages directly to DA via `aem content`.
+Run **`aem up`** from the repository root for both Day 1 and Day 2. Content comes from EDS and Experience Workspace; the agent pushes test pages directly via `aem content`.
 
 **Verify**: Open http://localhost:3000 — you should see the EDS Masterclass Labs homepage.
 
-![EDS Masterclass Labs homepage at localhost:3000](images/nyc-masterclass-home.png)
+![EDS Masterclass Labs Bengaluru homepage at localhost:3000](images/da-bengaluru-masterclass-home.png)
 
 > **Note:**
 > If you see a **403 error** when navigating to [http://localhost:3000](http://localhost:3000), check if a `.env` file exists in your project root.
@@ -194,17 +194,17 @@ Run **`aem up`** from the repository root for both Day 1 and Day 2. Content come
 
 ---
 
-## Step 6b: Clone Your DA Content Folder
+## Step 6b: Clone Your Experience Workspace Content Folder
 
-The AI coding agent pushes test content directly to DA.live using `aem content`. Clone your personal drafts folder so the agent has a local working copy to add and push from.
+The AI coding agent pushes test content directly to Experience Workspace using `aem content`. Clone your personal drafts folder so the agent has a local working copy to add and push from.
 
 ```bash
 aem content clone --path /drafts/<yourname>
 ```
 
-Replace `<yourname>` with your DA folder name (e.g. `jsmith`). This opens a browser login — authenticate with your Adobe ID, then wait for the clone to complete.
+Replace `<yourname>` with your Experience Workspace folder name (e.g. `jsmith`). This opens a browser login — authenticate with your Adobe ID, then wait for the clone to complete.
 
-> **The folder doesn't need to exist in DA yet.** DA folders are virtual, so cloning a brand-new path reports `Found 0 file(s)` and downloads nothing — that's expected. The clone still creates the local `content/` working copy and saves your auth token; your agent's first `aem content push` creates the folder in DA. (The `content/drafts/<yourname>/` subfolder only appears once a file lands in it.)
+> **The folder doesn't need to exist in Experience Workspace yet.** Experience Workspace folders are virtual, so cloning a brand-new path reports `Found 0 file(s)` and downloads nothing — that's expected. The clone still creates the local `content/` working copy and saves your auth token; your agent's first `aem content push` creates the folder. (The `content/drafts/<yourname>/` subfolder only appears once a file lands in it.)
 
 > **Token is saved** to `.hlx/.da-token.json` — you only need to authenticate once per session.
 
@@ -234,7 +234,7 @@ npm install -g @playwright/cli@latest
 playwright-cli install --skills
 ```
 
-This installs `playwright-cli` and  adds the `playwright-cli` skill to your project's `.claude/skills/` directory so the agent can use it automatically.
+This installs `playwright-cli` and adds the `playwright-cli` skill to your project's `.claude/skills/` directory so the agent can use it automatically.
 
 ---
 
@@ -253,7 +253,7 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
 ---
 
-## Step 9: Verify DA.live Access
+## Step 9: Verify Experience Workspace Access
 
 > **Prerequisite:** Complete the [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) (see Prerequisites) and allow time for access to be granted before this step.
 
@@ -262,17 +262,21 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
    > If your Adobe ID is tied to a Personal Account, choose that instead of Corporate Account
 3. You should see the project and folder structure
 
-   ![EDS Masterclass Labs homepage at da.live](images/da-nyc-masterclass-home.png)
+   ![Experience Workspace project and folder structure for EDS Masterclass Labs](images/da-bengaluru-project-structure.png)
 
 4. Navigate into `/drafts`
 5. Create a folder: `/drafts/<yourname>` (e.g. `/drafts/jsmith`)
 
-   ![Create Folder in DA](images/da-create-folder.png)
+   ![Create Folder from the New menu in Experience Workspace](images/da-create-folder-bengaluru.png)
 
-6. Inside that folder, choose **New** → **Document** and name it something like `hello` (a simple “Hello” document to prove you can author).
-7. Add some text to the document — a short heading or paragraph is enough.
-8. **Preview** the page and confirm it opens in the browser at a `.aem.page` URL.
-9. **Publish** the page and confirm it is available on `.aem.live`.
+6. Select your new folder and click **Favorite** in the bottom action bar so it is easy to access throughout the labs.
+
+   ![Favorite your drafts folder from the action bar](images/da-favorite-drafts-folder.png)
+
+7. Inside that folder, choose **New** → **Document** and name it something like `hello` (a simple “Hello” document to prove you can author).
+8. Add some text to the document — a short heading or paragraph is enough.
+9. **Preview** the page and confirm it opens in the browser at a `.aem.page` URL.
+10. **Publish** the page and confirm it is available on `.aem.live`.
 
 **If you cannot access**:
 - Confirm you submitted the [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) with the **same** Adobe ID and GitHub username you are using for the lab
@@ -287,7 +291,7 @@ With your dev server running, add the EDS Masterclass Labs project (this repo) t
 
 1. Open [main--labs--edsmasterclass.aem.page](https://main--labs--edsmasterclass.aem.page/) in Chrome or Edge
 2. Click the **AEM Sidekick** icon in your browser toolbar
-   > If this the first time that you are viewing sidekick extension , go through the overview
+   > If this is your first time viewing the Sidekick extension, go through the overview.
 3. Click **Add project** from sidekick extension
 
 ![Sidekick "Add project" prompt](images/sidekick-add-project.png)
@@ -299,13 +303,13 @@ With your dev server running, add the EDS Masterclass Labs project (this repo) t
 
 ---
 
-## Step 11: Verify EDS, DA Permissions
+## Step 11: Verify EDS and Experience Workspace Permissions
 
-Your account should be granted a **`publish`-style** role (what the instructor configures), which typically includes:
+Your account should be granted a **publisher** role (what the instructor configures), which typically includes:
 - `preview:read`, `preview:write` (access to `.aem.page`)
 - `live:write` (publish to `.aem.live`)
 
-**Test**: In DA.live, open an existing page (e.g., [sessions/architecture-deep-dive](https://da.live/edit#/edsmasterclass/labs/sessions/architecture-deep-dive)) and click **Preview**. If it opens at `.aem.page`, permissions are correct.
+**Test**: In Experience Workspace, open an existing page (e.g., [sessions/architecture-deep-dive](https://da.live/edit#/edsmasterclass/labs/sessions/architecture-deep-dive)) and click **Preview**. If it opens at `.aem.page`, permissions are correct.
 
 **If preview fails**: Ask your instructor to verify EDS Admin API permissions — **@mention them in the lab Slack channel** with what you tried (page path, Preview vs Publish, any error text).
 
@@ -322,7 +326,7 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 
 ## Validation Checklist
 
-**For AI lab (Day 1)** — before [AI-Assisted Development](ai-dev/instructions.md):
+**For AI lab** — before [AI-Assisted Development](ai-dev/instructions.md):
 
 - [ ] Repository cloned
 - [ ] Feature branch created (e.g., `jsmith`)
@@ -330,18 +334,18 @@ Your account should be granted a **`publish`-style** role (what the instructor c
 - [ ] Dependencies installed (`npm install` completed)
 - [ ] Linting runs clean (`npm run lint` no errors)
 - [ ] Dev server running: `aem up` — `http://localhost:3000` loads
-- [ ] DA content cloned: `aem content clone --path /drafts/<yourname>` — authenticated and `content/.da-config.json` exists (an empty clone reports `Found 0 file(s)`; that's expected — the `drafts/<yourname>/` subfolder appears later)
+- [ ] Experience Workspace content cloned: `aem content clone --path /drafts/<yourname>` — authenticated and `content/.da-config.json` exists (an empty clone reports `Found 0 file(s)`; that's expected — the `drafts/<yourname>/` subfolder appears later)
 - [ ] AI coding agent set up (Cursor, Claude Code, Codex, or Copilot) and project opened in it
 
-**For Day 2 exercises** — add these before [Exercise 1](exercise1/instructions.md):
+**For exercises** — add these before [Exercise 1](exercise1/instructions.md):
 
-- [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) submitted (Adobe ID + GitHub username); access processed before DA verification
+- [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) submitted (Adobe ID + GitHub username); access processed before Experience Workspace verification
 - [ ] **GitHub:** Email invitation to join **`edsmasterclass`** org accepted **before** first `git push` (see Prerequisites)
-- [ ] DA.live access verified (project loads, `/drafts/<yourname>/` folder, `hello` page previewed and published)
+- [ ] Experience Workspace access verified (project loads, `/drafts/<yourname>/` folder is favorited, and `hello` page previewed and published)
 - [ ] AEM Sidekick extension installed (Chrome/Edge)
 - [ ] Sidekick project added — toolbar visible on `localhost:3000`
 - [ ] Branch URL pattern understood — `main--` URLs verified as working
-- [ ] EDS/DA permissions verified (preview works from DA)
+- [ ] EDS/Experience Workspace permissions verified (preview works from Experience Workspace)
 - [ ] Git workflow clear (lint, add, commit, push)
 - [ ] PR process understood (test URLs, Lighthouse scores)
 
@@ -423,7 +427,7 @@ https://developers.google.com/speed/pagespeed/insights/?url=https://<your-branch
 **If scores are low** — troubleshoot in this order before asking for help:
 
 1. **Check what you added, not the boilerplate** — the starter project already scores 100. Low scores are almost always caused by code you introduced.
-2. **Images** — avoid committing large images to Git. Use DA.live to upload images (they get optimized automatically) or use external URLs. If you must commit an image, compress it first (< 100 KB).
+2. **Images** — avoid committing large images to Git. Use Experience Workspace to upload images (they get optimized automatically) or use external URLs. If you must commit an image, compress it first (< 100 KB).
 3. **JavaScript** — keep block JS minimal. Avoid importing large libraries. Use native browser APIs (fetch, DOM) instead of frameworks.
 4. **CSS** — put only above-the-fold styles in your block CSS. Avoid `@import` statements in your blocks that are used above-the-fold.
 5. **Render-blocking resources** — never add additional `<link>` or `<script>` tags to `head.html` unless absolutely necessary. Use `lazy-styles.css` or `delayed.js` for non-critical resources.
@@ -490,8 +494,8 @@ Assign the instructor as a reviewer.
 | Environment | URL pattern | When it updates |
 |---|---|---|
 | Local | `http://localhost:3000/<path>` | Immediately on file save |
-| Preview | `https://{branch}--labs--edsmasterclass.aem.page/<path>` | After DA.live Preview or `git push` |
-| Live | `https://{branch}--labs--edsmasterclass.aem.live/<path>` | After DA.live Publish |
+| Preview | `https://{branch}--labs--edsmasterclass.aem.page/<path>` | After Experience Workspace Preview or `git push` |
+| Live | `https://{branch}--labs--edsmasterclass.aem.live/<path>` | After Experience Workspace Publish |
 
 Use `main` as the branch for the reference site. Use your branch name (e.g. `jsmith`) for your own work — available after your first `git push` in Exercise 2.
 
@@ -522,9 +526,9 @@ git branch
 
 Should show `* jsmith` (your branch name).
 
-### DA.live "Permission denied"
+### Experience Workspace "Permission denied"
 
-Log out and log back in to refresh IMS tokens. If it still fails, **@mention your instructor in the lab Slack channel** so they can confirm your DA / EDS permissions.
+Log out and log back in to refresh IMS tokens. If it still fails, **@mention your instructor in the lab Slack channel** so they can confirm your Experience Workspace / EDS permissions.
 
 ### AEM CLI not found
 

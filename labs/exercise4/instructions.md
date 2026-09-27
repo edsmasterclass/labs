@@ -15,7 +15,7 @@
   - [Step 3: Create Block Files](#step-3-create-block-files)
   - [Step 4: Implement JavaScript](#step-4-implement-javascript)
   - [Step 5: Implement Styles](#step-5-implement-styles)
-  - [Step 6: Create Test Page in DA.live](#step-6-create-test-page-in-dalive)
+  - [Step 6: Create Test Page in Experience Workspace](#step-6-create-test-page-in-experience-workspace)
   - [Step 7: Test the Search Block](#step-7-test-the-search-block)
   - [Step 8: Test Edge Cases](#step-8-test-edge-cases)
   - [Step 9: Commit Your Changes](#step-9-commit-your-changes)
@@ -43,7 +43,7 @@
 - Code editor open with the repository
 - Exercises 1–3 completed (if doing in sequence)
 - **Indexed page** — Your Exercise 1 lab or session page must be **published** under **`/labs/<your-name>/`** or **`/sessions/<your-name>/`** on **`.aem.live`** so it appears in `query-index.json`. If you have not done this yet, complete [Exercise 3 — Step 10](../exercise3/instructions.md#step-10-before-you-move-on-for-exercise-4) (copy from `/drafts/<your-name>/` to the matching tree, publish). Pages under `/drafts/**` are **not** indexed.
-- DA.live access
+- Experience Workspace access
 
 ---
 
@@ -185,7 +185,7 @@ blocks/
 
 On GitHub: [tree/main/blocks/search](https://github.com/adobe/aem-block-collection/tree/main/blocks/search).
 
-**In Step 3** , you will create `blocks/search/` under **this** project (labs) — same relative layout as upstream, but your own files to extend.
+**In Step 3**, you will create `blocks/search/` under **this** project (labs) — same relative layout as upstream, but your own files to extend.
 
 Take a quick look at the upstream files. The Block Collection version has two variants:
 - **Default** — full search box with results rendered as cards
@@ -617,20 +617,19 @@ Copy/Replace the contents of the file with this code:
 
 ---
 
-## Step 6: Create Test Page in DA.live
+## Step 6: Create Test Page in Experience Workspace
 
-**In DA.live**, create a page at **`/drafts/<your-name>/search-test`** (same **`<your-name>`** folder as Exercises 1–3).
+**In Experience Workspace**, create a page at **`/drafts/<your-name>/search-test`** (same **`<your-name>`** folder as Exercises 1–3).
 
 1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
 2. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase).
-3. **New** → **Document**, name it **`search-test`**.
-4. Add a **level-1 heading**: **Search**.
-5. Type `/` → **Library** (or **Blocks**) → insert **Search**.
-6. If the block has a row for the data source URL, set it to **`/query-index.json`**. If you leave that row empty or omit it, the block still defaults to **`/query-index.json`**. (You can point it at any JSON endpoint that returns `{ data: [...] }` if you experiment later.)
+3. **New** → **Page**, name it **`search-test`**.
+4. Switch to **Content** mode and add a **level-1 heading**: **Search**.
+5. Open **Outline**, then choose **Blocks** (available in both Content and Layout modes).
+6. In **Outline** → **Blocks**, find **Search** and click the **+** to insert it.
+7. If the block has a row for the data source URL, set it to **`/query-index.json`**. If you leave that row empty or omit it, the block still defaults to **`/query-index.json`**. (You can point it at any JSON endpoint that returns `{ data: [...] }` if you experiment later.)
 
-![search Example](images/search-block.png)
-
-DA.live auto-saves. Click **Preview** to see the page on localhost.
+Experience Workspace auto-saves. Click **Preview** to see the page on localhost.
 
 ---
 

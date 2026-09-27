@@ -82,13 +82,13 @@ There are two ways to extend a block's capabilities:
 
 ## How Block Decoration Works
 
-Read this as a **conceptual pipeline** — build real tables and code in DA.live and your editor, not by pasting from this page.
+Read this as a **conceptual pipeline** — build real tables and code in Experience Workspace and your editor, not by pasting from this page.
 
-**1. Authoring in DA.live**  
-The author inserts a **Cards** block and fills it like a table: a header row names the block (**Cards**), then each content row is one card — typically an image in one area and body copy in another (e.g. italic label such as *Speaker*, then name and title). Exact layout comes from the block template in DA.live.
+**1. Authoring in Experience Workspace**  
+The author inserts a **Cards** block and fills it like a table: a header row names the block (**Cards**), then each content row is one card — typically an image in one area and body copy in another (e.g. italic label such as *Speaker*, then name and title). Exact layout comes from the block template in Experience Workspace.
 
 **2. EDS output (HTML before your `decorate()` runs)**  
-EDS turns that into a root element (e.g. `div.cards`) with nested `div`s, `picture`, and paragraphs — including `<em>` where the author used italics. Below is **illustration-only** HTML so you can picture the shape of the DOM (do not paste into DA.live):
+EDS turns that into a root element (e.g. `div.cards`) with nested `div`s, `picture`, and paragraphs — including `<em>` where the author used italics. Below is **illustration-only** HTML so you can picture the shape of the DOM (do not paste into Experience Workspace):
 
 ```html
 <!-- Reference only — pipeline shape, not a copy target -->
@@ -150,7 +150,7 @@ blocks/
 
 **Naming convention**: Folder and file names must match the block name exactly (e.g. `cards` → `cards/cards.js`).
 
-**Variation classes**: In DA.live, authors add a variation by putting extra text in the table header after the block name in parentheses — for example the header reads **Cards (List)**. EDS adds both class names on the root element, so in the DOM you typically see **`class="cards list"`** (or equivalent) on the block wrapper. Your CSS/JS can target the combined selector **`.cards.list`** for variation-specific behavior.
+**Variation classes**: In Experience Workspace, authors add a variation by putting extra text in the table header after the block name in parentheses — for example the header reads **Cards (List)**. EDS adds both class names on the root element, so in the DOM you typically see **`class="cards list"`** (or equivalent) on the block wrapper. Your CSS/JS can target the combined selector **`.cards.list`** for variation-specific behavior.
 
 **Reference**: [Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
 
@@ -158,7 +158,7 @@ blocks/
 
 ## Current Cards Block
 
-The repository already has a Cards block. **Open `blocks/cards/cards.js` in your editor** and follow along there — the snippet below is **for reading only** (do not paste it into DA.live; it belongs in the repo file).
+The repository already has a Cards block. **Open `blocks/cards/cards.js` in your editor** and follow along there — the snippet below is **for reading only** (do not paste it into Experience Workspace; it belongs in the repo file).
 
 **File**: `blocks/cards/cards.js`
 
@@ -204,35 +204,38 @@ export default function decorate(block) {
 
 ## Step 1: Create a Test Page with Cards Blocks
 
-**In DA.live**, create a draft page at **`/drafts/<your-name>/cards-test`** (first initial + last name, lowercase — same folder pattern as [Exercise 1](../exercise1/instructions.md)).
+**In Experience Workspace**, create a draft page at **`/drafts/<your-name>/cards-test`** (first initial + last name, lowercase — same folder pattern as [Exercise 1](../exercise1/instructions.md)).
 
-1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
-2. In that view, go into your personal subfolder **`<your-name>`** (first initial + last name, lowercase). Create the folder here if it does not exist yet — same pattern as [Exercise 1](../exercise1/instructions.md).
-3. **New** → **Document**, name it **`cards-test`**.
+1. In **Experience Workspace**, use the breadcrumb trail at the top of the editor to go to your drafts folder (**`/drafts/<your-name>/`**).
+   ![Use the breadcrumb trail at the top to navigate back to your drafts folder](images/breadcrumb-navigation-experience-workspace.png)
+2. In that folder, select **New** → **Page** and name the page **`cards-test`**.
+3. Once the page opens, switch to **Layout** mode, open the **Outline** panel menu, and click **Blocks**.
+   ![Switch to Layout mode, open Outline, and click Blocks](images/layout-outline-blocks-experience-workspace.png)
 
-**Follow this order on `cards-test`** (headings first, then blocks from the **Sidekick** library):
+**Follow this order on `cards-test`** (headings first, then insert blocks from **Outline → Blocks**):
 
-4. Add an **H1**: **Cards Test Page**.
-5. Add an **H2**: **Cards With Images**.
-6. Insert **Cards w/Images**: open the **DA Sidekick** → **Library** → **Blocks** → expand **Cards** → choose **Cards w/Images**. That inserts the cards table into the page.
-7. Add an **H2**: **Cards with Eyebrow**.
-8. Insert **Cards with Eyebrows**: open the **DA Sidekick** → **Library** → **Blocks** → expand **Cards** → choose **Cards with Eyebrows**. Place it under **Cards with Eyebrow**.
-9. In that eyebrow block, look at the **second column** of the sample cards: notice the italic phrases *performance* and *Authoring made easy as 1, 2, 3* (and similar). In Step 3, code will turn those into eyebrow labels instead of inline italics.
+4. Switch to **Content** mode before adding headings and text. You can either type **`/`** and choose **H1–H6**, or type text first and change it from the bottom formatting panel (for example, change **Paragraph** to **Heading 1** or **Heading 2**).
+   ![Content mode with heading options in slash menu and bottom formatting panel](images/content-mode-heading-style-panel.png)
+5. Add an **H1**: **Cards Test Page**.
+6. Add an **H2**: **Cards With Images**.
+7. Switch back to **Layout** mode to insert blocks from **Outline** → **Blocks**.
+8. Insert **Cards w/Images**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards w/ Images** to insert it.
+9. Add an **H2**: **Cards with Eyebrow**.
+10. Insert **Cards with Eyebrows**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards with Eyebrows**. Place it under **Cards with Eyebrow**.
+11. In that eyebrow block, look at the **second column** of the sample cards: notice the italic phrases *performance* and *Authoring made easy as 1, 2, 3* (and similar). In the implementation step below, code will turn those into eyebrow labels instead of inline italics.
 
 **Preview vs refresh in this exercise**
 
-- **DA.live content** (headings, blocks, editing table cells): after each change, click **Preview** in the Sidekick and check `http://localhost:3000/drafts/<your-name>/cards-test`.
+- **Experience Workspace content** (headings, blocks, editing table cells): after each change, click **Preview** in the top-right action menu and check `http://localhost:3000/drafts/<your-name>/cards-test`.
 - **`blocks/cards/` code** (`cards.js`, `cards.css`): save in your editor, then **refresh the browser** on that same URL so localhost loads the updated block files.
 
-  ![Cards Block and Variants in DA.live](images/cards-block-1.gif)
-
-DA.live auto-saves. **Preview** now, then continue to Step 2.
+Experience Workspace auto-saves. **Preview** now, then continue to Step 2.
 
 ---
 
 ## Step 2: Test the page (Cards w/Images + eyebrow sample)
 
-**Open** (or **Preview** from DA.live): `http://localhost:3000/drafts/<your-name>/cards-test`
+**Open** (or **Preview** from Experience Workspace): `http://localhost:3000/drafts/<your-name>/cards-test`
 
 **Test on desktop and mobile**: Use Chrome DevTools responsive view — open DevTools (F12 or Cmd+Option+I), toggle the device toolbar (Cmd+Shift+M / Ctrl+Shift+M) to switch to responsive mode, then resize the viewport or pick a device preset to verify layout at different widths. Use this for all test steps in this exercise.
 
@@ -240,9 +243,9 @@ DA.live auto-saves. **Preview** now, then continue to Step 2.
 - A **Cards w/Images** block — cards in a responsive grid
 - Under **Cards with Eyebrow**: italic snippets such as *performance* and *Authoring made easy as 1, 2, 3* still showing **inline** in the card body (not as a separate eyebrow label yet)
 
-  ![Cards Block and Variants in DA.live](images/cards-block-2.gif)
+  ![Cards Block and Variants in Experience Workspace](images/cards-block-2.gif)
 
-**Why?** The eyebrow enhancement isn’t implemented yet. We’ll add it in the next step. After later **code** edits, **refresh** the browser to pick up `cards.js` / `cards.css`; after **DA.live** edits, use **Preview** again.
+**Why?** The eyebrow enhancement isn’t implemented yet. We’ll add it in the next step. After later **code** edits, **refresh** the browser to pick up `cards.js` / `cards.css`; after **Experience Workspace** edits, use **Preview** again.
 
 ---
 
@@ -254,7 +257,7 @@ The eyebrow adds a label above card content. Authors simply **italicize** the la
 - Column 1: Image
 - Column 2: Body text — italicize the eyebrow label (e.g., *Speaker*)
 
-**How it works**: In DA.live, italic text becomes `<em>` in HTML. The block finds `<em>` in each card's body, extracts it, and renders it as an eyebrow label. If there's no `<em>`, nothing changes — the card renders normally.
+**How it works**: In Experience Workspace, italic text becomes `<em>` in HTML. The block finds `<em>` in each card's body, extracts it, and renders it as an eyebrow label. If there's no `<em>`, nothing changes — the card renders normally.
 
 ### Update JavaScript
 
@@ -344,18 +347,16 @@ Add at the end of the file:
 - The italic sample text is no longer inline — it’s been extracted into the eyebrow
 - The **Cards With Images** block is unchanged (no italic labels there = no eyebrow behavior)
 
-  ![Cards Block and Variants in DA.live](images/cards-block-3.png)
+  ![Cards Block and Variants in Experience Workspace](images/cards-block-3.png)
 ---
 
 ## Step 5: Implement List Variation
 
 The list variation displays cards in a single column with centered text. Authors opt in by writing **`Cards (List)`** in the block’s **table header row** (the first row of the block table).
 
-**There is no separate “Cards (List)” snippet to insert from the library in this flow.** In DA.live, open **`cards-test`** and edit the **first** **Cards w/Images** block you added in Step 1: in the header row, change the block name so it includes the list variation — e.g. **`Cards (List)`** or, if the header still reflects the template name, add **`(List)`** in parentheses on that same heading row so EDS adds the `list` class (same pattern as `| Cards (List) |` in the source table).
+**There is no separate “Cards (List)” snippet to insert from the library in this flow.** In Experience Workspace, open **`cards-test`** and edit the **first** **Cards w/Images** block you added in Step 1: in the header row, change the block name so it includes the list variation — e.g. **`Cards (List)`** or, if the header still reflects the template name, add **`(List)`** in parentheses on that same heading row so EDS adds the `list` class (same pattern as `| Cards (List) |` in the source table).
 
 **Preview** after editing the header so localhost shows the new layout before Step 6.
-
-  ![Cards Block and Variants in DA.live](images/cards-block-4.png)
 
 ### Add List Styles
 
@@ -381,7 +382,7 @@ Add at the end of the file:
 
 **No JavaScript needed** - this variation is CSS-only!
 
-**Save** `cards.css` and **refresh** the browser on **`cards-test`** so the list rules apply. (You already **Preview**’d after editing the block header in DA.live.)
+**Save** `cards.css` and **refresh** the browser on **`cards-test`** so the list rules apply. (You already **Preview**’d after editing the block header in Experience Workspace.)
 
 ---
 
@@ -394,16 +395,15 @@ Add at the end of the file:
 - Cards full width with full-width images; body text **centered**
 - **Cards with Eyebrow** unchanged by this CSS (still uses grid unless you also add `(List)` there — don’t, for this step)
 
-![Cards Block and Variants in DA.live](images/cards-block-5.png)
+![Cards Block and Variants in Experience Workspace](images/cards-block-5.png)
 ---
 
 ## Step 7: Implement View Switcher Variation
 
 Now let's add a variation that combines **JavaScript and CSS**. The view switcher adds toggle buttons that let users switch between grid and list views on the fly.
 
-**Add a new block (do not reuse the first Cards block)**: In DA.live, open **`cards-test`**. Add an **H2** (e.g. **View Switcher** or **Stacked cards**). **Sidekick** → **Library** → **Blocks** → **Cards** → insert **Stacked cards with view switcher** (name in the library may vary slightly). That adds a **new** Cards block on the page — **not** the **Cards w/Images** / **Cards (List)** block from Step 1 and **not** your **Cards with Eyebrow** block. The inserted table’s header row should look like **`Cards (List, View Switcher)`** (or equivalent), so the block already has both the **list** and **view-switcher** variation classes. **Preview** before Step 8.
+**Add a new block (do not reuse the first Cards block)**: In Experience Workspace, open **`cards-test`**. Add an **H2** (e.g. **View Switcher** or **Stacked cards**). Open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Stacked Cards with view switcher** (name in the block picker may vary slightly). That adds a **new** Cards block on the page — **not** the **Cards w/Images** / **Cards (List)** block from Step 1 and **not** your **Cards with Eyebrow** block. The inserted table’s header row should look like **`Cards (List, View Switcher)`** (or equivalent), so the block already has both the **list** and **view-switcher** variation classes. **Preview** before Step 8.
 
-  ![Cards Block and Variants in DA.live](images/cards-block-6.png)
 
 **This is different from Step 5 list-only**: Step 5 edits the **first** block to a fixed **Cards (List)** layout. Here, the **stacked / view-switcher** block lets the **end user** toggle grid vs list with buttons.
 
@@ -512,7 +512,7 @@ Add the toolbar styles at the end of the file:
 - **List** is the correct default highlight if the block was inserted with **`Cards (List, View Switcher)`** — try **Grid** to switch to the multi-column layout, then **List** again for single column + centered text
 - Toggling updates only **this** block; your **Cards w/Images** / **Cards (List)** and **Cards with Eyebrow** sections stay as you left them
 
-![Cards Block and Variants in DA.live](images/cards-block-7.png)
+![Cards Block and Variants in Experience Workspace](images/cards-block-7.png)
 
 ---
 
