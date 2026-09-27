@@ -49,7 +49,7 @@ The instructor has pre-configured the entire JSON2HTML pipeline so you can focus
 
 | Component | Location | Status |
 |-----------|----------|--------|
-| **Data source** (Sheet) | `/future-events` in DA.live | Published — available as JSON |
+| **Data source** (Sheet) | `/future-events` in Experience Workspace | Published — available as JSON |
 | **List template** | `/labs/exercise5/events-template` in repo | Committed |
 | **Detail template** | `/labs/exercise5/event-template` in repo | Committed |
 | **Event block** | `blocks/event/event.js` + `event.css` in repo | Committed |
@@ -66,7 +66,7 @@ The instructor has pre-configured the entire JSON2HTML pipeline so you can focus
 
 3. **If you see 404**: Ask the instructor to publish the `/future-events` Sheet.
 
-**Key concept**: Sheets in DA.live automatically become JSON endpoints. The Sheet at `/future-events` becomes available as `/future-events.json`.
+**Key concept**: Sheets in Experience Workspace automatically become JSON endpoints. The Sheet at `/future-events` becomes available as `/future-events.json`.
 
 ---
 
@@ -163,19 +163,19 @@ Understanding the entire flow — from first visit to cached edge delivery:
 ```
 
 **For the list page** (`/events/list`):
-- Same flow — click "Update" from Sidekick to generate and cache on edge
+- Same flow — click "Update" from AEM Sidekick to generate and cache on edge
 - Worker does NOT filter — passes ALL records to template
 - Template loops with `{{#data}}...{{/data}}` to render all event cards
 - EDS wraps each card in an `.event-wrapper` inside one `.section`
 - CSS grid lays out cards responsively (1/2/3 columns)
 
-**Key insight**: The JSON2HTML worker is a **page generation engine**, not a runtime proxy. It generates HTML once, stores it on the edge, and subsequent visits are served directly from the CDN — just like any other EDS page. Use "Update" from the Sidekick to regenerate pages when data or templates change.
+**Key insight**: The JSON2HTML worker is a **page generation engine**, not a runtime proxy. It generates HTML once, stores it on the edge, and subsequent visits are served directly from the CDN — just like any other EDS page. Use "Update" from AEM Sidekick to regenerate pages when data or templates change.
 
 ---
 
 ## Understanding the Data
 
-The instructor has created a **Sheet in DA.live** at `/future-events` with upcoming masterclass events in 6 cities.
+The instructor has created a **Sheet in Experience Workspace** at `/future-events` with upcoming masterclass events in 6 cities.
 
 **JSON endpoint**: `https://main--labs--edsmasterclass.aem.page/future-events.json`
 
@@ -389,7 +389,7 @@ Now prove the system is truly dynamic — add new events and watch the pages gen
 
 ### 5a. Open the Future Events Sheet
 
-1. **In DA.live**, navigate to: `/future-events`
+1. **In Experience Workspace**, navigate to: `/future-events`
    ```
    https://da.live/sheet#/edsmasterclass/labs/future-events
    ```
@@ -417,14 +417,14 @@ Add new rows to the sheet with new cities. For each row, fill in all columns to 
 
 ### 5c. Preview and Publish the Sheet
 
-1. **Preview** the sheet in DA.live (click the Preview button)
+1. **Preview** the sheet in Experience Workspace (click the Preview button)
 2. Wait a few seconds for the JSON endpoint to update
 3. **Verify** the JSON includes your new records:
    ```
    https://main--labs--edsmasterclass.aem.page/future-events.json
    ```
 
-### 5d. Regenerate Pages with Sidekick "Update"
+### 5d. Regenerate Pages with AEM Sidekick "Update"
 
 The pages on edge are cached — they won't automatically reflect new data. You need to trigger the worker to regenerate them.
 
@@ -442,7 +442,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
    https://<your-name>--labs--edsmasterclass.aem.page/events/newyork
    ```
 
-5. The page will initially show **404** (it's never been generated before). Click **"Update"** in the Sidekick to trigger the worker to generate it.
+5. The page will initially show **404** (it's never been generated before). Click **"Update"** in AEM Sidekick to trigger the worker to generate it.
 
 6. **Refresh** — you should see a fully rendered detail page for your new city.
 
@@ -477,7 +477,7 @@ Replace `jsmith` with your branch name.
 - `labs/exercise5/events-template.html` — List page Mustache template
 - `labs/exercise5/event-template.html` — Detail page Mustache template
 
-**What lives in DA.live** (set up by instructor):
+**What lives in Experience Workspace** (set up by instructor):
 - `/future-events` — Data sheet (JSON endpoint)
 
 **What lives in the worker service** (configured by instructor):
@@ -574,10 +574,10 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 ## Key Takeaways
 
 - **JSON2HTML worker** is a page generation engine — it creates HTML from JSON + Mustache templates and stores it on the edge
-- **Generate once, serve from edge** — worker runs on "Update" from Sidekick, subsequent visits are served directly from CDN
+- **Generate once, serve from edge** — worker runs on "Update" from AEM Sidekick, subsequent visits are served directly from CDN
 - **Two templates** — list template (loops with `{{#data}}`) and detail template (single record)
 - **One block, two views** — the `event` block decorates both list cards and detail pages
-- **Add data, click "Update"** — new rows in the sheet + Sidekick "Update" = new pages on edge
+- **Add data, click "Update"** — new rows in the sheet + AEM Sidekick "Update" = new pages on edge
 - **CSS `:has()` selector** — detects list vs. detail by counting `.event-wrapper` children
 - **EDS DOM structure** — `.event-wrapper` elements are direct children of `.section` (no intermediate div)
 - **Responsive grid** — 1 column mobile, 2 tablet, 3 desktop
@@ -585,7 +585,7 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 - **Worker config ordering matters** — specific paths before general ones
 - **Scale effortlessly** — 6 events or 600, same templates
 
-**The pattern**: Data in JSON → Sidekick "Update" → Worker generates HTML → Stored on edge → Served to all visitors
+**The pattern**: Data in JSON → AEM Sidekick "Update" → Worker generates HTML → Stored on edge → Served to all visitors
 
 </details>
 
@@ -600,7 +600,7 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 - [ ] **Understand detail template** — single record rendering with `{{variable}}` syntax
 - [ ] **Understand worker config** — path ordering, arrayKey, pathKey, template
 - [ ] **Tested in simulator** with real `future-events.json` data (both templates)
-- [ ] **Added new events** to the future-events sheet in DA.live
+- [ ] **Added new events** to the future-events sheet in Experience Workspace
 - [ ] **New events appear** on list page and generate working detail pages automatically
 - [ ] **Understand EDS DOM** — `.event-wrapper` as direct children of `.section`
 - [ ] **Understand complete flow**: Request → Worker → JSON + Template → HTML → EDS → Styled Page
@@ -622,7 +622,7 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 - Check that `/events/list` config comes **before** `/events/` in the array
 - Check that you're using the correct branch URL
 - Ensure config was POSTed successfully (check response)
-- Try hard refresh (Cmd+Shift+R or Ctrl+Shift+R) and/or use *update* from sidekick
+- Try hard refresh (Cmd+Shift+R or Ctrl+Shift+R) and/or use *Update* from AEM Sidekick
 
 **Template doesn't render**:
 - Verify template path in config matches the relative path from the repo exactly
@@ -644,14 +644,14 @@ JSON Data → Worker → [Match Path + Apply Template] → HTML → EDS Decorati
 - Ensure the block class name in HTML (`event`) matches the folder name (`blocks/event/`)
 
 **New events don't appear on the list page**:
-- Verify you **previewed** the sheet in DA.live after adding rows (click the Preview button)
+- Verify you **previewed** the sheet in Experience Workspace after adding rows (click the Preview button)
 - Check the JSON endpoint directly — open `https://main--labs--edsmasterclass.aem.page/future-events.json` and confirm your new records are in the `data` array
 - Verify the `URL` field in your new row follows the pattern `/events/cityname` (lowercase, no spaces)
-- Worker may cache briefly — wait 1-2 minutes and hard refresh and/or use *update* from sidekick
+- Worker may cache briefly — wait 1-2 minutes and hard refresh and/or use *Update* from AEM Sidekick
 
 **Changes don't appear**:
 - Worker config is cached briefly — wait 1-2 minutes
-- Try hard refresh (Cmd+Shift+R or Ctrl+Shift+R) and/or use *update* from sidekick
+- Try hard refresh (Cmd+Shift+R or Ctrl+Shift+R) and/or use *Update* from AEM Sidekick
 - Check you're on the correct branch URL
 
 **Use Browser DevTools to debug**:
