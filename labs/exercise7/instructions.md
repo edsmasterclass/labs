@@ -12,7 +12,7 @@
 - **Exercise steps**
   - [Step 1: Clone the Site Configuration (or request one)](#step-1-clone-the-site-configuration-or-request-one)
   - [Step 2: Create Your Content Folder](#step-2-create-your-content-folder)
-  - [Step 3: Copy Content from NYC Masterclass](#step-3-copy-content-from-nyc-masterclass)
+  - [Step 3: Copy Content from the Source Site](#step-3-copy-content-from-the-source-site)
   - [Step 4: Preview Your Site](#step-4-preview-your-site)
   - [Step 5: Verify Repoless is Working](#step-5-verify-repoless-is-working)
   - [Step 6: Customize Your Content](#step-6-customize-your-content)
@@ -42,9 +42,9 @@
 - Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
 - Code editor open with the repository
 - Exercises 1–6 completed (if doing in sequence)
-- DA.live access
+- Experience Workspace access
 - AEM Sidekick logged in (for Site Admin tool auth)
-- **Personal workspace**: your own site `/edsmasterclass/jsmith-mc` (use your name, lowercase)
+- **Personal workspace**: your own site `/edsmasterclass/<your-site>` (`<your-site>` = first initial + last name + `-mc`, lowercase)
 - **Org Admin for this lab**: if you need a site cloned or permissions adjusted, contact **murugull@adobe.com** (Slack, Microsoft Teams, or email), as described in [Step 1](#step-1-clone-the-site-configuration-or-request-one).
 
 ---
@@ -57,7 +57,7 @@
 - How repoless architecture works in Edge Delivery Services
 - How to share code across multiple sites (one codebase, many sites)
 - How site configuration cloning works in Site Admin (self-service for Org Admins, or by request for everyone else)
-- How to use DA.live Traverse and Import tools to copy content
+- How to use Experience Workspace Traverse and Import tools to copy content
 - How to create your own branded site in minutes
 - How multi-brand theming works with body class selectors and CSS custom properties
 - How Configuration Service manages code and content separation
@@ -72,7 +72,7 @@
 
 **The repoless solution**:
 - **One code repository** (blocks, scripts, styles) - `/edsmasterclass/labs`
-- **Multiple sites** with different content - Each person's site in DA.live
+- **Multiple sites** with different content - Each person's site in Experience Workspace
 - **Configuration Service** manages which code repo each site uses
 - **Code updates** to `labs` apply to all sites automatically
 - **Zero code duplication** - Launch new sites in minutes
@@ -97,15 +97,15 @@
 ```
 NYC Masterclass
 ├── GitHub: edsmasterclass/labs (code)
-└── DA.live: edsmasterclass/labs (content)
+└── Experience Workspace: edsmasterclass/labs (content)
 
 Boston Masterclass
 ├── GitHub: edsmasterclass/boston-mc (code - DUPLICATED!)
-└── DA.live: edsmasterclass/boston-mc (content)
+└── Experience Workspace: edsmasterclass/boston-mc (content)
 
 Chicago Masterclass  
 ├── GitHub: edsmasterclass/chicago-mc (code - DUPLICATED!)
-└── DA.live: edsmasterclass/chicago-mc (content)
+└── Experience Workspace: edsmasterclass/chicago-mc (content)
 ```
 
 **Problem**: Update the hero block? Must change 3 GitHub repositories. Bug fix? Deploy to 3 places.
@@ -119,11 +119,11 @@ GitHub: edsmasterclass/labs
 └── styles/
 
 CONTENT (MANY places)
-DA.live Projects (each uses labs code):
+Experience Workspace Projects (each uses labs code):
 ├── edsmasterclass/labs (NYC content)
 ├── edsmasterclass/boston-mc (Boston content)
 ├── edsmasterclass/chicago-mc (Chicago content)
-└── edsmasterclass/jsmith-mc (YOUR content)
+└── edsmasterclass/<your-site> (YOUR content)
 ```
 
 **Solution**: Update hero block once in `labs` → all 4 sites get it instantly.
@@ -136,22 +136,22 @@ DA.live Projects (each uses labs code):
 
 ### The Configuration Service
 
-Each site in DA.live can specify:
+Each site in Experience Workspace can specify:
 
-1. **Content Source**: Where content lives (always the DA.live project itself)
+1. **Content Source**: Where content lives (always the Experience Workspace project itself)
 2. **Code Source**: Where code lives (can point to a different GitHub repo)
 3. **Site Settings**: Permissions, custom configuration
 
-**Example**: Your site `/edsmasterclass/jsmith-mc`
-- Content from: `/edsmasterclass/jsmith-mc` in DA.live (YOUR pages)
+**Example**: Your site `/edsmasterclass/<your-site>`
+- Content from: `/edsmasterclass/<your-site>` in Experience Workspace (YOUR pages)
 - Code from: `/edsmasterclass/labs` in GitHub (SHARED blocks/scripts)
 
 ### What Gets Loaded From Where
 
-When someone visits `https://main--jsmith-mc--edsmasterclass.aem.page/`:
+When someone visits `https://main--<your-site>--edsmasterclass.aem.page/`:
 
-1. EDS checks `jsmith-mc` configuration → sees code source is `labs`
-2. Gets **content** (index.html) from `/edsmasterclass/jsmith-mc` in DA.live
+1. EDS checks `<your-site>` configuration → sees code source is `labs`
+2. Gets **content** (index.html) from `/edsmasterclass/<your-site>` in Experience Workspace
 3. Gets **code** (hero.js, hero.css, scripts.js) from `/edsmasterclass/labs` in GitHub
 4. Combines them → your page with your content, shared functionality
 
@@ -169,7 +169,7 @@ The Site Admin tool is how new site entries are created in the Configuration Ser
 
 1. **Get a cloned site configuration** — either you self-clone (Org Admins only) or an Org Admin does it for you.
 2. **Get admin permissions** on *your* cloned site so you can open it in Site Admin and adjust settings for the rest of the exercise.
-3. **Change the content path** (or equivalent site settings) so preview/production load **your** DA.live content folder (`/edsmasterclass/<your-site>`).
+3. **Change the content path** (or equivalent site settings) so preview/production load **your** Experience Workspace content folder (`/edsmasterclass/<your-site>`).
 4. **Leave the code path as-is** — keep the shared code source pointing at **`/edsmasterclass/labs`** (GitHub) so the exercise stays repoless.
 
 If an Org Admin created the site for you, they should grant you the access you need to complete steps 2–4 yourself; if anything is still wrong after that, follow up with the same contact.
@@ -181,7 +181,7 @@ If an Org Admin created the site for you, they should grant you the access you n
    Include at least:
    - **Organization**: `edsmasterclass`
    - **Source site to clone**: `labs`
-   - **New site name**: `jsmith-mc` (first initial + last name + `-mc`, all lowercase) — e.g. John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
+   - **New site name**: `<your-site>` (first initial + last name + `-mc`, all lowercase) — e.g. John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
    - Ask to be granted **admin (or equivalent) on the new site’s configuration** so you can verify paths in Site Admin.
 
 2. Wait until you are told the site exists and you have access, then continue from [Step 2](#step-2-create-your-content-folder). You can still open Site Admin to **list** sites and inspect your site once you have permissions.
@@ -197,7 +197,7 @@ If an Org Admin created the site for you, they should grant you the access you n
    - Click **List** to load the existing configuration
 
 4. Clone the configuration for `labs` to create your new site (three dots on the site card → **clone site config**):
-   - **New site name**: `jsmith-mc` (your first initial + last name + `-mc`)
+   - **New site name**: `<your-site>` (your first initial + last name + `-mc`)
 
 5. Confirm the clone.
 
@@ -209,23 +209,23 @@ If an Org Admin created the site for you, they should grant you the access you n
 
 ## Step 2: Create Your Content Folder
 
-Now create a place for your site's content in DA.live.
+Now create a place for your site's content in Experience Workspace.
 
-1. Go to DA.live: [https://da.live/#/edsmasterclass](https://da.live/#/edsmasterclass)
+1. Go to Experience Workspace: [https://da.live/#/edsmasterclass](https://da.live/#/edsmasterclass)
 
 2. You should see the `edsmasterclass` org with its existing sites (including `labs`)
 
-3. Create a new folder called `jsmith-mc` (your name)
+3. Create a new folder called `<your-site>` (your name)
 
-**Result**: You now have an empty content folder at `edsmasterclass/jsmith-mc`.
+**Result**: You now have an empty content folder at `edsmasterclass/<your-site>`.
 
-**If your site was cloned by an Org Admin**: In Site Admin, open **your** site’s configuration and confirm **content** resolves to this DA path (`edsmasterclass/jsmith-mc` — same as your site name in the exercise). **Leave the code source** pointed at the shared **`labs`** repository; do not repoint code to a fork unless an instructor tells you to.
+**If your site was cloned by an Org Admin**: In Site Admin, open **your** site’s configuration and confirm **content** resolves to this content path (`edsmasterclass/<your-site>` — same as your site name in the exercise). **Leave the code source** pointed at the shared **`labs`** repository; do not repoint code to a fork unless an instructor tells you to.
 
 ---
 
-## Step 3: Copy Content from NYC Masterclass
+## Step 3: Copy Content from the Source Site
 
-Instead of creating content from scratch, use the DA.live tools to copy all existing content from the NYC Masterclass site.
+Instead of creating content from scratch, use the Experience Workspace tools to copy all existing content from the source site (for this lab, `edsmasterclass/labs`).
 
 ### 3a: Traverse the Source Site
 
@@ -245,7 +245,7 @@ Instead of creating content from scratch, use the DA.live tools to copy all exis
 
 2. Paste all the URLs gathered from the traverse tool into the `By URL` field.
 
-3. In the `Into` section, enter the org `edsmasterclass` and your site name: `jsmith-mc`
+3. In the `Into` section, enter the org `edsmasterclass` and your site name: `<your-site>`
 
 4. Run the import — this copies all content (pages, images, metadata) to your site
 
@@ -265,20 +265,20 @@ Imported content needs to be previewed and published before it's available on yo
 
 4. Wait for it to complete, then run **Publish** to make all pages live
 
-**Result**: Your site now has a full copy of all NYC Masterclass content, previewed and published.
+**Result**: Your site now has a full copy of source-site content, previewed and published.
 
 ---
 
 ## Step 4: Preview Your Site
 
-1. Open your site: `https://main--jsmith-mc--edsmasterclass.aem.page/`
+1. Open your site: `https://main--<your-site>--edsmasterclass.aem.page/`
 
 2. **Test on desktop and mobile**: Use Chrome DevTools responsive view (F12 → device toolbar Cmd+Shift+M / Ctrl+Shift+M) to verify the site at different widths.
 
-3. **You should see**: The full NYC Masterclass homepage — same hero, same cards, same styling
+3. **You should see**: The full source-site homepage content — same hero, same cards, same styling
 
 **What's happening**:
-- **Content** is coming from `/edsmasterclass/jsmith-mc` (your DA.live folder)
+- **Content** is coming from `/edsmasterclass/<your-site>` (your Experience Workspace folder)
 - **Code** is coming from `/edsmasterclass/labs` (shared GitHub repo)
 - The site looks identical to NYC because you copied the content and share the code
 
@@ -288,7 +288,7 @@ Imported content needs to be previewed and published before it's available on yo
 
 Prove that code is loading from the shared repository, not your site.
 
-1. On your site (`https://main--jsmith-mc--edsmasterclass.aem.page/`), open browser **DevTools** (F12)
+1. On your site (`https://main--<your-site>--edsmasterclass.aem.page/`), open browser **DevTools** (F12)
 
 2. Go to the **Network** tab
 
@@ -303,10 +303,10 @@ https://main--labs--edsmasterclass.aem.page/scripts/scripts.js
 https://main--labs--edsmasterclass.aem.page/styles/styles.css
 ```
 
-**KEY OBSERVATION**: URLs say `labs`, NOT `jsmith-mc`!
+**KEY OBSERVATION**: URLs say `labs`, NOT `<your-site>`!
 
 **This proves**:
-- Your **content** comes from `/edsmasterclass/jsmith-mc` (your DA.live project)
+- Your **content** comes from `/edsmasterclass/<your-site>` (your Experience Workspace project)
 - Your **code** comes from `/edsmasterclass/labs` (shared GitHub repo)
 - **Repoless is working!**
 
@@ -316,16 +316,16 @@ https://main--labs--edsmasterclass.aem.page/styles/styles.css
 
 Now make the site yours by editing content. This proves that each site's content is independent.
 
-1. In DA.live, navigate to your site: [https://da.live/#/edsmasterclass/jsmith-mc](https://da.live/#/edsmasterclass/jsmith-mc)
+1. In Experience Workspace, navigate to your site: [https://da.live/#/edsmasterclass/<your-site>](https://da.live/#/edsmasterclass/<your-site>)
 
 2. Open the homepage (`index`)
 
 3. Change the `<h1>` to: **Jsmith's Masterclass** (use your name)
 
-4. DA.live auto-saves. Click **Preview** to see the page.
+4. Experience Workspace auto-saves. Click **Preview** to see the page.
 
 **Verify**:
-- Your site (`jsmith-mc`) shows YOUR heading
+- Your site (`<your-site>`) shows YOUR heading
 - NYC site (`labs`) still shows the original heading
 - Both sites have identical styling, blocks, and functionality
 
@@ -352,7 +352,7 @@ The NYC Masterclass site currently uses `theme: masterclass`, which produces the
 
 In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata values for all pages on a site using a spreadsheet. This is how you apply a theme site-wide without editing every page individually.
 
-1. In DA.live, navigate to your site: [https://da.live/#/edsmasterclass/jsmith-mc](https://da.live/#/edsmasterclass/jsmith-mc)
+1. In Experience Workspace, navigate to your site: [https://da.live/#/edsmasterclass/<your-site>](https://da.live/#/edsmasterclass/<your-site>)
 
 2. Open the **sheet** called `metadata` at the root of your site
 
@@ -365,7 +365,7 @@ In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata v
 - The `URL` column uses glob patterns to match pages — `/**` matches every page on the site
 - The `theme` column sets the metadata value that `decorateTemplateAndTheme()` reads
 
-4. DA.live auto-saves. **Preview** the metadata sheet so it becomes available as JSON.
+4. Experience Workspace auto-saves. **Preview** the metadata sheet so it becomes available as JSON.
 
 **What this does**: Every page on your site now has `theme: jsmith` in its metadata. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds `class="jsmith"` to the `<body>` element. No page-level editing needed — one sheet controls the entire site.
 
@@ -400,10 +400,10 @@ body.jsmith {
 Before pushing, test your theme locally. Use the `--pagesUrl` flag to tell the local dev server to load **content** from your new site while using your **local code**:
 
 ```bash
-aem up --pagesUrl https://main--jsmith-mc--edsmasterclass.aem.page/
+aem up --pagesUrl https://main--<your-site>--edsmasterclass.aem.page/
 ```
 
-Replace `jsmith-mc` with your site name.
+Replace `<your-site>` with your site name.
 
 Open `http://localhost:3000/` and **you should see**:
 - Your site's content (your custom heading from Step 6)
@@ -414,7 +414,7 @@ Open `http://localhost:3000/` and **you should see**:
 
 > **Pro tip**: You can run both sites in parallel by using the `--port` flag. In one terminal run the original site (`aem up`) on the default port 3000, and in another run your new site on a different port:
 > ```bash
-> aem up --port 3001 --pagesUrl https://main--jsmith-mc--edsmasterclass.aem.page/
+> aem up --port 3001 --pagesUrl https://main--<your-site>--edsmasterclass.aem.page/
 > ```
 > Now compare `http://localhost:3000/` (original) and `http://localhost:3001/` (your theme) side by side.
 
@@ -422,7 +422,7 @@ Open `http://localhost:3000/` and **you should see**:
 
 ```bash
 git add styles/styles.css
-git commit -m "feat: add personal theme for jsmith-mc"
+git commit -m "feat: add personal theme for <your-site>"
 git push origin jsmith
 ```
 
@@ -430,7 +430,7 @@ Replace `jsmith` with your branch name.
 
 ### 7e: Verify Your Theme
 
-Open your site: `https://jsmith--jsmith-mc--edsmasterclass.aem.page/`
+Open your site: `https://<your-branch>--<your-site>--edsmasterclass.aem.page/`
 
 **You should see**:
 - Your custom heading ("Jsmith's Masterclass")
@@ -487,7 +487,7 @@ Ask other participants to share their site URLs and compare.
 - No code duplication or version drift
 
 **For content authors**:
-- Each site has own DA.live project (zero conflicts)
+- Each site has own Experience Workspace project (zero conflicts)
 - No code complexity (pure content authoring)
 - Full editorial control per site
 - Site-specific branding via metadata
@@ -536,7 +536,7 @@ Ask other participants to share their site URLs and compare.
 
 - **Repoless** separates code from content — one codebase, many sites
 - **Site Admin** clones site configurations (Org Admins) or **Org Admins clone on request**; you then align **content** with your DA folder and keep **code** on `labs`
-- **DA.live tools** (Traverse + Import) copy content between sites instantly
+- **Experience Workspace tools** (Traverse + Import) copy content between sites instantly
 - **Configuration Service** manages which code each site uses
 - **Multi-brand theming** uses body class selectors + CSS custom properties
 - **Theme metadata** controls which visual identity a site uses — no code changes needed
@@ -549,15 +549,15 @@ Ask other participants to share their site URLs and compare.
 
 ## Verification Checklist
 
-- [ ] Have a `jsmith-mc` site config cloned from `labs` (self-service in Site Admin **or** requested via **murugull@adobe.com** / class Slack or Teams)
+- [ ] Have a `<your-site>` site config cloned from `labs` (self-service in Site Admin **or** requested via **murugull@adobe.com** / class Slack or Teams)
 - [ ] Can open your site in Site Admin and confirm **content** → your DA folder; **code** → shared `labs`
-- [ ] Created content folder in DA.live (`edsmasterclass/jsmith-mc`)
+- [ ] Created content folder in Experience Workspace (`edsmasterclass/<your-site>`)
 - [ ] Copied content using Traverse and Import tools
 - [ ] Previewed your site and saw it working
 - [ ] **Tested in Chrome DevTools responsive view** (desktop and mobile)
 - [ ] Verified code loading from `labs` (DevTools Network tab)
 - [ ] Customized the homepage heading (content independence)
-- [ ] Created metadata sheet in DA.live to set theme site-wide
+- [ ] Created metadata sheet in Experience Workspace to set theme site-wide
 - [ ] Added theme CSS in `styles/styles.css` with body class selector
 - [ ] Pushed changes and previewed your custom brand colors
 - [ ] Compared your site with other participants' sites
@@ -586,7 +586,7 @@ A working implementation of this exercise is available for the site `ukhalid-mc`
 
 ## Next Exercise
 
-**Exercise 8**: [DA.live Plugin Development](../exercise8/instructions.md) — Extend authoring with a plugin + block pair (e.g. turning third-party embeds into structured content).
+**Exercise 8**: [Experience Workspace Plugin Development](../exercise8/instructions.md) — Extend authoring with a plugin + block pair (e.g. turning third-party embeds into structured content).
 
 ---
 
