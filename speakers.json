@@ -1,0 +1,71 @@
+{
+  "total": 7,
+  "limit": 7,
+  "offset": 0,
+  "data": [
+    {
+      "Name": "Gillian Krause",
+      "Title": "Senior Director Product Marketing",
+      "Company": "Adobe",
+      "Bio": "Gillian Krause leads product marketing for Adobe Edge Delivery Services, driving the vision and go-to-market strategy for the platform. With over 15 years in enterprise software marketing, she specializes in translating complex technical capabilities into business value. Gillian is passionate about democratizing web performance and empowering content teams to deliver lightning-fast experiences without sacrificing authoring ease.",
+      "Image": "https://placehold.co/400x400/1473E6/FFFFFF?text=GK",
+      "Session": "Introductions & Welcome",
+      "LinkedIn": "https://linkedin.com/in/gillian-krause"
+    },
+    {
+      "Name": "Amol Anand",
+      "Title": "Senior Product Manager",
+      "Company": "Adobe",
+      "Bio": "Amol Anand is a Senior Product Manager at Adobe, leading the technical direction for Edge Delivery Services. With a background in distributed systems and CDN architecture, Amol has been instrumental in defining the edge-first approach that makes EDS uniquely performant. He works closely with enterprise customers to evolve the platform based on real-world use cases and scaling challenges.",
+      "Image": "https://placehold.co/400x400/EB1000/FFFFFF?text=AA",
+      "Session": "What is Edge Delivery Services?",
+      "LinkedIn": "https://linkedin.com/in/amol-anand"
+    },
+    {
+      "Name": "Darin Kuntze",
+      "Title": "Senior Solutions Architect",
+      "Company": "Adobe",
+      "Bio": "Darin Kunze is a Senior Solutions Architect at Adobe with deep expertise in content management systems and web architecture. He specializes in designing scalable, performant solutions for global enterprises using Edge Delivery Services. Darin has led dozens of successful implementations, from media companies to financial services, and is known for his pragmatic approach to solving complex technical challenges.",
+      "Image": "https://placehold.co/400x400/34A853/FFFFFF?text=MW",
+      "Session": "Architecture Deep Dive",
+      "LinkedIn": "https://linkedin.com/in/matt-ward"
+    },
+    {
+      "Name": "Sagar Sane",
+      "Title": "Solution Architect",
+      "Company": "Adobe",
+      "Bio": "Sagar Sane is a Solution Architect at Adobe specializing in commerce integrations and headless commerce architectures for Edge Delivery Services. With extensive experience in e-commerce platforms, product catalog management, and payment gateway integrations, Sagar helps customers build high-performance commerce experiences. He is passionate about API-first design, serverless patterns, and creating scalable retail solutions that deliver exceptional customer experiences.",
+      "Image": "https://placehold.co/400x400/10B981/FFFFFF?text=SS",
+      "Session": "Edge Commerce Patterns",
+      "LinkedIn": "https://linkedin.com/in/sagar-sane"
+    },
+    {
+      "Name": "Sean Steimer",
+      "Title": "Senior Computer Scientist",
+      "Company": "Adobe",
+      "Bio": "Sean Steimer is a Senior Computer Scientist at Adobe and one of the core architects of Edge Delivery Services. With 15+ years in AEM development, Sean has contributed to key framework components and is a leading voice in the AEM developer community. He is passionate about clean code, performance optimization, and creating developer-friendly APIs that reduce complexity without sacrificing power.",
+      "Image": "https://placehold.co/400x400/9333EA/FFFFFF?text=SS",
+      "Session": "Development Best Practices",
+      "LinkedIn": "https://linkedin.com/in/stefan-seifert"
+    },
+    {
+      "Name": "Kiran Murugulla",
+      "Title": "Cloud Architect",
+      "Company": "Adobe",
+      "Bio": "Kiran Murugulla is a Cloud Architect at Adobe specializing in integrations and enterprise architecture for Edge Delivery Services. With extensive experience in cloud-native solutions, microservices, and API design, Kiran helps customers integrate EDS with existing enterprise systems including PIMs, CRMs, and commerce platforms. He is an advocate for API-first design and serverless architectures.",
+      "Image": "https://placehold.co/400x400/EC4899/FFFFFF?text=KM",
+      "Session": "Integration Strategies & Enterprise Patterns",
+      "LinkedIn": "https://linkedin.com/in/kiran-murugulla"
+    },
+    {
+      "Name": "Abhishek Kumar",
+      "Title": "AEM Architect ",
+      "Company": "Adobe",
+      "Bio": "AEM Architect with ACS GDC.",
+      "Image": "https://placehold.co/400x400/EC4899/FFFFFF?text=KM",
+      "Session": "ACS",
+      "LinkedIn": "www.linkedin.com/in/abhishek-kumar-25096434"
+    }
+  ],
+  ":type": "sheet"
+}
