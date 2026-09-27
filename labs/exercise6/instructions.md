@@ -39,7 +39,7 @@
 - Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
 - Code editor open with the repository
 - Exercises 1–5 completed (if doing in sequence)
-- **Personal workspace**: `/drafts/jsmith/` (use your name, lowercase)
+- **Personal workspace**: `/drafts/<your-name>/` (first initial + last name, lowercase — same pattern as earlier exercises)
 
 ---
 
@@ -236,10 +236,10 @@ blocks/
 
 ## Step 2: Create Test Page
 
-**In DA.live**:
+**In Experience Workspace**:
 
 1. Open your personal drafts folder **`/drafts/<your-name>/`** (first initial + last name, lowercase — same pattern as earlier exercises).
-2. **New** → **Document** and name it **`feedback`**. You should end up with **`/drafts/<your-name>/feedback`**.
+2. **New** → **Page** and name it **`feedback`**. You should end up with **`/drafts/<your-name>/feedback`**.
 3. **Save**. Leave the body minimal for now — you’ll insert the Feedback block in Step 3.
 
 ---
@@ -248,7 +248,7 @@ blocks/
 
 Still on **`/drafts/<your-name>/feedback`**:
 
-1. Use the **Block Library** to insert the **Feedback Form** block (or equivalent name shown in your library).
+1. Open **Outline**, choose **Blocks**, find **Feedback Form** (or equivalent name shown in your block picker), and click the **+** to insert it.
 
 **Authoring structure** — the block expects:
 
@@ -273,7 +273,7 @@ If you need to adjust cells after insert, match this shape:
 </div>
 ```
 
-See how this block looks in DA edit mode:
+See how this block looks in Experience Workspace edit mode:
 
 ![Feedback Form | Block Structure](../images/da-feedback-form.png)
 
