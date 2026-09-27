@@ -1,4 +1,4 @@
-# Exercise 8: DA.live Plugin Development
+# Exercise 8: Experience Workspace Plugin Development
 
 **Duration**: 30 minutes
 
@@ -8,7 +8,7 @@
 <summary><strong>Quick navigation</strong></summary>
 
 - [Prerequisites](#prerequisites)
-- **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [Pattern showcase](#pattern-showcase-third-party-embed-conversion) · [How DA.live plugins work](#how-dalive-plugins-work) · [Understanding the DA App SDK](#understanding-the-da-app-sdk) · [Plugin architecture](#plugin-architecture))
+- **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [Pattern showcase](#pattern-showcase-third-party-embed-conversion) · [How Experience Workspace plugins work](#how-experience-workspace-plugins-work) · [Understanding the DA App SDK](#understanding-the-da-app-sdk) · [Plugin architecture](#plugin-architecture))
 - **Exercise steps**
   - [Step 1: Create Plugin HTML](#step-1-create-plugin-html)
   - [Step 1.5: Create Plugin CSS](#step-15-create-plugin-css)
@@ -24,7 +24,6 @@
 - [Optional Enhancements](#optional-enhancements)
 - [References](#references)
 - [Solution](#solution)
-- [Congratulations!](#congratulations)
 
 </details>
 
@@ -43,10 +42,10 @@
 - Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
 - Code editor open with the repository
 - Exercises 1–7 completed (if doing in sequence)
-- DA.live access
-- **Personal workspace**: `/drafts/jsmith/` (use your name, lowercase)
+- Experience Workspace access
+- **Personal workspace**: `/drafts/<your-name>/` (first initial + last name, lowercase)
 
-**Context:** You've been authoring in DA.live (Exercises 1–7); this exercise extends DA.live with custom plugins so authors can insert pre-formatted content from the library.
+**Context:** You've been authoring in Experience Workspace (Exercises 1–7); this exercise extends Experience Workspace with custom plugins so authors can insert pre-formatted content from the library.
 
 ---
 
@@ -55,7 +54,7 @@
 
 ## What You'll Learn
 
-- How DA.live plugins work as library integrations
+- How Experience Workspace plugins work as library integrations
 - How to use the DA App SDK (context, token, actions)
 - How to insert content into documents programmatically via DA SDK
 - How to develop plugins locally and deploy to your branch
@@ -65,7 +64,7 @@
 
 ## Why This Matters
 
-DA.live library plugins extend the authoring experience with custom content insertion capabilities.
+Experience Workspace library plugins extend the authoring experience with custom content insertion capabilities.
 
 **The challenge**: Authors often copy/paste third-party embed codes (widgets, scripts, config JSON), but raw custom HTML in documents is an anti-pattern and hard to maintain.
 
@@ -84,7 +83,7 @@ DA.live library plugins extend the authoring experience with custom content inse
 1. Developer builds plugin (HTML + JavaScript)
 2. Plugin uses DA App SDK (context, token, actions)
 3. Plugin is committed to Git repository
-4. Authors access via library palette in DA.live
+4. Authors access via the library palette in Experience Workspace
 5. Plugin inserts content into document via SDK actions
 ```
 
@@ -115,14 +114,14 @@ This exercise demonstrates a practical DA pattern: let authors use familiar copy
 
 ---
 
-## How DA.live Plugins Work
+## How Experience Workspace Plugins Work
 
-DA.live plugins are HTML + JavaScript applications hosted on your Edge Delivery site that communicate with DA.live via the DA App SDK.
+Experience Workspace plugins are HTML + JavaScript applications hosted on your Edge Delivery site that communicate with Experience Workspace via the DA App SDK.
 
 **Architecture**:
 ```
 ┌─────────────────────────────────────────────────┐
-│            DA.live Editor                       │
+│       Experience Workspace Editor               │
 │                                                 │
 │  ┌───────────────────┐  ┌──────────────────┐  │
 │  │  Document Editor  │  │  Library Palette │  │
@@ -151,19 +150,19 @@ DA.live plugins are HTML + JavaScript applications hosted on your Edge Delivery 
 
 **How it works**:
 1. Plugin is an **HTML page** on your Edge Delivery site
-2. Plugin loads in **iframe** within DA.live library palette
+2. Plugin loads in **iframe** within the Experience Workspace library palette
 3. Plugin uses **DA App SDK** (imported from da.live)
 4. SDK provides **PostMessage API** for secure communication
 5. SDK gives you: **context** (document info), **token** (auth), **actions** (insert content)
 6. Plugin calls `actions.sendText()` or `actions.sendHTML()` to insert content
-7. DA.live receives message and inserts into document
+7. Experience Workspace receives the message and inserts it into the document
 
 **URL Structure**:
 - **Your codebase**: `https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html`
-- **DA.live Plugin URL**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith`
+- **Experience Workspace plugin URL**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>`
 - **Local development**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local`
 
-**Key concept**: DA.live loads your plugin HTML from your AEM site into an iframe, then uses PostMessage for secure cross-origin communication.
+**Key concept**: Experience Workspace loads your plugin HTML from your AEM site into an iframe, then uses PostMessage for secure cross-origin communication.
 
 **Reference**: [Developing Apps and Plugins](https://docs.da.live/developers/guides/developing-apps-and-plugins)
 
@@ -171,7 +170,7 @@ DA.live plugins are HTML + JavaScript applications hosted on your Edge Delivery 
 
 ## Understanding the DA App SDK
 
-The DA App SDK is the bridge between your plugin and DA.live. It provides three key objects:
+The DA App SDK is the bridge between your plugin and Experience Workspace. It provides three key objects:
 
 ### 1. **context** - Document Information
 
@@ -183,7 +182,7 @@ const { context } = await DA_SDK;
 console.log(context.org);      // "edsmasterclass"
 console.log(context.repo);     // "labs"
 console.log(context.ref);      // "main" or branch name
-console.log(context.path);     // "/drafts/jsmith/my-page"
+console.log(context.path);     // "/drafts/<your-name>/my-page"
 ```
 
 **Use cases**:
@@ -193,7 +192,7 @@ console.log(context.path);     // "/drafts/jsmith/my-page"
 
 ### 2. **token** - Authentication Token
 
-Authentication token for making authenticated API calls to DA.live Admin API:
+Authentication token for making authenticated API calls to the Experience Workspace Admin API:
 
 ```javascript
 const { token } = await DA_SDK;
@@ -223,7 +222,7 @@ await actions.sendHTML('<div><h1>Heading</h1><p>Paragraph</p></div>');
 await actions.closeLibrary();
 ```
 
-**Key insight**: You don't manipulate the document directly. You send content to DA.live, and DA.live inserts it.
+**Key insight**: You don't manipulate the document directly. You send content to Experience Workspace, and Experience Workspace inserts it.
 
 **Why PostMessage?**: Your plugin runs in an iframe (different origin). PostMessage is the secure way to communicate across origins.
 
@@ -257,13 +256,13 @@ For this exercise, you'll build an **EmbedWidget plugin** with three files:
 tools/
   plugins/
     embedwidget/
-      embedwidget.html   ← Loaded by DA.live in iframe
+      embedwidget.html   ← Loaded by Experience Workspace in iframe
       embedwidget.js     ← Your plugin logic
 ```
 
 **URL accessed by authors**:
 ```
-https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>
 ```
 
 This loads your HTML from:
@@ -542,11 +541,11 @@ Before pushing to your branch, test the plugin loads correctly from localhost.
 https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local
 ```
 
-**To Test : EmbedWidget Plugin and TradingView Block**:
-1. **Open DA.live**: Go to `https://da.live/edit#/edsmasterclass/labs/drafts/jsmith/` (use your name)
-2. **Open any existing page** (or create `/drafts/jsmith/plugin-test`)
+**To test EmbedWidget plugin and TradingView block**:
+1. **Open Experience Workspace**: Go to `https://da.live/edit#/edsmasterclass/labs/drafts/<your-name>/`
+2. **Open any existing page** (or create `/drafts/<your-name>/plugin-test`)
 3. **Open library**: Click the library icon in the left sidebar (puzzle piece icon)
-4. **Load your plugin**: In a new browser tab, navigate to https://da.live/edit?ref=local#/edsmasterclass/labs/drafts/jsmith/plugin-test
+4. **Load your plugin**: In a new browser tab, navigate to `https://da.live/edit?ref=local#/edsmasterclass/labs/drafts/<your-name>/plugin-test`
 
 5. **Think like an author**: Open the TradingView Company Profile widget page:
    - `https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/`
@@ -554,7 +553,7 @@ https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?re
 7. **Return to EmbedWidget**: You should see a textarea for embed code and an "Insert Widget Block" button
 8. **Paste and insert**: A structured `tradingview` block table should be inserted
 9. **Library should close** automatically
-10. **Preview** the DA page to see the rendered TradingView widget
+10. **Preview** the Experience Workspace page to see the rendered TradingView widget
 
 **Debugging local issues**:
 - Verify `http://localhost:3000` is running
@@ -562,7 +561,7 @@ https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?re
 - Verify file paths: `/tools/plugins/embedwidget/embedwidget.html`
 - Check Network tab for failed requests
 
-**How `?ref=local` works**: DA.live fetches your plugin HTML from `http://localhost:3000` instead of the published site. This lets you develop without committing/pushing every change.
+**How `?ref=local` works**: Experience Workspace fetches your plugin HTML from `http://localhost:3000` instead of the published site. This lets you develop without committing/pushing every change.
 
 ---
 
@@ -570,16 +569,16 @@ https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?re
 
 Once local testing works, access your plugin from your pushed branch.
 
-**Your plugin URL** (replace `jsmith` with your branch):
+**Your plugin URL** (replace `<your-branch>` with your branch name):
 ```
-https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=jsmith
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>
 ```
 
 **To test on your branch**:
 1. **Ensure you've pushed** to GitHub (`git push origin jsmith`)
 2. **Wait 1-2 minutes** for AEM Code Sync to deploy
-3. **Open DA.live** and navigate to any page
-4. **Load your plugin URL** with `?ref=jsmith` in a new tab
+3. **Open Experience Workspace** and navigate to any page
+4. **Load your plugin URL** with `?ref=<your-branch>` in a new tab
 5. **Plugin loads from**:
    ```
    https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html
@@ -594,9 +593,9 @@ https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?re
 
 ## Step 6: Preview the Page and Verify Widget Rendering
 
-After inserting the block in DA, validate that the `tradingview` block decorator renders the actual widget on the page.
+After inserting the block in Experience Workspace, validate that the `tradingview` block decorator renders the actual widget on the page.
 
-1. **Preview** your DA document containing the inserted block (DA.live auto-saves)
+1. **Preview** your Experience Workspace document containing the inserted block (Experience Workspace auto-saves)
 2. **Open the preview URL** in your browser (branch or local)
 3. **Test on desktop and mobile**: Use Chrome DevTools responsive view (F12 → device toolbar Cmd+Shift+M / Ctrl+Shift+M) to verify the widget layout at different widths.
 4. **Verify rendered output**:
@@ -645,7 +644,7 @@ For production use, plugins should be registered in the site configuration so au
 1. **Check file paths**: Verify files exist at `/tools/plugins/embedwidget/embedwidget.html`
 2. **Check dev server**: Ensure `aem up` is running for `?ref=local`
 3. **Check branch deployment**: Wait 1-2 minutes after `git push` for Code Sync
-4. **Check URL**: Verify `?ref=jsmith` matches your branch name exactly
+4. **Check URL**: Verify `?ref=<your-branch>` matches your branch name exactly
 5. **Open plugin URL directly**: Visit the .aem.page URL in a new tab to see errors
 
 ### SDK import fails
@@ -655,7 +654,7 @@ For production use, plugins should be registered in the site configuration so au
 **Fixes**:
 1. **Check SDK URL**: Must be `https://da.live/nx/utils/sdk.js` (exact case)
 2. **Check script type**: Must have `type="module"` in both HTML script tags
-3. **Check CORS**: DA.live must be able to load your plugin (check browser console)
+3. **Check CORS**: Experience Workspace must be able to load your plugin (check browser console)
 
 ### Content doesn't insert
 
@@ -687,14 +686,14 @@ For production use, plugins should be registered in the site configuration so au
 3. **Check pasted embed**: Validate JSON in the embed script body
 4. **Test locally first**: Use `?ref=local` to debug before pushing
 
-### Can't access plugin in DA.live
+### Can't access plugin in Experience Workspace
 
-**Problem**: DA.live doesn't let you load plugin URL
+**Problem**: Experience Workspace doesn't let you load plugin URL
 
 **Fixes**:
 1. **Check permissions**: Ensure you have access to edsmasterclass/labs
 2. **Check URL format**: Must start with `https://da.live/app/`
-3. **Check ref parameter**: Must include `?ref=jsmith` or `?ref=local`
+3. **Check ref parameter**: Must include `?ref=<your-branch>` or `?ref=local`
 4. **Try main branch**: Test with `?ref=main` to isolate branch issues
 
 **Debugging with Browser DevTools**:
@@ -712,7 +711,7 @@ For production use, plugins should be registered in the site configuration so au
 - **Fetch speaker data** from `/speakers.json` or external API
 - **Display list** of speakers with photos and names
 - **Click to insert**: Selected speaker bio as formatted table
-- **Bonus**: Use `token` to fetch authenticated data from DA.live Admin API
+- **Bonus**: Use `token` to fetch authenticated data from Experience Workspace Admin API
 
 **Example flow**:
 ```javascript
@@ -812,14 +811,14 @@ buttons.forEach(btn => {
 
 ## Key Takeaways
 
-- **DA.live plugins** are HTML + JavaScript applications hosted on your Edge Delivery site
-- **DA App SDK** (`https://da.live/nx/utils/sdk.js`) provides the interface to DA.live
+- **Experience Workspace plugins** are HTML + JavaScript applications hosted on your Edge Delivery site
+- **DA App SDK** (`https://da.live/nx/utils/sdk.js`) provides the interface to Experience Workspace
 - **PostMessage API** enables secure cross-origin communication (plugin in iframe)
 - **Three SDK objects**: `context` (document info), `token` (auth), `actions` (insert content)
 - **Two insertion methods**: `actions.sendText()` (markdown) and `actions.sendHTML()` (HTML)
 - **Plugin URL pattern**: `https://da.live/app/{org}/{repo}/{path}?ref={branch}`
 - **Local development**: Use `?ref=local` to load from `localhost:3000`
-- **Branch testing**: Use `?ref=jsmith` to load from your feature branch
+- **Branch testing**: Use `?ref=<your-branch>` to load from your feature branch
 - **Production use**: Register plugins in site config for automatic library discovery
 - **Plugin architecture**: HTML (UI) + JavaScript (logic) + SDK (communication)
 
@@ -830,7 +829,7 @@ buttons.forEach(btn => {
 - **Automation** - Generate content programmatically
 - **Validation** - Enforce structure and rules
 
-**The pattern**: UI → Paste Embed → Parse + Validate → `actions.sendHTML()` → DA.live inserts → `actions.closeLibrary()`
+**The pattern**: UI → Paste Embed → Parse + Validate → `actions.sendHTML()` → Experience Workspace inserts → `actions.closeLibrary()`
 
 </details>
 
@@ -855,7 +854,7 @@ buttons.forEach(btn => {
 - [ ] **Tested in Chrome DevTools responsive view** (desktop and mobile)
 - [ ] **Library closes** automatically after insertion
 - [ ] **Committed and pushed** to feature branch (`git push origin jsmith`)
-- [ ] **Tested on branch** with `?ref=jsmith` parameter
+- [ ] **Tested on branch** with `?ref=<your-branch>` parameter
 - [ ] **Understand DA App SDK**:
   - `context` provides document info
   - `token` provides auth for API calls
@@ -935,7 +934,7 @@ await actions.sendHTML(html);
 
 - **[Developing Apps and Plugins](https://docs.da.live/developers/guides/developing-apps-and-plugins)** - Official guide
 - **[DA App SDK Source](https://da.live/nx/utils/sdk.js)** - SDK code (inspect for advanced usage)
-- **[DA.live Documentation](https://docs.da.live/)** - Complete documentation
+- **[Experience Workspace Documentation](https://docs.da.live/)** - Complete documentation
 - **[TradingView Widgets Collection](https://www.tradingview.com/widget-docs/widgets/)** - Sample widget catalog
 - **[TradingView Company Profile Widget](https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/)** - Example widget used in this lab
 - **[da-blog-tools TradingView README](https://raw.githubusercontent.com/aemsites/da-blog-tools/refs/heads/main/tools/plugins/tradingview/README.md)** - Source pattern for embed conversion
@@ -946,28 +945,3 @@ await actions.sendHTML(html);
 ## Solution
 
 The complete solution for this exercise (embedwidget plugin, tradingview block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
-
----
-
-## Congratulations!
-
-You've completed all 8 exercises of EDS Masterclass Labs.
-
-You now know how to:
-- Author content in DA.live
-- Build blocks with enhancements and variations
-- Fetch data from external sources
-- Use query index with auto-blocking
-- Generate pages from JSON templates
-- Integrate with third-party systems via Edge Workers
-- Architect multi-site solutions with shared code
-- Apply multi-brand theming from a single codebase
-- Build DA.live plugins for content insertion
-
-**Next steps**:
-- Review your work
-- Run `npm run lint` one final time
-- Create pull request with before/after URLs
-- Share Lighthouse scores (target: 100)
-
-Thank you for participating in EDS Masterclass Labs!
