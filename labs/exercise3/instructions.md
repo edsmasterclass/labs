@@ -101,7 +101,7 @@ In Exercise 2, you built blocks where authors manually create each card. But wha
 5. When the sheet updates, all pages show new data
 ```
 
-In this exercise you'll edit a **Sheet** in DA; **Preview** delivers the same data as **JSON**. The block doesn't care where the JSON comes from. Any URL that returns the same JSON shape will work, whether it's a Cloudflare Worker, a third-party API, or a custom backend. Swap the URL and everything else stays the same.
+In this exercise you'll edit a **Sheet** in Experience Workspace; **Preview** delivers the same data as **JSON**. The block doesn't care where the JSON comes from. Any URL that returns the same JSON shape will work, whether it's a Cloudflare Worker, a third-party API, or a custom backend. Swap the URL and everything else stays the same.
 
 **Reference**: [Integrations](https://www.aem.live/developer/integrations)
 
@@ -154,17 +154,16 @@ To avoid conflicts with other participants, you'll create your own personal copy
 
 **How it works**: **`speakers`** is a **Sheet**. You edit the sheet; **Preview** turns it into JSON and delivers it at **`/drafts/<your-name>/speakers.json`** (for your copy under drafts). Copy the sheet into **`/drafts/<your-name>/`** so **your** rows are what that JSON shows after **Save** and **Preview**.
 
-**In DA.live**:
+**In Experience Workspace**:
 
 1. Go to the **labs** project root.
 2. Select the **`speakers`** sheet.
-3. Use **Copy** from the **pink action bar** at the **bottom** of the screen.
+3. Click **Copy** in the action bar at the bottom.
+   ![Selected speakers sheet with Copy action in the action bar](images/copy-action-bar-speakers.png)
 4. Open the project's **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts).
 5. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase). Create the folder if it does not exist yet — same pattern as [Exercise 1](../exercise1/instructions.md).
-6. **Paste** from the same **pink action bar** at the bottom. That places the **speakers** sheet under **`/drafts/<your-name>/`**.
+6. **Paste** from the same action bar at the bottom. That places the **speakers** sheet under **`/drafts/<your-name>/`**.
 7. **Open** the pasted sheet and click **Preview** so **`/drafts/<your-name>/speakers.json`** is available (replace **`<your-name>`** with your folder).
-
-  ![Copy & Paste Speakers Sheet](images/exercise_3_1.gif)
 
 **Verify**: Open **`http://localhost:3000/drafts/<your-name>/speakers.json`** (dev server running) or the matching **`.aem.page`** URL — you should see JSON with a `data` array.
 
@@ -174,7 +173,7 @@ To avoid conflicts with other participants, you'll create your own personal copy
 
 Make this exercise meaningful by adding yourself as a speaker!
 
-**In DA.live**, open **`/drafts/<your-name>/speakers`** (the **sheet** you pasted in Step 1 — same **`<your-name>`** folder).
+**In Experience Workspace**, open **`/drafts/<your-name>/speakers`** (the **sheet** you pasted in Step 1 — same **`<your-name>`** folder).
 
 **Add a new row** with your information:
 - **Name**: Your full name (e.g., "John Smith")
@@ -416,27 +415,27 @@ Copy this code:
 
 ## Step 6: Create Test Page
 
-**In DA.live**, create a page at **`/drafts/<your-name>/speakers-test`** (same **`<your-name>`** folder as in Steps 1–2).
+**In Experience Workspace**, create a page at **`/drafts/<your-name>/speakers-test`** (same **`<your-name>`** folder as in Steps 1–2).
 
 1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
 2. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase).
-3. **New** → **Document**, name it **`speakers-test`**.
+3. **New** → **Page**, name it **`speakers-test`**.
 4. Add a **level-1 heading**: **Dynamic Speaker Directory**.
 5. Under it, add a short paragraph that explains the page loads speaker data from JSON (write it in your own words, or use something like: this page demonstrates fetching speaker data dynamically from JSON).
 
 **Author the block manually (not from the Block library yet)**  
-This block is **new** in your branch, so it is **not** in DA’s Block library until you register it later. **Test it first** by inserting a block table yourself:
+This block is **new** in your branch, so it is **not** in the Experience Workspace Block library until you register it later. **Test it first** by inserting a block table yourself:
 
-1. In the **DA Sidekick**, click **Block**. That inserts a table: first row header **Columns**, second row with **two** cells.
+1. In the editor toolbar, click **Block**. That inserts a table: first row header **Columns**, second row with **two** cells.
 2. Change the **first-row header** text from **Columns** to **`Dynamic Cards`** (must match the **`dynamic-cards`** folder name).
 3. Select the **second row**, **both** cells.
-4. The Sidekick label **Block** should change to **Edit Block**. Click **Edit Block**, then choose **Merge cells** (it is near the bottom of the menu — about the second option from the bottom). That merges the two cells into one.
+4. The toolbar label **Block** should change to **Edit Block**. Click **Edit Block**, then choose **Merge cells** (it is near the bottom of the menu — about the second option from the bottom). That merges the two cells into one.
 5. In the merged cell, type **`/drafts/<your-name>/speakers.json`** (replace **`<your-name>`** with your drafts folder). **Select that text** and use the **link** icon in the toolbar to turn it into a **real hyperlink** (the block code reads `block.querySelector('a')?.href`).
 6. **Save**, then **Preview** the page on localhost.
 
 **You should see** the rows from your sheet rendered as speaker cards (everyone’s row count differs depending on what was on the copied sheet and what you added).
 
-![Dynamic Cards Example](images/exercise-3-2.png)
+
 
 ---
 
@@ -462,7 +461,7 @@ This block is **new** in your branch, so it is **not** in DA’s Block library u
 
 **Test the data flow**:
 1. Keep the page open at `http://localhost:3000/drafts/<your-name>/speakers-test`
-2. Go to DA.live and open **`/drafts/<your-name>/speakers`**
+2. Go to Experience Workspace and open **`/drafts/<your-name>/speakers`**
 3. Edit **your** speaker row — change your bio or title
 4. **Save** the sheet, then **Preview** so **`.../speakers.json`** has the new data
 5. **Refresh** your local preview of **`speakers-test`** — your changes should appear
@@ -475,7 +474,7 @@ This block is **new** in your branch, so it is **not** in DA’s Block library u
 
 Skip this section if you are short on time — it is optional for the lab flow.
 
-Quick checks on your **`/drafts/<your-name>/speakers-test`** page in DA.live — same **Dynamic Cards** block as Step 6; you’re only changing the data link (or removing it), then refreshing localhost.
+Quick checks on your **`/drafts/<your-name>/speakers-test`** page in Experience Workspace — same **Dynamic Cards** block as Step 6; you’re only changing the data link (or removing it), then refreshing localhost.
 
 1. **Bad URL** — Point the block’s JSON link at something that will fail (for example `https://invalid-url.com/data.json`). **Save**, refresh the local preview. You should see an **error** message (your block styles it, e.g. red background) instead of cards.
 2. **No URL** — Remove the data link so the block has no `href`. **Save**, refresh. You should see **Error: No data source specified** (from your `decorate` logic).
@@ -517,11 +516,11 @@ Exercise 4 has you search for your own page. The search index only includes **`/
 
 Use the same **`<your-name>`** folder as in Steps 1–2 (first initial + last name, lowercase).
 
-1. In DA.live, open **`/drafts/<your-name>/`** and select your Exercise 1 page (the **lab** or **session** page you created in Ex1 — e.g. `my-lab` or `my-session`).
-2. Use **Copy** from the **pink action bar** at the bottom (same pattern as Step 1).
+1. In Experience Workspace, open **`/drafts/<your-name>/`** and select your Exercise 1 page (the **lab** or **session** page you created in Ex1 — e.g. `my-lab` or `my-session`).
+2. Click **Copy** in the action bar at the bottom (same pattern as Step 1).
 3. Navigate to the destination that matches your page type:
-   - **Lab page** → open **`/labs/`**, go into **`/labs/<your-name>/`** (create the folder with **New → Folder** if needed), then **Paste** from the pink bar.
-   - **Session page** → open **`/sessions/`**, go into **`/sessions/<your-name>/`** (create the folder if needed), then **Paste** from the pink bar.
+   - **Lab page** → open **`/labs/`**, go into **`/labs/<your-name>/`** (create the folder with **New → Folder** if needed), then **Paste** from the action bar.
+   - **Session page** → open **`/sessions/`**, go into **`/sessions/<your-name>/`** (create the folder if needed), then **Paste** from the action bar.
 4. **Open** the pasted page → **Preview** → **Publish**.
 
 The index updates in the background — by the time you reach Ex4, your page should be findable under **`/labs/`** or **`/sessions/`** as appropriate.
@@ -630,8 +629,8 @@ Note: In Exercise 4, you'll learn how query-index.json works and build a dedicat
 ## References
 
 - [Integrations](https://www.aem.live/developer/integrations)
-- [DA.live Sheets](https://docs.da.live/administrators/guides/sheets)
-- [DA.live API](https://docs.da.live/developers/api)
+- [Experience Workspace Sheets](https://docs.da.live/administrators/guides/sheets)
+- [Experience Workspace API](https://docs.da.live/developers/api)
 
 ---
 
