@@ -269,10 +269,14 @@ EDS serves a separate preview and live URL per GitHub branch. The pattern is:
 
    ![Create Folder from the New menu in Experience Workspace](images/da-create-folder-bengaluru.png)
 
-6. Inside that folder, choose **New** → **Document** and name it something like `hello` (a simple “Hello” document to prove you can author).
-7. Add some text to the document — a short heading or paragraph is enough.
-8. **Preview** the page and confirm it opens in the browser at a `.aem.page` URL.
-9. **Publish** the page and confirm it is available on `.aem.live`.
+6. Select your new folder and click **Favorite** in the bottom action bar so it is easy to access throughout the labs.
+
+   ![Favorite your drafts folder from the action bar](images/da-favorite-drafts-folder.png)
+
+7. Inside that folder, choose **New** → **Document** and name it something like `hello` (a simple “Hello” document to prove you can author).
+8. Add some text to the document — a short heading or paragraph is enough.
+9. **Preview** the page and confirm it opens in the browser at a `.aem.page` URL.
+10. **Publish** the page and confirm it is available on `.aem.live`.
 
 **If you cannot access**:
 - Confirm you submitted the [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) with the **same** Adobe ID and GitHub username you are using for the lab
@@ -337,7 +341,7 @@ Your account should be granted a **publisher** role (what the instructor configu
 
 - [ ] [Lab access form](https://main--aem-rockstar-website--adobe.aem.page/en/masterclass/eds-labs-access-request) submitted (Adobe ID + GitHub username); access processed before Experience Workspace verification
 - [ ] **GitHub:** Email invitation to join **`edsmasterclass`** org accepted **before** first `git push` (see Prerequisites)
-- [ ] Experience Workspace access verified (project loads, `/drafts/<yourname>/` folder, `hello` page previewed and published)
+- [ ] Experience Workspace access verified (project loads, `/drafts/<yourname>/` folder is favorited, and `hello` page previewed and published)
 - [ ] AEM Sidekick extension installed (Chrome/Edge)
 - [ ] Sidekick project added — toolbar visible on `localhost:3000`
 - [ ] Branch URL pattern understood — `main--` URLs verified as working
