@@ -18,7 +18,7 @@
 - [Verification Checklist](#verification-checklist)
 - [Troubleshooting Common Issues](#troubleshooting-common-issues)
 - [References](#references)
-- [Next Exercise](#next-exercise)
+- [Lab Complete](#lab-complete)
 
 </details>
 
@@ -59,7 +59,7 @@
 
 - How to push a product catalog into Adobe's Product Bus with a single script
 - How Product Bus auto-generates an index, sitemap, and Google Merchant Center feed from your catalog
-- How product pages combine **structured commerce data** (from Product Bus) with **authored editorial content** (from DA.live) at the same URL path
+- How product pages combine **structured commerce data** (from Product Bus) with **authored editorial content** (from Experience Workspace) at the same URL path
 - How per-namespace prefixes isolate catalogs by student, locale, or brand — the same pattern production sites use for `/products-en/` vs `/products-fr/`
 
 ---
@@ -68,8 +68,8 @@
 
 Traditional commerce setups require separate systems for product data, page rendering, and editorial authoring — and synchronizing them is painful. Product Bus collapses that into a single model:
 
-- **One path** is the product's identity. `/labs/jsmith/products/swag/masterclass-hoodie` is both the API address and the page URL.
-- **Two sources** merge automatically. Product Bus provides structured data; DA.live provides editorial voice. Neither team steps on the other.
+- **One path** is the product's identity. `/labs/<your-branch>/products/swag/masterclass-hoodie` is both the API address and the page URL.
+- **Two sources** merge automatically. Product Bus provides structured data; Experience Workspace provides editorial voice. Neither team steps on the other.
 - **Three output formats** are generated for free. Every catalog root gets an index JSON, a sitemap, and a Merchant Center feed — no extra work.
 
 ---
@@ -106,21 +106,21 @@ node labs/product-bus/generate-products.mjs --dry-run
 You should see a table like this (your branch name in the prefix):
 
 ```
-EDS Masterclass — Product Bus Payloads  [prefix: jsmith]
+EDS Masterclass — Product Bus Payloads  [prefix: <your-branch>]
 
 +------------------------------------------------+---------------------------------------------------+
 | Name                                           | Path                                              |
 +------------------------------------------------+---------------------------------------------------+
-| Masterclass Hoodie                             | /labs/jsmith/products/swag/masterclass-hoodie          |
-| Developer Sticker Pack                         | /labs/jsmith/products/swag/developer-sticker-pack      |
-| Masterclass Desk Kit                           | /labs/jsmith/products/swag/masterclass-desk-kit        |
-| EDS Block Development Field Guide              | /labs/jsmith/products/guides/eds-block-...             |
-| Cloudflare Workers for AEM Developers          | /labs/jsmith/products/guides/cloudflare-...            |
-| Edge Delivery Services: The Complete Reference | /labs/jsmith/products/guides/edge-...                  |
+| Masterclass Hoodie                             | /labs/<your-branch>/products/swag/masterclass-hoodie          |
+| Developer Sticker Pack                         | /labs/<your-branch>/products/swag/developer-sticker-pack      |
+| Masterclass Desk Kit                           | /labs/<your-branch>/products/swag/masterclass-desk-kit        |
+| EDS Block Development Field Guide              | /labs/<your-branch>/products/guides/eds-block-...             |
+| Cloudflare Workers for AEM Developers          | /labs/<your-branch>/products/guides/cloudflare-...            |
+| Edge Delivery Services: The Complete Reference | /labs/<your-branch>/products/guides/edge-...                  |
 +------------------------------------------------+---------------------------------------------------+
 ```
 
-**Key concept**: The URL path *is* the product's identity in Product Bus. The prefix `/labs/jsmith/products/` is your isolated namespace — no other student's products will overlap with yours.
+**Key concept**: The URL path *is* the product's identity in Product Bus. The prefix `/labs/<your-branch>/products/` is your isolated namespace — no other student's products will overlap with yours.
 
 ### 1b. Ingest the products
 
@@ -133,8 +133,8 @@ node labs/product-bus/generate-products.mjs --api <token>
 Expected output:
 
 ```
-Creating index: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/index/labs/jsmith/products/index.json
-  ✓ /labs/jsmith/products/index.json (HTTP 201)
+Creating index: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/index/labs/<your-branch>/products/index.json
+  ✓ /labs/<your-branch>/products/index.json (HTTP 201)
 
 Calling bulk API: POST https://api.adobecommerce.live/edsmasterclass/sites/labs/catalog/*
 Ingesting 6 products (1 batch(es))...
@@ -143,22 +143,22 @@ Ingesting 6 products (1 batch(es))...
 Done. 6 saved, 0 failed.
 
 Product pages (may take 30–60 s for feeds to populate):
-  https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+  https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie
   ...
 ```
 
 ### 1c. Verify one product was stored
 
-Open these URLs in your browser (replace `jsmith` with your branch name):
+Open these URLs in your browser (replace `<your-branch>` with your branch name):
 
 ```
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie
 ```
 
 You should see a web page showing the product information.
 
 ```
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie.json
+https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie.json
 ```
 
 You should see the full product JSON including name, price, images, and attributes.
@@ -186,21 +186,21 @@ This is the entire infrastructure configuration for Product Bus on this site. No
 
 ### 2b. Open the auto-generated feeds
 
-Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `jsmith` with your branch):
+Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `<your-branch>` with your branch):
 
 **Query index** — power product listing grids (one per scope):
 ```
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/index.json
+https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/index.json
 ```
 
 **Product sitemap** — for search engines:
 ```
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/sitemap.xml
+https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/sitemap.xml
 ```
 
 **Google Merchant Center feed** — for shopping ads:
 ```
-https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/merchant-center-feed.xml
+https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/merchant-center-feed.xml
 ```
 
 > **Note**: Feeds may take 30–60 seconds to generate after ingest. If you see a 404, wait a moment and refresh.
@@ -215,20 +215,20 @@ https://main--labs--edsmasterclass.aem.network/labs/jsmith/products/merchant-cen
 
 ### Push your branch first
 
-The branch preview URL (`jsmith--labs--edsmasterclass.aem.page`) only works once your branch exists on the remote. Push it now if you haven't already:
+The branch preview URL (`<your-branch>--labs--edsmasterclass.aem.page`) only works once your branch exists on the remote. Push it now if you haven't already:
 
 ```bash
-git push -u origin jsmith
+git push -u origin <your-branch>
 ```
 
 AEM Code Sync picks up the branch automatically — no extra configuration needed.
 
 ### Part A: Explore a rendered product page (~5 min)
 
-Open a product detail page on your branch (replace `jsmith` with your branch):
+Open a product detail page on your branch (replace `<your-branch>` with your branch):
 
 ```
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie
 ```
 
 You should see a fully rendered product page with:
@@ -239,7 +239,7 @@ You should see a fully rendered product page with:
 Now append `.json` to the URL to see the raw product data:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie.json
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie.json
 ```
 
 **Key concept**: The pipeline worker renders product pages at the edge — combining Product Bus data with any authored content at the same path. Right now there is no authored content, so you're seeing pure Product Bus output.
@@ -254,37 +254,37 @@ The `product-grid` block renders a responsive card grid from any index JSON. Cop
 git checkout answers -- blocks/product-grid
 ```
 
-Create three pages in DA.live (replace `jsmith` with your branch in all paths) at https://da.live/#/edsmasterclass/labs:
+Create three pages in Experience Workspace (replace `<your-branch>` with your branch in all paths) at https://da.live/#/edsmasterclass/labs:
 
-**`/labs/jsmith/products`** — all products:
+**`/labs/<your-branch>/products`** — all products:
 
 h1: All Products
 | product-grid |
 |---|
-| /labs/jsmith/products/index.json |
+| /labs/<your-branch>/products/index.json |
 
-**`/labs/jsmith/products/swag`** — swag only:
+**`/labs/<your-branch>/products/swag`** — swag only:
 
 h1: Swag
 | product-grid |
 |---|
-| /labs/jsmith/products/index.json |
+| /labs/<your-branch>/products/index.json |
 | swag |
 
-**`/labs/jsmith/products/guides`** — guides only:
+**`/labs/<your-branch>/products/guides`** — guides only:
 
 h1: Guides
 | product-grid |
 |---|
-| /labs/jsmith/products/index.json |
+| /labs/<your-branch>/products/index.json |
 | guides |
 
 Preview and publish all three. Open them on your branch:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/swag
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/guides
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products/guides
 ```
 
 **Key concept**: All three pages share one index. The optional second row filters by URL path segment client-side — no separate indexes needed per category.
@@ -293,7 +293,7 @@ https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/guides
 
 ### Part C: Author enrichment on a product page (~3 min)
 
-Open DA.live and navigate to `/labs/jsmith/products/swag/masterclass-hoodie`. This is the same path as the product page — any content you author here **merges automatically** with the Product Bus data when the page is rendered.
+Open Experience Workspace and navigate to `/labs/<your-branch>/products/swag/masterclass-hoodie`. This is the same path as the product page — any content you author here **merges automatically** with the Product Bus data when the page is rendered.
 
 Add a short paragraph of editorial copy — for example:
 
@@ -304,12 +304,12 @@ Add a short paragraph of editorial copy — for example:
 Preview and publish. Reload the product page on your branch:
 
 ```
-https://jsmith--labs--edsmasterclass.aem.network/labs/jsmith/products/swag/masterclass-hoodie
+https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/products/swag/masterclass-hoodie
 ```
 
 Your authored content should appear on the page alongside the structured product data.
 
-**Key concept**: Product Bus handles commerce data; DA.live handles editorial voice. One page, two sources — and the merge happens automatically at the same URL path. Neither the commerce team nor the content team needs to coordinate.
+**Key concept**: Product Bus handles commerce data; Experience Workspace handles editorial voice. One page, two sources — and the merge happens automatically at the same URL path. Neither the commerce team nor the content team needs to coordinate.
 
 ---
 
@@ -342,7 +342,7 @@ The patterns in this lab are exactly what production commerce sites use:
 The product's URL path is its primary key. Changing a product's URL is a deliberate, meaningful operation — not an accidental re-keying of some internal ID.
 
 **Editorial + commerce merge**
-Marketing authors product stories in DA.live without ever touching the commerce system. The commerce team updates pricing without ever touching DA.live. Both updates land on the same product page automatically.
+Marketing authors product stories in Experience Workspace without ever touching the commerce system. The commerce team updates pricing without ever touching Experience Workspace. Both updates land on the same product page automatically.
 
 ---
 
@@ -351,7 +351,7 @@ Marketing authors product stories in DA.live without ever touching the commerce 
 - **Path = identity** — In Product Bus, where a product lives *is* its address. The SKU is just an attribute.
 - **Namespace prefixes scale** — The same pattern that gives 30 students isolation today gives a global brand locale isolation in production.
 - **Indexing is free** — Every catalog root auto-generates index JSON, sitemap, and Merchant Center feed. Zero configuration per namespace.
-- **Two-source pages** — Product Bus data and DA.live authored content merge at the same path. Neither system owns the page exclusively.
+- **Two-source pages** — Product Bus data and Experience Workspace authored content merge at the same path. Neither system owns the page exclusively.
 - **Buy is an API layer** — The commerce funnel (cart, checkout, orders) integrates below the product pages you built. The pages are the top of the funnel.
 
 </details>
@@ -360,17 +360,17 @@ Marketing authors product stories in DA.live without ever touching the commerce 
 
 ## Verification Checklist
 
-- [ ] Dry-run shows correct prefix (`jsmith`) for all 6 products
+- [ ] Dry-run shows correct prefix (`<your-branch>`) for all 6 products
 - [ ] Ingest succeeds: index created, `6 saved, 0 failed`
 - [ ] `GET` one product from the API returns full JSON
-- [ ] `/labs/<branch>/products/index.json` shows all 6 products
+- [ ] `/labs/<your-branch>/products/index.json` shows all 6 products
 - [ ] `sitemap.xml` lists all 6 product URLs
 - [ ] `merchant-center-feed.xml` is present
-- [ ] Product detail page renders at `/labs/<branch>/products/swag/masterclass-hoodie`
+- [ ] Product detail page renders at `/labs/<your-branch>/products/swag/masterclass-hoodie`
 - [ ] Appending `.json` to the product URL returns raw product data
-- [ ] All-products grid at `/labs/<branch>/products` renders all 6 cards
-- [ ] Swag grid at `/labs/<branch>/products/swag` renders 3 cards
-- [ ] Guides grid at `/labs/<branch>/products/guides` renders 3 cards
+- [ ] All-products grid at `/labs/<your-branch>/products` renders all 6 cards
+- [ ] Swag grid at `/labs/<your-branch>/products/swag` renders 3 cards
+- [ ] Guides grid at `/labs/<your-branch>/products/guides` renders 3 cards
 - [ ] Clicking a card navigates to the correct product detail page
 - [ ] Authored enrichment appears on the product detail page alongside structured data
 
@@ -386,11 +386,11 @@ git branch --show-current
 ```
 If it shows `main` or another branch, switch first:
 ```bash
-git checkout jsmith
+git checkout <your-branch>
 ```
 Or override the prefix manually:
 ```bash
-node labs/product-bus/generate-products.mjs --dry-run --prefix jsmith
+node labs/product-bus/generate-products.mjs --dry-run --prefix <your-branch>
 ```
 
 **Ingest returns HTTP 401**
@@ -408,13 +408,13 @@ The indexer runs asynchronously. Wait 30–60 seconds and refresh. If still miss
 **Product page shows 404**
 
 - Confirm the mixer routing is active: `/products-*/**` should be in the site's `config.json`
-- Confirm you're using your branch URL: `https://<branch>--labs--edsmasterclass.aem.page/...`
+- Confirm you're using your branch URL: `https://<your-branch>--labs--edsmasterclass.aem.page/...`
 - Confirm the product was successfully ingested (check the API GET in Step 1c)
 
 **Product page renders but authored enrichment doesn't appear**
 
-- Confirm you **published** the document in DA.live (Preview alone is not enough)
-- Confirm the DA.live path matches the product path exactly — `/labs/jsmith/products/swag/masterclass-hoodie` (no trailing slash, lowercase)
+- Confirm you **published** the document in Experience Workspace (Preview alone is not enough)
+- Confirm the Experience Workspace path matches the product path exactly — `/labs/<your-branch>/products/swag/masterclass-hoodie` (no trailing slash, lowercase)
 - Hard refresh: Cmd+Shift+R / Ctrl+Shift+R
 
 **product-grid block not found after `git checkout answers`**
@@ -437,6 +437,17 @@ Open DevTools → Network and check the request to `index.json`. Common causes:
 
 ---
 
-## Next Exercise
+## Lab Complete
 
-This is the final hands-on lab. The instructor will close with a Q&A on the buy-side API layer and next steps for your own Product Bus implementation.
+You’ve completed the final hands-on lab in the EDS Masterclass sequence.
+
+**What you just proved**:
+- You can ingest scoped product catalogs into Product Bus using a branch-based namespace.
+- You can validate auto-generated feeds (`index.json`, `sitemap.xml`, `merchant-center-feed.xml`).
+- You can deliver product pages that merge **Product Bus structured data** with **Experience Workspace authored content** at the same path.
+- You understand how this pattern scales to locales, brands, and large catalogs.
+
+**Suggested wrap-up**:
+- Re-run `npm run lint` if you changed any code while testing.
+- Capture 2–3 URLs as evidence (one product JSON, one listing page, one enriched product detail page).
+- Share your namespace prefix and findings during Q&A.
