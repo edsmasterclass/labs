@@ -39,6 +39,21 @@ function getRowText(row) {
   return row ? row.textContent.trim() : '';
 }
 
+function getParagraphTextWithBreaks(paragraph) {
+  if (!paragraph) return '';
+  const parts = [];
+  [...paragraph.childNodes].forEach((node) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      parts.push(node.textContent || '');
+    } else if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'BR') {
+      parts.push('\n');
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      parts.push(node.textContent || '');
+    }
+  });
+  return parts.join('').trim();
+}
+
 function extractFromRichDetails(row) {
   if (!row) return {};
 
@@ -49,9 +64,9 @@ function extractFromRichDetails(row) {
   const locationStrong = content.querySelector('p strong, p b');
   const location = (locationStrong?.textContent || paragraphs[0]?.textContent || '').trim();
 
-  const addressParagraph = paragraphs.find((p) => p.innerHTML.includes('<br'))
+  const addressParagraph = paragraphs.find((p) => p.querySelector('br'))
     || paragraphs.find((p) => p !== heading?.closest('p') && p.textContent.trim() !== location);
-  const address = (addressParagraph?.innerHTML || '').trim();
+  const address = getParagraphTextWithBreaks(addressParagraph);
 
   let description = '';
   if (heading) {
@@ -120,14 +135,20 @@ function createFeedbackForm(config) {
   if (location) {
     const locationBadge = document.createElement('div');
     locationBadge.className = 'location-badge';
-    locationBadge.innerHTML = `<span class="location-icon">📍</span><span class="location-text">${location}</span>`;
+    const icon = document.createElement('span');
+    icon.className = 'location-icon';
+    icon.textContent = '📍';
+    const locationText = document.createElement('span');
+    locationText.className = 'location-text';
+    locationText.textContent = location;
+    locationBadge.append(icon, locationText);
     locationInfo.appendChild(locationBadge);
   }
 
   if (address) {
     const addressElement = document.createElement('p');
     addressElement.className = 'event-address';
-    addressElement.innerHTML = address;
+    addressElement.textContent = address;
     locationInfo.appendChild(addressElement);
   }
 
@@ -204,12 +225,14 @@ async function handleSubmit(form, submitUrl) {
 
     if (response.ok) {
       isSuccess = true;
-      form.innerHTML = `
-        <div class="success-message">
-          <h3>Thank You!</h3>
-          <p>Your feedback has been submitted successfully.</p>
-        </div>
-      `;
+      const successMessage = document.createElement('div');
+      successMessage.className = 'success-message';
+      const heading = document.createElement('h3');
+      heading.textContent = 'Thank You!';
+      const body = document.createElement('p');
+      body.textContent = 'Your feedback has been submitted successfully.';
+      successMessage.append(heading, body);
+      form.replaceChildren(successMessage);
     } else {
       throw new Error(`Submission failed with status: ${response.status}`);
     }
@@ -221,9 +244,9 @@ async function handleSubmit(form, submitUrl) {
 
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
-    errorDiv.innerHTML = `
-      <p>Sorry, there was an error processing your feedback. Please try again later.</p>
-    `;
+    const errorText = document.createElement('p');
+    errorText.textContent = 'Sorry, there was an error processing your feedback. Please try again later.';
+    errorDiv.append(errorText);
     form.insertBefore(errorDiv, form.firstChild);
   } finally {
     if (!isSuccess && submitButton && submitButton.parentNode) {
@@ -240,7 +263,10 @@ export default function decorate(block) {
   const config = extractConfig(block);
 
   if (!config.submitUrl) {
-    block.innerHTML = '<p class="error-message">Error: Feedback endpoint URL is required.</p>';
+    const error = document.createElement('p');
+    error.className = 'error-message';
+    error.textContent = 'Error: Feedback endpoint URL is required.';
+    block.replaceChildren(error);
     return;
   }
 

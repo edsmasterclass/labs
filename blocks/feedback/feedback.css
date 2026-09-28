@@ -67,6 +67,7 @@
   color: #555;
   line-height: 1.4;
   text-align: center;
+  white-space: pre-line;
 }
 
 .feedback .form-fields {
