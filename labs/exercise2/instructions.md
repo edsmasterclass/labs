@@ -208,21 +208,20 @@ export default function decorate(block) {
 
 1. In **Experience Workspace**, use the breadcrumb trail at the top of the editor to go to your drafts folder (**`/drafts/<your-name>/`**).
    ![Use the breadcrumb trail at the top to navigate back to your drafts folder](images/breadcrumb-navigation-experience-workspace.png)
-2. In that folder, select **New** → **Page** and name the page **`cards-test`**.
-3. Once the page opens, switch to **Layout** mode, open the **Outline** panel menu, and click **Blocks**.
-   ![Switch to Layout mode, open Outline, and click Blocks](images/layout-outline-blocks-experience-workspace.png)
+2. While in your **`/drafts/<your-name>/`**  folder, select **New** → **Page** and name the page **`cards-test`**.
 
-**Follow this order on `cards-test`** (headings first, then insert blocks from **Outline → Blocks**):
+**Follow this order of editing on `cards-test` page ** (headings first, then insert blocks from **Outline → Blocks**):
 
-4. Switch to **Content** mode before adding headings and text. You can either type **`/`** and choose **H1–H6**, or type text first and change it from the bottom formatting panel (for example, change **Paragraph** to **Heading 1** or **Heading 2**).
+3. You can either type **`/`** and choose **H1–H6**, or type text first and change it from the bottom formatting panel (for example, change **Paragraph** to **Heading 1** or **Heading 2**).
    ![Content mode with heading options in slash menu and bottom formatting panel](images/content-mode-heading-style-panel.png)
-5. Add an **H1**: **Cards Test Page**.
-6. Add an **H2**: **Cards With Images**.
-7. Switch back to **Layout** mode to insert blocks from **Outline** → **Blocks**.
-8. Insert **Cards w/Images**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards w/ Images** to insert it.
-9. Add an **H2**: **Cards with Eyebrow**.
-10. Insert **Cards with Eyebrows**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards with Eyebrows**. Place it under **Cards with Eyebrow**.
-11. In that eyebrow block, look at the **second column** of the sample cards: notice the italic phrases *performance* and *Authoring made easy as 1, 2, 3* (and similar). In the implementation step below, code will turn those into eyebrow labels instead of inline italics.
+4. Add an **H1**: **Cards Test Page**.
+
+5. To find the available Blocks configured, open the **Outline** panel menu, and click **Blocks**.
+   ![Switch to Layout mode, open Outline, and click Blocks](images/layout-outline-blocks-experience-workspace.png)
+6. Insert **Cards w/Images**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards w/ Images** to insert it.
+7. Add an **H2**: **Cards with Eyebrow**.
+8. Insert **Cards with Eyebrows**: open **Outline** → **Blocks**, expand **Cards**, then click the **+** next to **Cards with Eyebrows**. Place it under **Cards with Eyebrow**.
+9. In that eyebrow block, look at the **second column** of the sample cards: notice the italic phrases *performance* and *Authoring made easy as 1, 2, 3* (and similar). In the implementation step below, code will turn those into eyebrow labels instead of inline italics.
 
 **Preview vs refresh in this exercise**
 
