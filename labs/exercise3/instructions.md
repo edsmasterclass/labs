@@ -148,7 +148,7 @@ https://main--labs--edsmasterclass.aem.page/path/to/sheet.json
 
 ---
 
-## Step 1: Copy Speakers Data to Your Workspace
+## Step 1: Copy Speakers Data to Your Drafts Folder
 
 To avoid conflicts with other participants, you'll create your own personal copy of the **speakers** sheet.
 
