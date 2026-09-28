@@ -123,7 +123,7 @@ Notice how the tables you see in Experience Workspace become the styled componen
 
 ![Enter the new page name in Experience Workspace](images/new-page-name-dialog-bengaluru.png)
 
-After the page opens, quickly orient yourself:
+Click on the page to open it and quickly review the options available in the editor:
 - **Left panel**: Assistant/chat panel
 - **Center**: Editor with **Layout**, **Content**, and **Side-by-side** modes
 - **Right panel**: **Outline** view for sections
