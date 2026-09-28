@@ -285,6 +285,25 @@ See how this block looks in Experience Workspace edit mode:
 - POSTs JSON to the Worker URL from row 1
 - Handles loading, success, and error states
 
+**Implementation note (Trusted Types-safe)**:
+
+Avoid `innerHTML` in `feedback.js` for dynamic or user-driven content. Build nodes with DOM APIs instead:
+
+```javascript
+// ❌ Avoid in strict Trusted Types setups:
+// form.innerHTML = `<div class="success-message"><h3>Thank You!</h3></div>`;
+
+// ✅ Preferred:
+const successMessage = document.createElement('div');
+successMessage.className = 'success-message';
+const heading = document.createElement('h3');
+heading.textContent = 'Thank You!';
+const body = document.createElement('p');
+body.textContent = 'Your feedback has been submitted successfully.';
+successMessage.append(heading, body);
+form.replaceChildren(successMessage);
+```
+
 2. **Save**, then click **Preview** to open the page on localhost.
 3. Open **`http://localhost:3000/drafts/<your-name>/feedback`** (dev server running) to exercise the block locally.
 
