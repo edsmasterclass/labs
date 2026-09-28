@@ -210,7 +210,7 @@ Everything is pre-configured. The instructor has already generated the pages on 
 
 **Open the list page** (replace `<your-name>` with your **Git feature branch** name from Prerequisites — usually the same as your `/drafts/<your-name>/` folder):
 ```
-https://<your-name>--labs--edsmasterclass.aem.page/events/list
+https://main--labs--edsmasterclass.aem.page/events/list
 ```
 
 **You should see**:
@@ -223,7 +223,7 @@ https://<your-name>--labs--edsmasterclass.aem.page/events/list
 
 **Open a detail page**:
 ```
-https://<your-name>--labs--edsmasterclass.aem.page/events/sydney
+https://main--labs--edsmasterclass.aem.page/events/sydney
 ```
 
 **You should see**:
@@ -430,7 +430,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
 
 1. **Open the list page** in your browser (same `<your-name>` host as Step 1):
    ```
-   https://<your-name>--labs--edsmasterclass.aem.page/events/list
+   https://main--labs--edsmasterclass.aem.page/events/list
    ```
 
 2. **Open the AEM Sidekick** and click **"Update"** — this tells the JSON2HTML worker to regenerate the page with the latest data and store it on the edge.
@@ -439,7 +439,7 @@ The pages on edge are cached — they won't automatically reflect new data. You 
 
 4. **Generate a new detail page** — navigate to your new city's URL:
    ```
-   https://<your-name>--labs--edsmasterclass.aem.page/events/newyork
+   https://main--labs--edsmasterclass.aem.page/events/newyork
    ```
 
 5. The page will initially show **404** (it's never been generated before). Click **"Update"** in AEM Sidekick to trigger the worker to generate it.
