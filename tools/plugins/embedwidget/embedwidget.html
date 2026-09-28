@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EmbedWidget</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/tools/plugins/embedwidget/embedwidget.css">
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <script src="/tools/plugins/embedwidget/embedwidget.js" type="module"></script>
+  </head>
+  <body>
+    <main class="plugin-shell">
+      <h1>EmbedWidget</h1>
+      <p class="plugin-intro">
+        Paste a supported embed snippet. The plugin converts it into structured block content
+        so no raw custom HTML is inserted into the document.
+      </p>
+
+      <label for="embed-code-input">Embed Code</label>
+      <textarea
+        id="embed-code-input"
+        rows="14"
+        placeholder="Paste full embed HTML here"
+        aria-label="Embed code"
+      ></textarea>
+
+      <div class="plugin-actions">
+        <button id="insert-block-btn" type="button">Insert Widget Block</button>
+      </div>
+
+      <p id="plugin-status" class="plugin-status" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

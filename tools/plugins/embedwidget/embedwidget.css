@@ -1,0 +1,81 @@
+.plugin-shell {
+  box-sizing: border-box;
+  padding: 16px;
+  margin: 0;
+  font-family: adobe-clean, "Segoe UI", sans-serif;
+  color: #2c2c2c;
+}
+
+.plugin-shell h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.plugin-intro {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.plugin-shell label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#embed-code-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+#embed-code-input:focus {
+  outline: 2px solid #1473e6;
+  outline-offset: 1px;
+  border-color: #1473e6;
+}
+
+.plugin-actions {
+  margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#insert-block-btn {
+  border: 0;
+  border-radius: 999px;
+  background: #1473e6;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+
+#insert-block-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.plugin-status {
+  min-height: 20px;
+  margin-top: 10px;
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.plugin-status.error {
+  color: #c9252d;
+}
+
+.plugin-status.success {
+  color: #12805c;
+}
