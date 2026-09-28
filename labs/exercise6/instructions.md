@@ -231,6 +231,7 @@ blocks/
 ```
 
 **NOTE**: You can copy the `feedback` block from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/blocks/feedback) on GitHub.
+When implementing or customizing `feedback.js`, prefer DOM APIs (`createElement`, `textContent`, `append`, `replaceChildren`) and avoid `innerHTML` so the block remains compatible with Trusted Types CSP.
 
 ---
 
@@ -641,6 +642,10 @@ Form → Worker → [Validate + Transform] → [Service 1, Service 2, Service N]
 **"Missing required fields" error**:
 - Problem: Form data not being extracted correctly
 - Fix: Check field names in form HTML match JavaScript (`fullName`, `email`, `feedback`)
+
+**"This document requires 'TrustedHTML' assignment" in console**:
+- Problem: The block uses `innerHTML` in an environment with Trusted Types CSP enabled
+- Fix: Replace `innerHTML` writes with DOM API construction (`createElement`, `textContent`, `append`, `replaceChildren`)
 
 **Submit button stays disabled**:
 - Problem: Error handler not re-enabling button
