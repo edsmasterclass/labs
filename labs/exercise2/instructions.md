@@ -210,7 +210,7 @@ export default function decorate(block) {
    ![Use the breadcrumb trail at the top to navigate back to your drafts folder](images/breadcrumb-navigation-experience-workspace.png)
 2. While in your **`/drafts/<your-name>/`**  folder, select **New** → **Page** and name the page **`cards-test`**.
 
-**Follow this order of editing on `cards-test` page ** (headings first, then insert blocks from **Outline → Blocks**):
+**Follow this order of editing on `cards-test` page** (headings first, then insert blocks from **Outline → Blocks**):
 
 3. You can either type **`/`** and choose **H1–H6**, or type text first and change it from the bottom formatting panel (for example, change **Paragraph** to **Heading 1** or **Heading 2**).
    ![Content mode with heading options in slash menu and bottom formatting panel](images/content-mode-heading-style-panel.png)
