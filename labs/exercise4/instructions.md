@@ -131,6 +131,9 @@ indices:
       description:
         value: attribute(el, "content")
         select: head > meta[name="description"]
+      image:
+        value: attribute(el, "content")
+        select: head > meta[property="og:image"]
     exclude:
       - /drafts/**
 ```
@@ -139,7 +142,7 @@ indices:
 - **Only `/sessions/**` and `/labs/**` are indexed** — other paths (including `/drafts/**`) are excluded
 - **Custom properties** are extracted from `<meta>` tags in the page `<head>` — these are the same metadata fields you set in Exercise 1
 - **`parseTimestamp`** converts the `MM/DD/YYYY` date string authors write into a Unix timestamp for sorting
-- The built-in fields (`path`, `title`, `description`, `image`, `lastModified`) are always included automatically
+- Include `title`, `description`, and `image` in your index output so search cards can render a strong result preview (title text, summary, thumbnail)
 
 **Reference**: [Indexing Reference](https://www.aem.live/docs/indexing-reference)
 
@@ -192,6 +195,7 @@ Take a quick look at the upstream files. The Block Collection version has two va
 - Restyle CSS to match the masterclass dark theme
 - Configure default data source to `/query-index.json`
 - Expand search fields to include canonical metadata: `presenter`, `category`, `tags`, `level`, `time`, and `duration`
+- Ensure index rows include `title`, `description`, and `image` so result cards show more than just links
 
 ---
 
