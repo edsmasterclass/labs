@@ -12,7 +12,10 @@ export default async function decorate(block) {
     return;
   }
 
-  block.innerHTML = '<p class="loading">Loading speakers...</p>';
+  const loading = document.createElement('p');
+  loading.className = 'loading';
+  loading.textContent = 'Loading speakers...';
+  block.replaceChildren(loading);
 
   try {
     const response = await fetch(dataSource);
@@ -21,10 +24,10 @@ export default async function decorate(block) {
     const json = await response.json();
     const speakers = json.data;
 
-    block.innerHTML = '';
-
     if (!speakers || speakers.length === 0) {
-      block.innerHTML = '<p>No speakers found.</p>';
+      const empty = document.createElement('p');
+      empty.textContent = 'No speakers found.';
+      block.replaceChildren(empty);
       return;
     }
 
@@ -35,24 +38,44 @@ export default async function decorate(block) {
       const li = document.createElement('li');
       li.className = 'dynamic-card';
 
-      li.innerHTML = `
-        <div class="dynamic-card-image">
-          <img src="${speaker.Image}" alt="${speaker.Name}" loading="lazy">
-        </div>
-        <div class="dynamic-card-body">
-          <h3>${speaker.Name}</h3>
-          <p class="dynamic-card-title">${speaker.Title}</p>
-          <p class="dynamic-card-company">${speaker.Company}</p>
-          <p class="dynamic-card-bio">${speaker.Bio}</p>
-        </div>
-      `;
+      const imageWrapper = document.createElement('div');
+      imageWrapper.className = 'dynamic-card-image';
+      const img = document.createElement('img');
+      img.src = speaker.Image || '';
+      img.alt = speaker.Name || '';
+      img.loading = 'lazy';
+      imageWrapper.append(img);
+
+      const body = document.createElement('div');
+      body.className = 'dynamic-card-body';
+
+      const name = document.createElement('h3');
+      name.textContent = speaker.Name || '';
+
+      const title = document.createElement('p');
+      title.className = 'dynamic-card-title';
+      title.textContent = speaker.Title || '';
+
+      const company = document.createElement('p');
+      company.className = 'dynamic-card-company';
+      company.textContent = speaker.Company || '';
+
+      const bio = document.createElement('p');
+      bio.className = 'dynamic-card-bio';
+      bio.textContent = speaker.Bio || '';
+
+      body.append(name, title, company, bio);
+      li.append(imageWrapper, body);
 
       ul.append(li);
     });
 
-    block.append(ul);
+    block.replaceChildren(ul);
   } catch (error) {
-    block.innerHTML = `<p class="error">Error loading speakers: ${error.message}</p>`;
+    const errorMessage = document.createElement('p');
+    errorMessage.className = 'error';
+    errorMessage.textContent = `Error loading speakers: ${error.message}`;
+    block.replaceChildren(errorMessage);
     /* eslint-disable-next-line no-console */
     console.error('Dynamic Cards error:', error);
   }
