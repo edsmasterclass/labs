@@ -126,7 +126,10 @@ Notice how the tables you see in Experience Workspace become the styled componen
 Click on the page to open it and quickly review the options available in the editor:
 - **Left panel**: Assistant/chat panel
 - **Center**: Editor with **Layout**, **Content**, and **Side-by-side** modes
-- **Right panel**: **Outline** view for sections
+- **Right panel**: **Outline** view 
+- **Send**: **Preview** and  **Publish** actions
+- **...** : **Prepare** menu that has actions such as **Preflight** and **Unpublish**
+- **feedback** : To Submit your feedback to the Adobe Engineering Team
 
 ![Experience Workspace editor layout with assistant panel and outline](images/new-page-editor-layout-bengaluru.png)
 
