@@ -233,7 +233,6 @@ Copy this code:
  * - Row 1: Data source URL (sheet.json endpoint)
  */
 export default async function decorate(block) {
-  // Extract data source URL from block content
   const dataSource = block.querySelector('a')?.href;
 
   if (!dataSource) {
@@ -241,52 +240,70 @@ export default async function decorate(block) {
     return;
   }
 
-  // Show loading state
-  block.innerHTML = '<p class="loading">Loading speakers...</p>';
+  const loading = document.createElement('p');
+  loading.className = 'loading';
+  loading.textContent = 'Loading speakers...';
+  block.replaceChildren(loading);
 
   try {
-    // Fetch data from sheet JSON endpoint
     const response = await fetch(dataSource);
     if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
     const json = await response.json();
     const speakers = json.data;
 
-    // Clear loading message
-    block.innerHTML = '';
-
     if (!speakers || speakers.length === 0) {
-      block.innerHTML = '<p>No speakers found.</p>';
+      const empty = document.createElement('p');
+      empty.textContent = 'No speakers found.';
+      block.replaceChildren(empty);
       return;
     }
 
-    // Create cards container
     const ul = document.createElement('ul');
     ul.className = 'dynamic-cards-list';
 
-    // Generate card for each speaker
     speakers.forEach((speaker) => {
       const li = document.createElement('li');
       li.className = 'dynamic-card';
 
-      li.innerHTML = `
-        <div class="dynamic-card-image">
-          <img src="${speaker.Image}" alt="${speaker.Name}" loading="lazy">
-        </div>
-        <div class="dynamic-card-body">
-          <h3>${speaker.Name}</h3>
-          <p class="dynamic-card-title">${speaker.Title}</p>
-          <p class="dynamic-card-company">${speaker.Company}</p>
-          <p class="dynamic-card-bio">${speaker.Bio}</p>
-        </div>
-      `;
+      const imageWrapper = document.createElement('div');
+      imageWrapper.className = 'dynamic-card-image';
+      const img = document.createElement('img');
+      img.src = speaker.Image || '';
+      img.alt = speaker.Name || '';
+      img.loading = 'lazy';
+      imageWrapper.append(img);
+
+      const body = document.createElement('div');
+      body.className = 'dynamic-card-body';
+
+      const name = document.createElement('h3');
+      name.textContent = speaker.Name || '';
+
+      const title = document.createElement('p');
+      title.className = 'dynamic-card-title';
+      title.textContent = speaker.Title || '';
+
+      const company = document.createElement('p');
+      company.className = 'dynamic-card-company';
+      company.textContent = speaker.Company || '';
+
+      const bio = document.createElement('p');
+      bio.className = 'dynamic-card-bio';
+      bio.textContent = speaker.Bio || '';
+
+      body.append(name, title, company, bio);
+      li.append(imageWrapper, body);
 
       ul.append(li);
     });
 
-    block.append(ul);
+    block.replaceChildren(ul);
   } catch (error) {
-    block.innerHTML = `<p class="error">Error loading speakers: ${error.message}</p>`;
+    const errorMessage = document.createElement('p');
+    errorMessage.className = 'error';
+    errorMessage.textContent = `Error loading speakers: ${error.message}`;
+    block.replaceChildren(errorMessage);
     console.error('Dynamic Cards error:', error);
   }
 }
@@ -294,12 +311,12 @@ export default async function decorate(block) {
 
 **What this does**:
 1. The block's entrypoint is the default-exported `decorate(block)` function — same as any block; the runtime calls it with the block root element.
-2. Extracts data source URL from block content (line 9)
-3. Shows loading state while fetching (line 16)
-4. Fetches JSON from endpoint (line 20-21)
-5. Handles errors gracefully (line 58-61)
-6. Generates card HTML for each speaker (line 40-54)
-7. Uses `loading="lazy"` for images (line 46)
+2. Extracts data source URL from block content
+3. Shows loading state while fetching
+4. Fetches JSON from endpoint
+5. Handles errors gracefully
+6. Generates DOM nodes for each speaker card (image + body fields)
+7. Uses `loading="lazy"` for images
 
 **Error handling**: If fetch fails, shows user-friendly message and logs to console.
 
@@ -534,7 +551,10 @@ The index updates in the background — by the time you reach Ex4, your page sho
 
 **Loading states**: Always show feedback during async operations
 ```javascript
-block.innerHTML = '<p class="loading">Loading...</p>';
+const loading = document.createElement('p');
+loading.className = 'loading';
+loading.textContent = 'Loading...';
+block.replaceChildren(loading);
 ```
 
 **Error handling**: Network requests can fail
