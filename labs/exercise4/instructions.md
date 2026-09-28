@@ -104,30 +104,24 @@ indices:
       - /sessions/**
       - /labs/**
     properties:
-      speaker-name:
+      presenter:
         value: attribute(el, "content")
-        select: head > meta[name="speaker-name"]
-      instructor:
-        value: attribute(el, "content")
-        select: head > meta[name="instructor"]
+        select: head > meta[name="presenter"]
       category:
         value: attribute(el, "content")
         select: head > meta[name="category"]
       tags:
         value: attribute(el, "content")
-        select: head > meta[name="tags"]
+        select: head > meta[property="article:tag"]
       published-date:
         value: parseTimestamp(attribute(el, "content"), "MM/DD/YYYY")
         select: head > meta[name="published-date"]
-      session-level:
+      level:
         value: attribute(el, "content")
-        select: head > meta[name="session-level"]
-      session-time:
+        select: head > meta[name="level"]
+      time:
         value: attribute(el, "content")
-        select: head > meta[name="session-time"]
-      difficulty-level:
-        value: attribute(el, "content")
-        select: head > meta[name="difficulty-level"]
+        select: head > meta[name="time"]
       duration:
         value: attribute(el, "content")
         select: head > meta[name="duration"]
@@ -137,6 +131,9 @@ indices:
       description:
         value: attribute(el, "content")
         select: head > meta[name="description"]
+      image:
+        value: attribute(el, "content")
+        select: head > meta[property="og:image"]
     exclude:
       - /drafts/**
 ```
@@ -145,7 +142,7 @@ indices:
 - **Only `/sessions/**` and `/labs/**` are indexed** — other paths (including `/drafts/**`) are excluded
 - **Custom properties** are extracted from `<meta>` tags in the page `<head>` — these are the same metadata fields you set in Exercise 1
 - **`parseTimestamp`** converts the `MM/DD/YYYY` date string authors write into a Unix timestamp for sorting
-- The built-in fields (`path`, `title`, `description`, `image`, `lastModified`) are always included automatically
+- Include `title`, `description`, and `image` in your index output so search cards can render a strong result preview (title text, summary, thumbnail)
 
 **Reference**: [Indexing Reference](https://www.aem.live/docs/indexing-reference)
 
@@ -197,7 +194,8 @@ Take a quick look at the upstream files. The Block Collection version has two va
 - Render results via the **Cards block** (block composition) instead of custom card markup
 - Restyle CSS to match the masterclass dark theme
 - Configure default data source to `/query-index.json`
-- Expand search fields to include `instructor`, `speaker-name`, `category`, and `tags`
+- Expand search fields to include canonical metadata: `presenter`, `category`, `tags`, `level`, `time`, and `duration`
+- Ensure index rows include `title`, `description`, and `image` so result cards show more than just links
 
 ---
 
@@ -334,6 +332,10 @@ function buildCardsBlock(results, searchTerms) {
     if (result.image) {
       const imageDiv = document.createElement('div');
       const pic = createOptimizedPicture(result.image, result.title || '', false, [{ width: '750' }]);
+      const img = pic.querySelector('img');
+      if (img) {
+        img.addEventListener('error', () => imageDiv.remove(), { once: true });
+      }
       imageDiv.append(pic);
       row.append(imageDiv);
     }
@@ -404,10 +406,12 @@ function filterData(searchTerms, data) {
     const metaContents = [
       result.title,
       result.description,
-      result.instructor,
-      result['speaker-name'],
+      result.presenter,
       result.category,
       result.tags,
+      result.level,
+      result.time,
+      result.duration,
       pathSuffix,
     ].filter(Boolean).join(' ').toLowerCase();
     searchTerms.forEach((term) => {
@@ -514,7 +518,7 @@ export default async function decorate(block) {
 
 - **`ensureCardsCSS()`** — loads `cards.css` on demand the first time results render. The Cards block stylesheet may not be present if there's no Cards block on the page, so we load it ourselves
 - **`buildCardsBlock(results, searchTerms)`** — block composition: builds the pre-decoration DOM that `cards.decorate()` expects, with `<mark>` highlighting applied to titles and descriptions *before* Cards transforms the DOM (marks survive the transformation)
-- **`filterData(searchTerms, data)`** — two-pass ranking: title/header matches rank first, then `title + description + instructor + speaker-name + category + tags + path` matches. Custom fields from the index config are all searchable
+- **`filterData(searchTerms, data)`** — two-pass ranking: title/header matches rank first, then `title + description + presenter + category + tags + level + time + duration + path` matches. Custom fields from the index config are all searchable
 - **`handleSearch()`** — fires on every `input` event (live search, no submit button). Updates `?q=` URL param so searches are bookmarkable. Skips fetch for queries under 3 characters
 - **`decorate(block)`** — reads optional data source URL from the block's first link, defaults to `/query-index.json`. Restores search from `?q=` param on page load
 
@@ -650,8 +654,8 @@ Open: `http://localhost:3000/drafts/<your-name>/search-test`
 | ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
 | `technical`                               | All session pages that contain `technical` (matches `category` field)                            |
 | `lab`                                     | All lab pages + your `/labs/<your-name>/` page (matches title and path)                          |
-| `stefan`                                  | 2 sessions by Stefan Seifert (matches `speaker-name` field)                                      |
-| Your first name (e.g. `sagar`)            | Your `/labs/<your-name>/` page (matches `instructor` field — requires your page to be published) |
+| `stefan`                                  | 2 sessions by Stefan Seifert (matches `presenter` field)                                         |
+| Your first name (e.g. `sagar`)            | Your `/labs/<your-name>/` page (matches `presenter` field — requires your page to be published) |
 | `development`                             | Lab pages in the development category                                                            |
 | Your session or lab title (or part of it) | Your `/labs/<your-name>/` page                                                                   |
 | `xyz123`                                  | "No results found." message                                                                      |
