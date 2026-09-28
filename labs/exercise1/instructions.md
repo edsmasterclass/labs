@@ -116,7 +116,7 @@ Notice how the tables you see in Experience Workspace become the styled componen
 
 1. Go to [da.live/#/edsmasterclass/labs](https://da.live/#/edsmasterclass/labs)
 2. Navigate into `/drafts/<your-name>/`
-3. Click **New** → **Document**
+3. Click **New** → **Page**
 4. Name it `my-session` or `my-lab`
 
 ![Create a new page from your personal drafts folder in Experience Workspace](images/browse-drafts-folder-bengaluru.png)
