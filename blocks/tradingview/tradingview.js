@@ -1,6 +1,7 @@
 import { readBlockConfig } from '../../scripts/aem.js';
 
-const SCRIPT_PREFIX = 'https://s3.tradingview.com/external-embedding/';
+const LEGACY_SCRIPT_PREFIX = 'https://s3.tradingview.com/external-embedding/';
+const MODULE_WIDGETS_HOST = 'widgets.tradingview-widget.com';
 
 function parseConfig(block) {
   const code = block.querySelector('pre > code');
@@ -13,7 +14,11 @@ function parseConfig(block) {
   }
 }
 
-function buildWidget({ script, config }) {
+function isAbsoluteURL(value) {
+  return /^https?:\/\//i.test(value);
+}
+
+function buildLegacyWidget({ script, config }) {
   const container = document.createElement('div');
   container.className = 'tradingview-widget-container';
 
@@ -35,10 +40,37 @@ function buildWidget({ script, config }) {
   const scriptEl = document.createElement('script');
   scriptEl.type = 'text/javascript';
   scriptEl.async = true;
-  scriptEl.src = `${SCRIPT_PREFIX}${script}`;
+  scriptEl.src = `${LEGACY_SCRIPT_PREFIX}${script}`;
   scriptEl.textContent = JSON.stringify(config);
 
   container.append(widget, copyright, scriptEl);
+  return container;
+}
+
+function buildModuleWidget({ script, config }) {
+  const container = document.createElement('div');
+  container.className = 'tradingview-widget-container';
+
+  const tagName = typeof config.tagName === 'string' ? config.tagName : '';
+  if (!tagName.startsWith('tv-')) {
+    return null;
+  }
+
+  const widgetElement = document.createElement(tagName);
+  const attributes = config.attributes && typeof config.attributes === 'object'
+    ? config.attributes
+    : {};
+  Object.entries(attributes).forEach(([name, value]) => {
+    if (value !== null && value !== undefined) {
+      widgetElement.setAttribute(name, String(value));
+    }
+  });
+
+  const scriptEl = document.createElement('script');
+  scriptEl.type = 'module';
+  scriptEl.src = script;
+
+  container.append(widgetElement, scriptEl);
   return container;
 }
 
@@ -49,7 +81,26 @@ export default function decorate(block) {
     return;
   }
 
-  const widget = buildWidget({ script: cfg.script, config: parseConfig(block) });
+  const config = parseConfig(block);
+  let widget;
+  if (isAbsoluteURL(cfg.script)) {
+    try {
+      const scriptURL = new URL(cfg.script);
+      if (scriptURL.host === MODULE_WIDGETS_HOST) {
+        widget = buildModuleWidget({ script: cfg.script, config });
+      }
+    } catch {
+      widget = null;
+    }
+  } else {
+    widget = buildLegacyWidget({ script: cfg.script, config });
+  }
+
+  if (!widget) {
+    block.textContent = 'Unsupported TradingView configuration.';
+    return;
+  }
+
   const height = cfg.height || '500px';
 
   block.textContent = '';
