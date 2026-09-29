@@ -57,6 +57,12 @@ function createInput(type, name, id, placeholder = '', required = false) {
   return input;
 }
 
+function createErrorParagraph(message) {
+  const paragraph = document.createElement('p');
+  paragraph.textContent = message;
+  return paragraph;
+}
+
 /**
  * Generates the form payload for submission
  * @param {HTMLFormElement} form - The form element
@@ -119,12 +125,16 @@ async function handleSubmit(form, submitUrl, location, address) {
     if (response.ok) {
       isSuccess = true;
       // Show success message
-      form.innerHTML = `
-        <div class="success-message">
-          <h3>Registration Successful!</h3>
-          <p>Thank you for registering. We've received your information and will be in touch soon with further details.</p>
-        </div>
-      `;
+      const successContainer = document.createElement('div');
+      successContainer.className = 'success-message';
+
+      const successHeading = document.createElement('h3');
+      successHeading.textContent = 'Registration Successful!';
+      const successCopy = document.createElement('p');
+      successCopy.textContent = 'Thank you for registering. We\'ve received your information and will be in touch soon with further details.';
+
+      successContainer.append(successHeading, successCopy);
+      form.replaceChildren(successContainer);
     } else {
       throw new Error(`Registration failed with status: ${response.status}`);
     }
@@ -137,9 +147,7 @@ async function handleSubmit(form, submitUrl, location, address) {
 
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
-    errorDiv.innerHTML = `
-      <p>Sorry, there was an error processing your registration. Please try again later.</p>
-    `;
+    errorDiv.append(createErrorParagraph('Sorry, there was an error processing your registration. Please try again later.'));
     form.insertBefore(errorDiv, form.firstChild);
   } finally {
     // Only restore button state if submission failed
@@ -200,7 +208,13 @@ function createRegistrationForm(config) {
   // Location badge
   const locationBadge = document.createElement('div');
   locationBadge.className = 'location-badge';
-  locationBadge.innerHTML = `<span class="location-icon">📍</span><span class="location-text">${location}</span>`;
+  const locationIcon = document.createElement('span');
+  locationIcon.className = 'location-icon';
+  locationIcon.textContent = '📍';
+  const locationText = document.createElement('span');
+  locationText.className = 'location-text';
+  locationText.textContent = location;
+  locationBadge.append(locationIcon, locationText);
   locationInfo.appendChild(locationBadge);
 
   // Event address
@@ -324,12 +338,18 @@ export default async function decorate(block) {
 
   // Validate required configuration
   if (!config.submitUrl) {
-    block.innerHTML = '<p class="error-message">Error: Webhook URL is required. Please configure the block with a valid n8n webhook URL.</p>';
+    const error = document.createElement('p');
+    error.className = 'error-message';
+    error.textContent = 'Error: Webhook URL is required. Please configure the block with a valid n8n webhook URL.';
+    block.replaceChildren(error);
     return;
   }
 
   if (!config.location) {
-    block.innerHTML = '<p class="error-message">Error: Location is required. Please configure the block with a location name.</p>';
+    const error = document.createElement('p');
+    error.className = 'error-message';
+    error.textContent = 'Error: Location is required. Please configure the block with a location name.';
+    block.replaceChildren(error);
     return;
   }
 
