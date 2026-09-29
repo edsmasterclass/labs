@@ -155,9 +155,14 @@ export default async function decorate(block) {
   // hamburger for mobile
   const hamburger = document.createElement('div');
   hamburger.classList.add('nav-hamburger');
-  hamburger.innerHTML = `<button type="button" aria-controls="nav" aria-label="Open navigation">
-      <span class="nav-hamburger-icon"></span>
-    </button>`;
+  const hamburgerButton = document.createElement('button');
+  hamburgerButton.type = 'button';
+  hamburgerButton.setAttribute('aria-controls', 'nav');
+  hamburgerButton.setAttribute('aria-label', 'Open navigation');
+  const hamburgerIcon = document.createElement('span');
+  hamburgerIcon.className = 'nav-hamburger-icon';
+  hamburgerButton.append(hamburgerIcon);
+  hamburger.append(hamburgerButton);
   hamburger.addEventListener('click', () => toggleMenu(nav, navSections));
   nav.prepend(hamburger);
   nav.setAttribute('aria-expanded', 'false');
