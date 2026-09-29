@@ -20,7 +20,8 @@ tools/plugins/embedwidget/
 
 ## Supported input
 
-- TradingView embed snippet containing a script from `https://s3.tradingview.com/.../embed-widget-*.js`
+- TradingView legacy embed snippet containing a script from `https://s3.tradingview.com/.../embed-widget-*.js` with inline JSON config
+- TradingView module/custom-element snippet containing a script from `https://widgets.tradingview-widget.com/.../tv-*.js` and matching `<tv-*>` element
 
 ## TradingView widget references
 

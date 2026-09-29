@@ -1,8 +1,10 @@
 // eslint-disable-next-line import/no-unresolved
 import DA_SDK from 'https://da.live/nx/utils/sdk.js';
 
-const TRADINGVIEW_HOST = 's3.tradingview.com';
-const SCRIPT_PREFIX = 'embed-widget-';
+const LEGACY_TRADINGVIEW_HOST = 's3.tradingview.com';
+const LEGACY_SCRIPT_PREFIX = 'embed-widget-';
+const MODULE_TRADINGVIEW_HOST = 'widgets.tradingview-widget.com';
+const MODULE_SCRIPT_PREFIX = 'tv-';
 const DEFAULT_HEIGHT = '500px';
 
 function setStatus(statusEl, message, type = '') {
@@ -26,23 +28,10 @@ function normalizeHeight(config) {
   return DEFAULT_HEIGHT;
 }
 
-function parseTradingViewEmbedCode(rawEmbedCode) {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(rawEmbedCode, 'text/html');
-  const scripts = [...doc.querySelectorAll('script[src]')];
-  const tradingViewScript = scripts.find(({ src }) => src.includes(TRADINGVIEW_HOST));
-
-  if (!tradingViewScript) {
-    throw new Error('No supported widget script found. Paste the full embed snippet.');
-  }
-
+function parseLegacyEmbed(tradingViewScript) {
   const scriptURL = new URL(tradingViewScript.src);
-  if (scriptURL.host !== TRADINGVIEW_HOST) {
-    throw new Error('Unsupported script source in embed code.');
-  }
-
   const scriptFilename = scriptURL.pathname.split('/').pop();
-  if (!scriptFilename || !scriptFilename.startsWith(SCRIPT_PREFIX)) {
+  if (!scriptFilename || !scriptFilename.startsWith(LEGACY_SCRIPT_PREFIX)) {
     throw new Error('Unsupported widget type in script URL.');
   }
 
@@ -67,6 +56,63 @@ function parseTradingViewEmbedCode(rawEmbedCode) {
     height: normalizeHeight(config),
     config,
   };
+}
+
+function parseModuleEmbed(doc, tradingViewScript) {
+  const scriptURL = new URL(tradingViewScript.src);
+  const scriptFilename = scriptURL.pathname.split('/').pop();
+  if (!scriptFilename || !scriptFilename.startsWith(MODULE_SCRIPT_PREFIX)) {
+    throw new Error('Unsupported widget type in script URL.');
+  }
+
+  const tagName = scriptFilename.replace(/\.js$/i, '');
+  const widgetElement = doc.querySelector(tagName);
+  if (!widgetElement) {
+    throw new Error(`Missing widget element <${tagName}> in embed code.`);
+  }
+
+  const attributes = widgetElement.getAttributeNames().reduce((acc, name) => {
+    acc[name] = widgetElement.getAttribute(name);
+    return acc;
+  }, {});
+
+  return {
+    script: scriptURL.toString(),
+    height: normalizeHeight({ height: attributes.height }),
+    config: {
+      tagName,
+      attributes,
+    },
+  };
+}
+
+function parseTradingViewEmbedCode(rawEmbedCode) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(rawEmbedCode, 'text/html');
+  const scripts = [...doc.querySelectorAll('script[src]')];
+  const tradingViewScript = scripts.find(({ src }) => {
+    try {
+      const url = new URL(src);
+      return url.host === LEGACY_TRADINGVIEW_HOST || url.host === MODULE_TRADINGVIEW_HOST;
+    } catch {
+      return false;
+    }
+  });
+
+  if (!tradingViewScript) {
+    throw new Error('No supported widget script found. Paste the full embed snippet.');
+  }
+
+  const scriptURL = new URL(tradingViewScript.src);
+  if (scriptURL.host === LEGACY_TRADINGVIEW_HOST) {
+    return parseLegacyEmbed(tradingViewScript);
+  }
+
+  if (scriptURL.host === MODULE_TRADINGVIEW_HOST) {
+    return parseModuleEmbed(doc, tradingViewScript);
+  }
+
+  throw new Error('Unsupported script source in embed code.');
 }
 
 function toTradingViewBlockHTML({ script, height, config }) {
