@@ -15,6 +15,7 @@ export default function decorate(block) {
     });
 
     // Detect italic text in body and extract as eyebrow label
+    // Detect italic text in body and extract as eyebrow label
     const body = li.querySelector('.cards-card-body');
     const em = body?.querySelector('em');
     if (em) {
