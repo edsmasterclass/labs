@@ -58,6 +58,80 @@ function buildHeroBlock(main) {
   }
 }
 
+function toDataAttributeName(name) {
+  return `data-${name.replace(/[^a-zA-Z0-9-]/g, '-').toLowerCase()}`;
+}
+
+async function hydrateWidget(container, widgetUrl) {
+  try {
+    const widgetName = widgetUrl.pathname.split('/').pop().replace('.html', '');
+    const widgetRoot = document.createElement('div');
+    widgetRoot.className = widgetName;
+    [...widgetUrl.searchParams.entries()].forEach(([key, value]) => {
+      widgetRoot.setAttribute(toDataAttributeName(key), value);
+    });
+
+    const widgetBasePath = widgetUrl.pathname.replace(/\.html$/, '');
+    const htmlUrl = new URL(widgetUrl.pathname, window.location.origin);
+    const resp = await fetch(htmlUrl.toString());
+    if (!resp.ok) throw new Error(`Failed to load widget markup: ${resp.status}`);
+
+    const html = await resp.text();
+    const parsed = new DOMParser().parseFromString(html, 'text/html');
+    widgetRoot.append(...parsed.body.childNodes);
+
+    await loadCSS(`${widgetBasePath}.css`);
+    const module = await import(`${widgetBasePath}.js`);
+    if (typeof module.default === 'function') {
+      await module.default(widgetRoot);
+    }
+
+    container.replaceChildren(widgetRoot);
+  } catch (error) {
+    container.textContent = 'Unable to load widget.';
+    // eslint-disable-next-line no-console
+    console.error('Widget loading failed', error);
+  }
+}
+
+/**
+ * Turns `/widgets/...` links into widget containers.
+ * @param {Element} main The container element
+ */
+function buildWidgetAutoBlocks(main) {
+  const widgetLinks = [...main.querySelectorAll('a[href*="/widgets/"]')];
+  widgetLinks.forEach((link) => {
+    if (link.closest('.widget-host')) return;
+
+    let widgetUrl;
+    try {
+      widgetUrl = new URL(link.href);
+    } catch {
+      return;
+    }
+
+    if (!widgetUrl.pathname.endsWith('.html')) return;
+
+    const widgetContainer = document.createElement('aside');
+    widgetContainer.className = 'widget-host';
+    widgetContainer.textContent = 'Loading widget...';
+
+    const paragraph = link.closest('p');
+    if (
+      paragraph
+      && paragraph.querySelectorAll('a').length === 1
+      && paragraph.querySelector('a') === link
+      && paragraph.textContent.trim() === link.textContent.trim()
+    ) {
+      paragraph.replaceWith(widgetContainer);
+    } else {
+      link.replaceWith(widgetContainer);
+    }
+
+    hydrateWidget(widgetContainer, widgetUrl);
+  });
+}
+
 /**
  * load fonts.css and set a session storage flag
  */
@@ -95,6 +169,7 @@ function buildAutoBlocks(main) {
     }
 
     buildHeroBlock(main);
+    buildWidgetAutoBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

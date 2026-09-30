@@ -1,0 +1,20 @@
+<form class="roi-calculator-form" novalidate>
+  <div class="roi-calculator-grid">
+    <label>
+      <span>Initial Investment</span>
+      <input type="number" name="investment" min="0" step="0.01" required />
+    </label>
+    <label>
+      <span>Final Value</span>
+      <input type="number" name="finalValue" min="0" step="0.01" required />
+    </label>
+    <label>
+      <span>Period (Years)</span>
+      <input type="number" name="years" min="0" step="0.1" />
+    </label>
+  </div>
+  <button type="submit">Calculate ROI</button>
+</form>
+<div class="roi-calculator-results" aria-live="polite">
+  <p class="roi-calculator-placeholder">Enter values to calculate ROI.</p>
+</div>
