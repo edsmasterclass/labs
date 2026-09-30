@@ -25,10 +25,9 @@ export default async function decorate(block) {
     else tbody.append(row);
     [...child.children].forEach((col) => {
       const cell = buildCell(header ? i : i + 1);
-      cell.innerHTML = col.innerHTML;
+      cell.append(...[...col.childNodes].map((node) => node.cloneNode(true)));
       row.append(cell);
     });
   });
-  block.innerHTML = '';
-  block.append(table);
+  block.replaceChildren(table);
 }

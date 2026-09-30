@@ -1,292 +1,202 @@
-# NYC Masterclass 2026 - Lab Guide
-
-**Duration**: 3 hours 15 minutes (9:15 AM – 12:30 PM, including 15-minute break)
+# EDS Masterclass Labs: Lab Guide
 
 **Theme**: Build pages and features for a Masterclass event series that can scale to future meetup sites.
 
----
+**Sample content**: Sessions, speakers, agendas, and multi-city events used in these exercises are **fictitious**. They exist only to give you realistic pages and data to build against, not real public schedules or commitments.
 
-## Agenda
-
-| Time       | Activity |
-|-----------|----------|
-| 9:15 AM   | Introduction – EDS overview, architecture, lab objectives |
-| 9:30 AM   | Exercise 1 – Authoring Your First Page |
-| 9:50 AM   | Exercise 2 – Block Development (variations) |
-| 10:10 AM  | Exercise 3 – Dynamic Cards with Data Sources |
-| 10:35 AM  | Exercise 4 – Block Development - Search Block using Query Index |
-| 10:55 AM  | Exercise 5 – JSON2HTML Dynamic Pages |
-| **11:20–11:35 AM** | **Break (15 min)** |
-| 11:35 AM  | Exercise 6 – Form Submissions to Slack |
-| 11:55 AM  | Exercise 7 – DA Plugin Development |
-| 12:25 PM  | Exercise 8 – Repoless Multi-Site Setup + Go-Live |
-| 12:30 PM  | End |
-
-*Sessions start at 9:15 AM; 15-minute break 11:20–11:35 AM; lab ends at 12:30 PM.*
-
----
-
-## Lab Narrative
-
-Welcome to the NYC Masterclass 2026 hands-on lab. Through practical exercises, you'll learn how to build fast, maintainable websites with Adobe Edge Delivery Services (EDS) and DA.live.
-
-**The journey**:
-1. Start as an author creating content
-2. Become a developer building blocks
-3. Integrate dynamic data from external sources
-4. Scale to enterprise multi-site architecture
-
-**What makes EDS different**:
-- Document-based authoring (Word/Google Docs)
-- No build steps, no frameworks
-- 100 Lighthouse scores by default
-- Microservices architecture
-- API-first approach
-
-By the end of this lab, you'll understand how to build production-ready websites that are fast, maintainable, and author-friendly.
+> **Tip:** On GitHub (and most Markdown viewers), links usually open in the **same tab**. **⌘-click** (Mac) or **Ctrl-click** (Windows/Linux) a link to open it in a **new tab** so you can keep this page open.
 
 ---
 
 ## Before You Begin
 
-**Complete setup**: [SETUP.md](SETUP.md) - Git, development environment, access verification
+**Complete setup**: [SETUP.md](SETUP.md) for Git, development environment, and access verification.
+
+**Solutions**: Complete solutions for code-oriented exercises are on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). Those exercises link to it from their **Solution** section; Exercise 1 is authoring-only in Experience Workspace (no solution block there).
 
 **Your environment**:
-- Repository: https://github.com/cloudadoption/nycmasterclass
-- Branch: `jsmith` (your first initial + last name)
-- Local: http://localhost:3000
-- Preview: https://jsmith--nycmasterclass--cloudadoption.aem.page/
-- Live: https://jsmith--nycmasterclass--cloudadoption.aem.live/
+- Repository: https://github.com/edsmasterclass/labs
+- Branch: `jsmith` (your first initial + last name). URLs for **your** code on Preview / Live look like `https://<branch>--labs--edsmasterclass.aem.page/` and `https://<branch>--labs--edsmasterclass.aem.live/`. They work only **after** that branch is pushed to GitHub ([SETUP Step 8](SETUP.md#step-8-understand-your-branch-urls), [Exercise 2](exercise2/instructions.md)). Until then, use `localhost:3000` and `main--` preview in the exercises.
+- Local: verify [http://localhost:3000](http://localhost:3000). If not, follow [SETUP Step 6](SETUP.md#step-6-start-development-server). Day 2 exercises use `aem up`; the Day 1 AI lab uses `aem up --html-folder drafts`.
 
 ---
 
-## Session 1: Core Concepts (2 hours 5 minutes)
+**Introduction**: EDS overview, architecture, lab objectives
 
-**Introduction** (15 mins): EDS overview, architecture, lab objectives
-
-**Exercise 1** (20 mins): [Authoring Your First Page](exercise1/instructions.md)
+**Exercise 1**: [Authoring Your First Page](exercise1/instructions.md)
 
 **What you'll learn**:
-- Document semantics and block structure
-- DA.live authoring workflow
-- Preview and publish pipeline
-- Inspecting content in multiple formats (.md, .plain.html, View document source)
+- How to **manage content in Experience Workspace** (authoring model, tables → blocks)
+- The **Preview** vs **Publish** workflow and what each environment represents
+- How to **read document transformations** across source, `.md`, and `.plain.html`
 
 **What you'll build**:
-- Session or Lab page with Hero block and metadata
-- Understanding how sections and blocks are structured
-- Personal workspace setup (jsmith naming convention)
+- Your **personal workspace** under `/drafts/<your-name>/`
+- Your **first authored page** from a Session or Lab template
+- A full **Preview → Publish** pass so you see content on `.aem.page` and `.aem.live`
 
-**Key takeaway**: Understanding document semantics is fundamental. Inspect content in different formats to see how EDS transforms authored content into rendered HTML.
+**Key takeaway**: Authoring in Experience Workspace and delivery through EDS are connected by a clear pipeline. Follow the same content through each stage and the mental model clicks.
 
 ---
 
-**Exercise 2** (20 mins): [Block Development - Simple Variations](exercise2/instructions.md)
+**Exercise 2**: [Block Development - Enhancements & Variations](exercise2/instructions.md)
 
 **What you'll learn**:
-- Block decoration lifecycle
-- Implementing block variations (eyebrow, stacked)
-- Mobile-first responsive CSS
-- CSS scoping for blocks
+- How **developer code** turns authored blocks into rendered experiences (**decoration**)
+- Two ways to extend a block: **enhancements** (content patterns) vs **variations** (layout / author-chosen variants)
+- Why **block-scoped, responsive CSS** matters for maintainability
 
 **What you'll build**:
-- Eyebrow variation for Cards block (adds label above content)
-- Stacked variation for Cards block (centered single column)
+- **Draft test pages** that exercise the Cards block
+- **Code changes** on your branch that add real behavior, not just static markup
 
-**Key takeaway**: One block codebase can support multiple presentations through variations. Authors choose the variation they need.
+**Key takeaway**: One block can stay one “contract” for authors while developers layer behavior underneath.
 
 ---
 
-**Exercise 3** (25 mins): [Dynamic Cards with Data Sources](exercise3/instructions.md)
+**Exercise 3**: [Dynamic Cards with Data Sources](exercise3/instructions.md)
 
 **What you'll learn**:
-- How Sheets convert to JSON endpoints
-- Fetching data from external sources
-- Async/await patterns and error handling
-- Safe personal data approach to avoid conflicts
+- When **data** should drive the page instead of curated rows
+- How **data** (e.g. Sheets → JSON) connects to the front end
+- **Loading and failure** as first-class UX, not only the happy path
 
 **What you'll build**:
-- Dynamic Cards block that fetches speaker data from your personal workspace
-- Copy speakers.json to /drafts/jsmith/ and add your own data
-- Loading and error states
-- Populate the /speakers page
+- A **dynamic-cards** block wired to data you own in drafts
+- A small **proof** that changing data changes the page without re-authoring every card
 
-**Key takeaway**: Dynamic blocks fetch data instead of decorating authored content. Working with personal data in drafts prevents conflicts with other participants.
+**Key takeaway**: Separate “what the data says” from “how the block renders it” and you can scale lists, catalogs, and directories.
 
 ---
 
-**Exercise 4** (20 mins): [Block Development - Search Block using Query Index](exercise4/instructions.md)
+**Exercise 4**: [Extend Search Block from Block Collection](exercise4/instructions.md)
 
 **What you'll learn**:
-- How query-index.json works as a search data source
-- Block composition — reusing the Cards block inside Search
-- Building a live search UI with fetch + filter + render
-- Using `loadCSS` for runtime stylesheet loading
-- DA.live publish workflow for making pages discoverable
+- How **published site content** becomes a **search index**, and what never gets indexed
+- How to **start from Block Collection** instead of inventing search from scratch
+- How **composition** lets one block reuse another’s rendering
 
 **What you'll build**:
-- Search block that fetches and filters query-index.json
-- Results rendered using the Cards block (block composition pattern)
-- Publish your own page to `/labs/jsmith/` and find it via search
+- A **search** experience in your project
+- A **discoverable** page in the indexed area of the site so search can actually find *your* work
 
-**Key takeaway**: Block composition lets blocks reuse each other's rendering logic. Query index enables client-side search with zero backend infrastructure.
+**Key takeaway**: Search is “read the index, filter in the browser,” plus thoughtful reuse of existing blocks.
 
 ---
 
-**Exercise 5** (25 mins): [JSON2HTML - Dynamic Pages](exercise5/instructions.md)
+**Exercise 5**: [JSON2HTML - Generate Pages from Data](exercise5/instructions.md)
 
 **What you'll learn**:
-- JSON2HTML worker service for dynamic page generation
-- Creating Mustache templates for repeatable content
-- Configuring JSON2HTML via Admin Edit tool
-- Testing templates with JSON2HTML Simulator
+- The idea of **many URLs from one dataset** (list + detail) without authoring each page by hand
+- How **templates + a worker + edge cache** fit together as a system
+- Why **Sidekick Update** matters when data, not code, changed
 
 **What you'll build**:
-- Multi-city event pages from future-events.json Sheet
-- Mustache template in DA.live
-- JSON2HTML worker configuration
-- Dynamic pages for Sydney, London, Bangalore, Berlin, Singapore, Dubai
+- **Confidence** in the pipeline by changing data and seeing new pages appear
+- The **event** block on your branch so generated HTML still feels like a polished site
 
-**Key takeaway**: JSON2HTML worker transforms JSON data into HTML pages via templates. One Sheet + one template = unlimited event pages.
-
-**Break** (15 mins) — 11:20–11:35 AM
+**Key takeaway**: Treat rows in a sheet like records in a database and let the platform generate pages at scale.
 
 ---
 
-## Session 2: Advanced Topics (1 hour 30 minutes)
-
-**Exercise 6** (20 mins): [Form Submissions to Slack](exercise6/instructions.md)
+**Exercise 6**: [Third-Party Integrations with Edge Workers](exercise6/instructions.md)
 
 **What you'll learn**:
-- Building forms in EDS blocks
-- Handling form submissions with JavaScript
-- Worker middleware for external integrations
-- Providing user feedback during async operations
+- Why the **browser is the wrong place for secrets** when calling external APIs
+- How an **Edge Worker** sits between your site and systems like Slack (or any HTTP API)
+- How to keep authors and visitors **informed** while async work runs
 
 **What you'll build**:
-- Feedback form block with client-side validation
-- Integration with Cloudflare Worker
-- Slack webhook connection to post submissions
+- A **feedback block** that collects input and POSTs to a worker
+- An **end-to-end path** you can trace from the page to a third-party system
 
-**Key takeaway**: Workers provide secure middleware for forms. Keep API keys server-side, validate data, integrate with external services.
+**Key takeaway**: Integrations are a trust boundary. Blocks collect; workers protect credentials and connect to external systems.
 
 ---
 
-**Exercise 7** (30 mins): [DA Plugin Development](exercise7/instructions.md)
+**Exercise 7**: [Repoless Multi-Site & Multi-Brand](exercise7/instructions.md)  
+*Site Admin “clone site” requires Org Admin. If it is disabled for you, Step 1 explains how to request a clone and permissions.*
 
 **What you'll learn**:
-- How DA.live plugins extend authoring capabilities
-- Plugin architecture and API
-- Installing and testing plugins
-- Interacting with document content programmatically
+- **Repoless** as “many sites, one codebase” via configuration, not copy-paste repos
+- How **content** and **code** can live in different places yet assemble into one experience
+- **Multi-brand** as theming and metadata, not necessarily new repositories
 
 **What you'll build**:
-- Metadata Generator plugin
-- Custom toolbar button
-- Auto-generation of description and tags from content
+- A **second site** in Experience Workspace that reuses this project’s code
+- **Evidence** (e.g. in DevTools) that shared scripts and styles really come from the shared repo
 
-**Key takeaway**: Plugins extend DA.live with custom functionality. Automate repetitive tasks, enforce standards, integrate with external systems.
+**Key takeaway**: Scale out sites and brands by separating *where content lives* from *where code lives*.
 
 ---
 
-**Exercise 8** (30 mins): [Repoless Multi-Site Setup](exercise8/instructions.md)
+**Exercise 8**: [Experience Workspace Plugin Development](exercise8/instructions.md)
 
 **What you'll learn**:
-- Repoless architecture in EDS
-- Sharing code across multiple sites
-- Using Site Admin tool to configure code sources
-- Verifying repoless setup with DevTools
+- How **plugins extend authoring** without polluting documents with raw embeds
+- The split between **author experience** (paste, dialog) and **delivery** (clean block markup)
+- How **local vs branch** loading speeds up plugin development
 
 **What you'll build**:
-- Your own DA.live project (cloudadoption/jsmith-mc)
-- Configure code source to point to shared nycmasterclass codebase
-- Create custom content pages with shared styling
-- Prove code independence using browser DevTools
+- A **plugin + block pair** that turns messy third-party snippets into structured content
+- A workflow authors could actually use week after week
 
-**Key takeaway**: Repoless enables launching unlimited sites with shared code. Create your own site in minutes, leverage existing codebase, maintain content independence.
+**Key takeaway**: Plugins are the guardrail that keeps “easy for authors” and “safe for the site” aligned.
 
 ---
 
-**Go-Live Discussion** (10 mins): Production readiness checklist
+**Exercise 9**: [Product Bus - Commerce at the Edge](product-bus/instructions.md)
+
+**What you'll learn**:
+- How to ingest a product catalog and expose it through Product Bus endpoints
+- How product data, index feeds, and authored content align on the same URL path
+- How commerce and editorial teams can work independently while the page experience stays unified
+
+**What you'll build**:
+- A namespaced product catalog for your branch
+- Product pages that merge structured commerce data with authored content
+- A practical mental model for scaling product data across locales, brands, and teams
+
+**Key takeaway**: Product Bus separates concerns cleanly. Commerce owns structured data, authors own storytelling, and Edge Delivery assembles both at delivery time.
 
 ---
 
-## Exercise Flow
-
-Each exercise builds on previous concepts:
-
-**Exercises 1-2**: Foundation
-- Author perspective -> Developer perspective
-- Static content -> Decorated blocks
-
-**Exercises 3-4**: Data Integration
-- External data (Sheets/personal workspace) -> Internal data (query index)
-- API-first architecture in practice
-- Dynamic data fetch -> Block composition (Search reuses Cards)
-
-**Exercise 5**: Content Scale
-- Manual pages -> Worker-generated pages
-- JSON2HTML service: Data + Mustache templates = Unlimited pages
-
-**Exercises 6-7**: Real-World Integrations
-- Output (Forms -> Slack) + Input (Widgets -> Pages)
-
-**Exercise 8**: Enterprise Scale
-- Single site -> Multi-site architecture (hands-on repoless setup)
-
----
-
-## Key Concepts
-
-**Separation of Concerns**:
-- DA.live = Authoring
-- EDS = Delivery
-- Workers = Middleware
-
-**API-First**:
-- Every resource has a JSON representation
-- DA.live API for content management
-- EDS Admin API for preview/publish
-
-**Performance by Default**:
-- No frameworks, vanilla JavaScript
-- Automatic image optimization
-- Progressive loading (eager/lazy/delayed)
-
-**Author-Friendly**:
-- Document-based authoring
-- Blocks for reusable components
-- Metadata for SEO control
+**Go-Live Discussion**: Production readiness checklist
 
 ---
 
 ## Resources
 
+**Solutions**: [answers branch](https://github.com/edsmasterclass/labs/tree/answers), reference implementations for code-oriented exercises (Exercise 1 is Experience Workspace authoring only).
+
 **Documentation**:
-- [AEM.live Docs](https://www.aem.live/)
-- [DA.live Docs](https://docs.da.live/)
 - [Developer Tutorial](https://www.aem.live/developer/tutorial)
+- [Markup, Sections, Blocks, and Auto Blocking](https://www.aem.live/developer/markup-sections-blocks)
+- [David's Model](https://www.aem.live/docs/davidsmodel)
+- [Experience Workspace Docs](https://www.aem.live/docs/ew/authoring)
+- [AEM.live Docs](https://www.aem.live/)
+- [Repoless](https://www.aem.live/docs/repoless)
+- [Integrations](https://www.aem.live/developer/integrations)
 - [Indexing Reference](https://www.aem.live/docs/indexing-reference)
 - [JSON2HTML](https://www.aem.live/developer/json2html)
-- [Integrations](https://www.aem.live/developer/integrations)
-- [Repoless](https://www.aem.live/docs/repoless)
+- [Product Bus Docs](https://docs.adobecommerce.live/)
 
 **Tools**:
+- [Site Admin](https://tools.aem.live/tools/site-admin/index.html)
+- [Index Admin](https://tools.aem.live/tools/index-admin/index.html)
+- [JSON2HTML Simulator](https://tools.aem.live/tools/json2html-simulator/index.html)
 - [EDS Admin Tools](https://tools.aem.live/)
-- [Index Admin](https://tools.aem.live/tools/index-admin)
-- [Site Admin](https://tools.aem.live/tools/site-admin)
-- [JSON2HTML Simulator](https://tools.aem.live/tools/json2html)
 
 **APIs**:
-- [DA.live API](https://docs.da.live/developers/api)
 - [EDS Admin API](https://www.aem.live/docs/admin.html)
+- [Experience Workspace / DA API](https://docs.da.live/developers/api)
 
 ---
 
 ## Troubleshooting
 
 **Dev server issues**: See [SETUP.md](SETUP.md)
-**Permission errors**: Verify IMS group membership, re-login to DA.live
+**Permission errors**: Verify IMS group membership, re-login to Experience Workspace
 **Pages not indexing**: Check published to `.aem.live`, wait 5-10 minutes
 **Blocks not loading**: Check browser console, verify file paths
 

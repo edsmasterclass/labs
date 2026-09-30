@@ -2,16 +2,42 @@ import {
   buildBlock,
   loadHeader,
   loadFooter,
-  decorateButtons,
   decorateIcons,
-  decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
   waitForFirstImage,
   loadSection,
   loadSections,
   loadCSS,
+  readBlockConfig,
+  toClassName,
+  toCamelCase,
 } from './aem.js';
+
+if (window.trustedTypes && window.trustedTypes.createPolicy) {
+  const innerTT = window.trustedTypes.createPolicy('tt-inner', {
+    createHTML: (s) => s, // avoid stack overflow
+  });
+
+  window.trustedTypes.createPolicy('default', {
+    createHTML: (input, type, sink) => {
+      let processedInput = input;
+      if (/srcdoc\s*=/i.test(processedInput)) {
+        const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
+        doc.querySelectorAll('iframe[srcdoc]').forEach((el) => el.removeAttribute('srcdoc'));
+        processedInput = doc.body.innerHTML;
+      }
+      if (sink.includes('createContextualFragment') || sink.includes('Document write')) {
+        const doc = new DOMParser().parseFromString(innerTT.createHTML(processedInput), 'text/html');
+        doc.querySelectorAll('script').forEach((el) => el.remove());
+        processedInput = doc.body.innerHTML;
+      }
+      return processedInput;
+    },
+    createScriptURL: (input) => input,
+    createScript: (input) => input,
+  });
+}
 
 /**
  * Builds hero block and prepends to main in a new section.
@@ -73,6 +99,94 @@ function buildAutoBlocks(main) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
+}
+
+/**
+ * Decorates links as buttons.
+ * @param {Element} element container element
+ */
+function decorateButtons(element) {
+  element.querySelectorAll('a').forEach((a) => {
+    a.title = a.title || a.textContent;
+    if (a.href !== a.textContent) {
+      const up = a.parentElement;
+      const twoup = a.parentElement.parentElement;
+      if (!a.querySelector('img')) {
+        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
+          a.className = 'button'; // default
+          up.classList.add('button-container');
+        }
+        if (
+          up.childNodes.length === 1
+          && up.tagName === 'STRONG'
+          && twoup.childNodes.length === 1
+          && twoup.tagName === 'P'
+        ) {
+          a.className = 'button primary';
+          twoup.classList.add('button-container');
+        }
+        if (
+          up.childNodes.length === 1
+          && up.tagName === 'EM'
+          && twoup.childNodes.length === 1
+          && twoup.tagName === 'P'
+        ) {
+          a.className = 'button secondary';
+          twoup.classList.add('button-container');
+        }
+      }
+    }
+  });
+}
+
+/**
+ * Decorates all sections in a container element.
+ * Overrides aem.js version to support richtext class handling.
+ * @param {Element} main The container element
+ */
+function decorateSections(main) {
+  main.querySelectorAll(':scope > div').forEach((section) => {
+    const wrappers = [];
+    let defaultContent = false;
+    [...section.children].forEach((e) => {
+      if (e.classList.contains('richtext')) {
+        e.removeAttribute('class');
+        if (!defaultContent) {
+          const wrapper = document.createElement('div');
+          wrapper.classList.add('default-content-wrapper');
+          wrappers.push(wrapper);
+          defaultContent = true;
+        }
+      } else if (e.tagName === 'DIV' || !defaultContent) {
+        const wrapper = document.createElement('div');
+        wrappers.push(wrapper);
+        defaultContent = e.tagName !== 'DIV';
+        if (defaultContent) wrapper.classList.add('default-content-wrapper');
+      }
+      wrappers[wrappers.length - 1].append(e);
+    });
+    wrappers.forEach((wrapper) => section.append(wrapper));
+    section.classList.add('section');
+    section.dataset.sectionStatus = 'initialized';
+    section.style.display = 'none';
+
+    const sectionMeta = section.querySelector('div.section-metadata');
+    if (sectionMeta) {
+      const meta = readBlockConfig(sectionMeta);
+      Object.keys(meta).forEach((key) => {
+        if (key === 'style') {
+          const styles = meta.style
+            .split(',')
+            .filter((style) => style)
+            .map((style) => toClassName(style.trim()));
+          styles.forEach((style) => section.classList.add(style));
+        } else {
+          section.dataset[toCamelCase(key)] = meta[key];
+        }
+      });
+      sectionMeta.parentNode.remove();
+    }
+  });
 }
 
 /**
@@ -143,16 +257,21 @@ function loadDelayed() {
   // load anything that can be postponed to the latest here
 }
 
-async function loadPage() {
+export async function loadPage() {
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();
 }
 
 loadPage();
-// enable live preview in da.live
-(async function loadDa() {
-  if (!new URL(window.location.href).searchParams.get('dapreview')) return;
+
+(function da() {
+  const { searchParams } = new URL(window.location.href);
+  const lp = searchParams.get('dapreview');
   // eslint-disable-next-line import/no-unresolved
-  import('https://da.live/scripts/dapreview.js').then(({ default: daPreview }) => daPreview(loadPage));
+  if (lp) import('https://da.live/scripts/dapreview.js').then((mod) => mod.default(loadPage));
+
+  const exp = searchParams.get('daexperiment');
+  // eslint-disable-next-line import/no-unresolved
+  if (exp) import('https://da.live/nx/public/plugins/exp/exp.js');
 }());

@@ -3,6 +3,6 @@ Please always provide the [GitHub issue(s)](../issues) your PR is for, as well a
 Fix #<gh-issue-id>
 
 Test URLs:
-- Before: https://main--nycmasterclass--cloudadoption.aem.live/
+- Before: https://main--labs--edsmasterclass.aem.live/
 
-- After: https://<branch>--nycmasterclass--cloudadoption.aem.live/
+- After: https://<branch>--labs--edsmasterclass.aem.live/
