@@ -48,7 +48,7 @@
 | **Product Bus API** (`api.adobecommerce.live`) | Live — accepts your ingest |
 | **Mixer routing** — `/labs/*/products/*/*` → pipeline | Configured for `edsmasterclass/labs` |
 | **Indexer** — auto-generates feeds per namespace | Configured |
-| **product-grid block** — renders a card grid from index JSON | On `answers` branch |
+| **product-grid block** — renders a card grid from index JSON | On `main` branch |
 
 ---
 
@@ -250,11 +250,13 @@ https://<your-branch>--labs--edsmasterclass.aem.network/labs/<your-branch>/produ
 
 ### Part B: Add product grid listing pages (~4 min)
 
-The `product-grid` block renders a responsive card grid from any index JSON. Copy it to your branch from the answers branch:
+The `product-grid` block renders a responsive card grid from any index JSON. It's already on `main`, so your branch has it. Confirm:
 
 ```bash
-git checkout answers -- blocks/product-grid
+ls blocks/product-grid
 ```
+
+You should see `product-grid.css` and `product-grid.js`. If not, see Troubleshooting.
 
 Create three pages in Experience Workspace (replace `<your-branch>` with your branch in all paths) at https://da.live/#/edsmasterclass/labs:
 
@@ -420,9 +422,16 @@ The indexer runs asynchronously. Wait 30–60 seconds and refresh. If still miss
 - Confirm the Experience Workspace path matches the product path exactly — `/labs/<your-branch>/products/swag/masterclass-hoodie` (no trailing slash, lowercase)
 - Hard refresh: Cmd+Shift+R / Ctrl+Shift+R
 
-**product-grid block not found after `git checkout answers`**
+**`blocks/product-grid` missing on your branch**
 
-Ask the instructor to confirm the `answers` branch has the `blocks/product-grid/` directory committed.
+Your branch was created before the block landed on `main`. Pull it in, then commit and push:
+
+```bash
+git fetch origin
+git checkout origin/main -- blocks/product-grid
+git commit -m "chore: add product-grid block"
+git push
+```
 
 **Product grid shows "Unable to load products right now"**
 
