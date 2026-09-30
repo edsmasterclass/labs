@@ -1,45 +1,58 @@
-# Exercise 6: Form Submissions with Workers
+# Exercise 6: Third-Party Integrations with Edge Workers
 
 **Duration**: 20 minutes
 
 ---
 
-## Prerequisites
+<details>
+<summary><strong>Quick navigation</strong></summary>
 
-**Complete [SETUP.md](../SETUP.md) if not already done.**
+- [Prerequisites](#prerequisites)
+- **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [The complete data flow](#the-complete-data-flow) · [Worker endpoint](#worker-endpoint) · [Understanding the POST request structure](#understanding-the-post-request-structure))
+- **Exercise steps**
+  - [Step 1: Create a Feedback Block](#step-1-create-a-feedback-block)
+  - [Step 2: Create Test Page](#step-2-create-test-page)
+  - [Step 3: Add and Configure the Feedback Block](#step-3-add-and-configure-the-feedback-block)
+  - [Step 4: Understanding What the Worker Does](#step-4-understanding-what-the-worker-does)
+  - [Step 5: Commit Your Changes](#step-5-commit-your-changes)
+- **After the steps** (please read — [Real-world applications](#real-world-applications) · [Key takeaways](#key-takeaways))
+- [Verification Checklist](#verification-checklist)
+- [Troubleshooting Common Issues](#troubleshooting-common-issues)
+- [References](#references)
+- [Solution](#solution)
+- [Next Exercise](#next-exercise)
 
-Required:
-- On your feature branch (`jsmith` - your first initial + last name)
-- Local dev server running at `http://localhost:3000`
-- Exercises 1-5 completed
-
-**Your Personal Workspace**: All work in `/drafts/jsmith/` (use your name: first initial + last name, lowercase)
-
-**Worker Endpoint**:
-
-The instructor has deployed a Cloudflare Worker that accepts form submissions and sends them to Slack.
-
-**Worker URL**: `https://masterclass-feedback.aem-poc-lab.workers.dev`
-
-**Verify worker is running**:
-```bash
-curl -X POST https://masterclass-feedback.aem-poc-lab.workers.dev \
-  -H "Content-Type: application/json" \
-  -d '{"fullName":"Test User","email":"test@example.com","feedback":"Test message"}'
-```
-
-**Expected response**: `{"success": true, "message": "Feedback submitted successfully"}`
+</details>
 
 ---
 
+## Prerequisites
+
+**Complete [SETUP.md](../SETUP.md) if not already done.** Exercises can be done in sequence or independently; if independent, ensure SETUP is done and you have the items below.
+
+**Required:**
+- **Feature branch** — From the repository root, run `git branch`. The line with `*` should be your personal branch: first initial + last name, all lowercase (e.g. `jsmith`). If you are on `main` or any other branch, create and switch to yours:
+  ```bash
+  git checkout -b jsmith
+  ```
+  Replace `jsmith` with your branch name. See [SETUP.md — Step 2: Create Feature Branch](../SETUP.md#step-2-create-feature-branch).
+- Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
+- Code editor open with the repository
+- Exercises 1–5 completed (if doing in sequence)
+- **Personal workspace**: `/drafts/<your-name>/` (first initial + last name, lowercase — same pattern as earlier exercises)
+
+---
+
+<details>
+<summary><strong>Background</strong> (please read — concepts before the hands-on steps)</summary>
+
 ## What You'll Learn
 
-- How to build forms in Edge Delivery Services blocks
-- How to handle form submissions with JavaScript (prevent default, capture data)
-- **POST request structure** for worker endpoints
-- How Workers integrate with external services (Slack)
+- How **visitor input** on the page reaches **third-party systems** without exposing secrets in the browser
+- How to implement that path using a **feedback block** (structured inputs + `fetch` to a worker)
+- **POST request structure** for worker endpoints and how workers call external APIs (Slack in this lab)
 - How to provide user feedback during async operations (loading, success, error states)
-- The complete data flow: Form → Worker → Slack
+- The end-to-end flow: **page → Worker → third-party service** (Slack)
 
 ---
 
@@ -67,6 +80,7 @@ Forms are critical for user engagement: registrations, feedback, contact forms, 
 - Lead capture → CRM (HubSpot, Salesforce)
 
 ---
+**Lab Exercise**:
 
 ## The Complete Data Flow
 
@@ -126,6 +140,26 @@ Understanding the entire flow from user submission to Slack notification:
 
 ---
 
+## Worker Endpoint
+
+The instructor has already deployed a Cloudflare Worker that accepts form submissions and sends them to Slack.
+
+**Worker URL**: `https://masterclass-feedback.aem-poc-lab.workers.dev`
+
+**Verify worker is running**:
+
+Using the terminal, Run the following CURL command : 
+```bash
+curl -X POST https://masterclass-feedback.aem-poc-lab.workers.dev \
+  -H "Content-Type: application/json" \
+  -d '{"fullName":"Test User","email":"test@example.com","feedback":"Test message"}'
+```
+
+**Expected response**: `{"success": true, "message": "Feedback submitted successfully"}`
+
+
+---
+
 ## Understanding the POST Request Structure
 
 Before building the form, understand what data format the worker expects.
@@ -181,11 +215,13 @@ Content-Type: application/json
 3. `fetch()` POST request with JSON body
 4. Handle response (success or error)
 
+</details>
+
 ---
 
-## Step 1: Use the Existing Feedback Block
+## Step 1: Create a Feedback Block
 
-In this project, the feedback block is already implemented:
+Create a feedback block with the following structure
 
 ```
 blocks/
@@ -194,17 +230,32 @@ blocks/
     feedback.css
 ```
 
-Use this block instead of creating `feedback-form` from scratch.
+**NOTE**: You can copy the `feedback` block from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/blocks/feedback) on GitHub.
 
 ---
 
-## Step 2: Configure the Block in Your Draft Page
+## Step 2: Create Test Page
 
-The block expects:
-- Row 1: Worker endpoint URL
-- Row 2: Rich content with location, address, title, and description
+**In Experience Workspace**:
 
-Use this block structure in your page:
+1. Open your personal drafts folder **`/drafts/<your-name>/`** (first initial + last name, lowercase — same pattern as earlier exercises).
+2. **New** → **Page** and name it **`feedback`**. You should end up with **`/drafts/<your-name>/feedback`**.
+3. **Save**. Leave the body minimal for now — you’ll insert the Feedback block in Step 3.
+
+---
+
+## Step 3: Add and Configure the Feedback Block
+
+Still on **`/drafts/<your-name>/feedback`**:
+
+1. Open **Outline**, choose **Blocks**, find **Feedback Form** (or equivalent name shown in your block picker), and click the **+** to insert it.
+
+**Authoring structure** — the block expects:
+
+- **Row 1**: Worker endpoint URL (as a link)
+- **Row 2**: Rich content with location, address, title, and description
+
+If you need to adjust cells after insert, match this shape:
 
 ```html
 <div class="feedback">
@@ -215,60 +266,36 @@ Use this block structure in your page:
     <div>
       <p><strong><u>New York City</u></strong></p>
       <p>1540 Broadway, 18th floor<br>New York, NY 10036</p>
-      <h2>AEM Master Class - NYC | Feedback</h2>
+      <h2>Feedback | EDS Masterclass Labs</h2>
       <p>Thank you for attending — we'd love your feedback.</p>
     </div>
   </div>
 </div>
 ```
 
-What this does:
-- Renders a structured feedback form UI
+See how this block looks in Experience Workspace edit mode:
+
+![Feedback Form | Block Structure](../images/da-feedback-form.png)
+
+**What this block does**:
+
+- Renders a structured feedback UI
 - Captures `fullName`, `email`, and `feedback`
-- POSTs JSON to the Worker endpoint from row 1
+- POSTs JSON to the Worker URL from row 1
 - Handles loading, success, and error states
 
----
+2. **Save**, then click **Preview** to open the page on localhost.
+3. Open **`http://localhost:3000/drafts/<your-name>/feedback`** (dev server running) to exercise the block locally.
 
-## Step 3: Confirm Block and Worker Contract
-
-No extra block coding is required for this lab setup. Confirm:
-- `blocks/feedback/feedback.js` is present
-- `blocks/feedback/feedback.css` is present
-- Worker URL is `https://masterclass-feedback.aem-poc-lab.workers.dev`
-
----
-
-## Step 4: Create Test Page
-
-**In DA.live**, create page: `/drafts/jsmith/feedback` (use your name)
-
-```
-# We Value Your Feedback
-
-Help us improve NYC Masterclass by sharing your thoughts.
-
-| Feedback |
-|----------|
-
-| Metadata |                        |
-|----------|------------------------|
-| Title    | Feedback - NYC Masterclass |
-```
-
-**Save** the page.
-
----
-
-## Step 5: Test Form Locally
-
-**Open**: `http://localhost:3000/drafts/jsmith/feedback` (use your name)
+**Test on desktop and mobile**: Use Chrome DevTools responsive view — open DevTools (F12 or Cmd+Option+I), toggle the device toolbar (Cmd+Shift+M / Ctrl+Shift+M) to verify the layout at different widths.
 
 **You should see**:
-- Form with three fields (name, email, feedback)
+
+- Fields for name, email, and feedback
 - Submit button
 
 **Test submission**:
+
 1. Fill in all fields
 2. Click "Submit Feedback"
 3. Button should show "Sending..."
@@ -277,13 +304,14 @@ Help us improve NYC Masterclass by sharing your thoughts.
 **Check Slack**: Instructor's Slack channel should receive your message!
 
 **Test validation**:
+
 - Submit with empty fields → error message
 - Submit with invalid email → error message
 - Fill all fields correctly → success
 
 ---
 
-## Step 6: Understanding What the Worker Does
+## Step 4: Understanding What the Worker Does
 
 The worker acts as secure middleware between your form and Slack. Here's what it does step-by-step:
 
@@ -367,7 +395,7 @@ const slackMessage = {
       elements: [
         {
           type: 'mrkdwn',
-          text: `Submitted from NYC Masterclass | ${new Date().toISOString()}`
+          text: `Submitted from EDS Masterclass Labs | ${new Date().toISOString()}`
         }
       ]
     }
@@ -446,7 +474,7 @@ try {
 
 ---
 
-## Step 7: Commit Your Changes
+## Step 5: Commit Your Changes
 
 ```bash
 # Run linting
@@ -465,6 +493,9 @@ git push origin jsmith
 Replace `jsmith` with your branch name.
 
 ---
+
+<details>
+<summary><strong>After the steps</strong> (please read — examples and takeaways)</summary>
 
 ## Real-World Applications
 
@@ -556,6 +587,8 @@ Form → Worker → [Validate + Transform] → [Service 1, Service 2, Service N]
 - Rate limiting (prevent spam)
 - Multi-destination (send to multiple services)
 
+</details>
+
 ---
 
 ## Verification Checklist
@@ -582,6 +615,7 @@ Form → Worker → [Validate + Transform] → [Service 1, Service 2, Service N]
   - Secure webhook URL storage
   - Error responses with appropriate status codes
 - [ ] **Understand complete flow**: Form → JavaScript → Worker → Slack → Response → UI update
+- [ ] **Tested in Chrome DevTools responsive view** (desktop and mobile)
 - [ ] **Committed and pushed** changes to feature branch
 
 ---
@@ -635,6 +669,12 @@ Form → Worker → [Validate + Transform] → [Service 1, Service 2, Service N]
 
 ---
 
+## Solution
+
+The complete solution for this exercise (feedback block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
+
+---
+
 ## Next Exercise
 
-**Exercise 7**: Performance Optimization - You'll learn to analyze and optimize your Edge Delivery Services site for Core Web Vitals, aiming for perfect Lighthouse scores.
+**Exercise 7**: [Repoless Multi-Site & Multi-Brand](../exercise7/instructions.md) — Point a second DA site at this repo’s code and explore multi-brand theming. *Site Admin “clone site” needs Org Admin; if it is disabled for you, Step 1 explains how to request a clone (e.g. via class Slack or Teams) and site permissions, then align content to your DA folder while keeping code on `labs`.*

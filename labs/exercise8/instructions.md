@@ -1,537 +1,947 @@
-# Exercise 8: Repoless Multi-Site & Multi-Brand
+# Exercise 8: Experience Workspace Plugin Development
 
 **Duration**: 30 minutes
 
 ---
 
-## Prerequisites
+<details>
+<summary><strong>Quick navigation</strong></summary>
 
-**Complete [SETUP.md](../SETUP.md) if not already done.**
+- [Prerequisites](#prerequisites)
+- **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [Pattern showcase](#pattern-showcase-third-party-embed-conversion) · [How Experience Workspace plugins work](#how-experience-workspace-plugins-work) · [Understanding the DA App SDK](#understanding-the-da-app-sdk) · [Plugin architecture](#plugin-architecture))
+- **Exercise steps**
+  - [Step 1: Create Plugin HTML](#step-1-create-plugin-html)
+  - [Step 1.5: Create Plugin CSS](#step-15-create-plugin-css)
+  - [Step 2: Create Plugin JavaScript](#step-2-create-plugin-javascript)
+  - [Step 2.5: Create TradingView Block Decorator](#step-25-create-tradingview-block-decorator)
+  - [Step 3: Commit Plugin Files](#step-3-commit-plugin-files)
+  - [Step 4: Test Plugin Locally First](#step-4-test-plugin-locally-first)
+  - [Step 5: Access Plugin on Your Branch](#step-5-access-plugin-on-your-branch)
+  - [Step 6: Preview the Page and Verify Widget Rendering](#step-6-preview-the-page-and-verify-widget-rendering)
+  - [Step 7: Optional - Register Plugin in Library](#step-7-optional---register-plugin-in-library)
+- **After the steps** (please read — [Troubleshooting](#troubleshooting-common-issues) · [Real-world plugin examples](#real-world-plugin-examples) · [Key takeaways](#key-takeaways))
+- [Verification Checklist](#verification-checklist)
+- [Optional Enhancements](#optional-enhancements)
+- [References](#references)
+- [Solution](#solution)
 
-Required:
-- On your feature branch (`jsmith` - your first initial + last name)
-- Exercises 1-7 completed
-- Access to DA.live (you should already be authoring there)
-- Logged into AEM Sidekick extension (for Site Admin tool auth)
-
-**Your Personal Workspace**: All work in your own site: `cloudadoption/jsmith-mc` (use your name: first initial + last name, lowercase)
+</details>
 
 ---
 
+## Prerequisites
+
+**Complete [SETUP.md](../SETUP.md) if not already done.** Exercises can be done in sequence or independently; if independent, ensure SETUP is done and you have the items below.
+
+**Required:**
+- **Feature branch** — From the repository root, run `git branch`. The line with `*` should be your personal branch: first initial + last name, all lowercase (e.g. `jsmith`). If you are on `main` or any other branch, create and switch to yours:
+  ```bash
+  git checkout -b jsmith
+  ```
+  Replace `jsmith` with your branch name. See [SETUP.md — Step 2: Create Feature Branch](../SETUP.md#step-2-create-feature-branch).
+- Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
+- Code editor open with the repository
+- Exercises 1–7 completed (if doing in sequence)
+- Experience Workspace access
+- **Personal workspace**: `/drafts/<your-name>/` (first initial + last name, lowercase)
+
+**Context:** You've been authoring in Experience Workspace (Exercises 1–7); this exercise extends Experience Workspace with custom plugins so authors can insert pre-formatted content from the library.
+
+---
+
+<details>
+<summary><strong>Background</strong> (please read — concepts before the hands-on steps)</summary>
+
 ## What You'll Learn
 
-- How repoless architecture works in Edge Delivery Services
-- How to share code across multiple sites (one codebase, many sites)
-- How to use the Site Admin tool to clone site configurations
-- How to use DA.live Traverse and Import tools to copy content
-- How to create your own branded site in minutes
-- How multi-brand theming works with body class selectors and CSS custom properties
-- How Configuration Service manages code and content separation
+- How Experience Workspace plugins work as library integrations
+- How to use the DA App SDK (context, token, actions)
+- How to insert content into documents programmatically via DA SDK
+- How to develop plugins locally and deploy to your branch
+- How plugins are accessed through the library palette
 
 ---
 
 ## Why This Matters
 
-**The scenario**: NYC Masterclass is successful. You need to launch personal regional events or client sites with the same functionality.
+Experience Workspace library plugins extend the authoring experience with custom content insertion capabilities.
 
-**The problem**: Do you duplicate the entire codebase for each site? Fork the repo? Copy all blocks?
+**The challenge**: Authors often copy/paste third-party embed codes (widgets, scripts, config JSON), but raw custom HTML in documents is an anti-pattern and hard to maintain.
 
-**The repoless solution**:
-- **One code repository** (blocks, scripts, styles) - `cloudadoption/nycmasterclass`
-- **Multiple sites** with different content - Each person's site in DA.live
-- **Configuration Service** manages which code repo each site uses
-- **Code updates** to `nycmasterclass` apply to all sites automatically
-- **Zero code duplication** - Launch new sites in minutes
+**The solution**: Build a plugin that accepts supported embed snippets and converts them into structured block content.
 
-**Multi-brand theming**:
-- Same code, different visual identities per site
-- CSS custom properties scoped to body classes
-- Theme applied via metadata — no code changes needed per site
+**Plugins enable**:
+- **Safe embed conversion** - Turn third-party snippets into block rows
+- **Integration with external data sources** - Fetch from APIs, databases
+- **Automated content generation** - Dynamic content based on rules
+- **Streamlined authoring workflows** - Paste once, insert clean content
+- **Consistency** - Same structure across all pages
+- **Custom tooling** - Build exactly what your authors need
 
-**Benefits**:
-- Maintain code once → all sites get updates instantly
-- Launch new sites in minutes (not hours or days)
-- Consistent functionality and quality across sites
-- Bug fixes apply everywhere automatically
-- Each site can have its own visual identity
-
----
-
-## Understanding Repoless
-
-### Traditional Model (Without Repoless)
+**The pattern**:
 ```
-NYC Masterclass
-├── GitHub: cloudadoption/nycmasterclass (code)
-└── DA.live: cloudadoption/nycmasterclass (content)
-
-Boston Masterclass
-├── GitHub: cloudadoption/boston-mc (code - DUPLICATED!)
-└── DA.live: cloudadoption/boston-mc (content)
-
-Chicago Masterclass  
-├── GitHub: cloudadoption/chicago-mc (code - DUPLICATED!)
-└── DA.live: cloudadoption/chicago-mc (content)
+1. Developer builds plugin (HTML + JavaScript)
+2. Plugin uses DA App SDK (context, token, actions)
+3. Plugin is committed to Git repository
+4. Authors access via the library palette in Experience Workspace
+5. Plugin inserts content into document via SDK actions
 ```
 
-**Problem**: Update the hero block? Must change 3 GitHub repositories. Bug fix? Deploy to 3 places.
+**Real-world use cases**:
+- **Widget embed converters** - Convert embed snippets into block config
+- **Section libraries** - Pre-formatted hero sections, CTAs, footers
+- **Product catalog** - Fetch products from PIM, insert as tables
+- **Speaker directory** - Insert speaker bio from API
+- **Asset browser** - Browse DAM, insert images with correct paths
+- **Form builders** - Generate form markup from templates
+- **Legal snippets** - Insert disclaimers, copyright notices
 
-### Repoless Model (With Configuration Service)
+---
+
+## Pattern Showcase: Third-Party Embed Conversion
+
+This exercise demonstrates a practical DA pattern: let authors use familiar copy/paste embed workflows while still preventing raw custom HTML from entering the document.
+
+**Workflow**:
+1. Author copies a third-party widget embed snippet
+2. Plugin parses and validates source + JSON config
+3. Plugin converts values into structured block rows
+4. DA inserts only block content (not raw embed markup)
+
+**Sample widget source**:
+- Company Profile example: `https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/`
+- TradingView widget catalog: `https://www.tradingview.com/widget-docs/widgets/`
+
+---
+
+## How Experience Workspace Plugins Work
+
+Experience Workspace plugins are HTML + JavaScript applications hosted on your Edge Delivery site that communicate with Experience Workspace via the DA App SDK.
+
+**Architecture**:
 ```
-CODE (ONE place)
-GitHub: cloudadoption/nycmasterclass
-├── blocks/
-├── scripts/
-└── styles/
-
-CONTENT (MANY places)
-DA.live Projects (each uses nycmasterclass code):
-├── cloudadoption/nycmasterclass (NYC content)
-├── cloudadoption/boston-mc (Boston content)
-├── cloudadoption/chicago-mc (Chicago content)
-└── cloudadoption/jsmith-mc (YOUR content)
-```
-
-**Solution**: Update hero block once in `nycmasterclass` → all 4 sites get it instantly.
-
-**Reference**: [Repoless Architecture](https://www.aem.live/docs/repoless)
-
----
-
-## How It Works
-
-### The Configuration Service
-
-Each site in DA.live can specify:
-
-1. **Content Source**: Where content lives (always the DA.live project itself)
-2. **Code Source**: Where code lives (can point to a different GitHub repo)
-3. **Site Settings**: Permissions, custom configuration
-
-**Example**: Your site `cloudadoption/jsmith-mc`
-- Content from: `cloudadoption/jsmith-mc` in DA.live (YOUR pages)
-- Code from: `cloudadoption/nycmasterclass` in GitHub (SHARED blocks/scripts)
-
-### What Gets Loaded From Where
-
-When someone visits `https://main--jsmith-mc--cloudadoption.aem.page/`:
-
-1. EDS checks `jsmith-mc` configuration → sees code source is `nycmasterclass`
-2. Gets **content** (index.html) from `cloudadoption/jsmith-mc` in DA.live
-3. Gets **code** (hero.js, hero.css, scripts.js) from `cloudadoption/nycmasterclass` in GitHub
-4. Combines them → your page with your content, shared functionality
-
-**Reference**: [Configuration Service Setup](https://www.aem.live/docs/config-service-setup)
-
----
-
-## Step 1: Clone the Site Configuration
-
-The Site Admin tool lets you clone an existing site's configuration to create a new site instantly.
-
-1. Open **Site Admin**: [https://tools.aem.live/tools/site-admin/index.html](https://tools.aem.live/tools/site-admin/index.html)
-
-2. **IMPORTANT**: You must be logged in via AEM Sidekick extension first
-
-3. In the form:
-   - **Organization**: `cloudadoption`
-   - Click **List** to load the existing configuration
-
-4. Clone the configuration for `nycmasterclass` to create your new site (click the three dots icon from the site card, then choose "clone site config"):
-   - **New site name**: `jsmith-mc` (your first initial + last name + `-mc`)
-   - Example: John Smith → `jsmith-mc`, Sarah Johnson → `sjohnson-mc`
-
-5. Confirm the clone
-
-**What you just did**: Created a new site entry in the Configuration Service that inherits the basic configuration from `nycmasterclass` — including the code source. Your new site already knows to load code from the shared `nycmasterclass` repository.
-
----
-
-## Step 2: Create Your Content Folder
-
-Now create a place for your site's content in DA.live.
-
-1. Go to DA.live: [https://da.live/#/cloudadoption](https://da.live/#/cloudadoption)
-
-2. You should see the `cloudadoption` org with its existing sites (including `nycmasterclass`)
-
-3. Create a new folder called `jsmith-mc` (your name)
-
-**Result**: You now have an empty content folder at `cloudadoption/jsmith-mc`.
-
----
-
-## Step 3: Copy Content from NYC Masterclass
-
-Instead of creating content from scratch, use the DA.live tools to copy all existing content from the NYC Masterclass site.
-
-### 3a: Traverse the Source Site
-
-1. Open the **Traverse** tool: [https://da.live/apps/traverse](https://da.live/apps/traverse)
-
-2. Enter the source site path: `cloudadoption/nycmasterclass`
-
-3. Run the traverse — this crawls the site and builds a list of all content pages and assets
-
-4. Wait for it to complete
-
-5. Hit `Copy List` to grab all the page URLs
-
-### 3b: Import Content to Your Site
-
-1. Open the **Import** tool: [https://da.live/apps/import](https://da.live/apps/import)
-
-2. Paste all the URLs gathered from the traverse tool into the `By URL` field.
-
-3. In the `Into` section, enter the org `cloudadoption` and your site name: `jsmith-mc`
-
-4. Run the import — this copies all content (pages, images, metadata) to your site
-
-5. Wait for it to complete
-
-6. When the import finishes, click the **Copy Success** button to copy all the successfully imported URLs to your clipboard — you'll need these in the next step
-
-### 3c: Preview & Publish All Content
-
-Imported content needs to be previewed and published before it's available on your site.
-
-1. Open the **Bulk Operations** tool: [https://da.live/apps/bulk](https://da.live/apps/bulk)
-
-2. Paste the URLs you copied from the import tool
-
-3. Run **Preview** to generate preview versions of all pages
-
-4. Wait for it to complete, then run **Publish** to make all pages live
-
-**Result**: Your site now has a full copy of all NYC Masterclass content, previewed and published.
-
----
-
-## Step 4: Preview Your Site
-
-1. Open your site: `https://main--jsmith-mc--cloudadoption.aem.page/`
-
-2. **You should see**: The full NYC Masterclass homepage — same hero, same cards, same styling
-
-**What's happening**:
-- **Content** is coming from `cloudadoption/jsmith-mc` (your DA.live folder)
-- **Code** is coming from `cloudadoption/nycmasterclass` (shared GitHub repo)
-- The site looks identical to NYC because you copied the content and share the code
-
----
-
-## Step 5: Verify Repoless is Working
-
-Prove that code is loading from the shared repository, not your site.
-
-1. On your site (`https://main--jsmith-mc--cloudadoption.aem.page/`), open browser **DevTools** (F12)
-
-2. Go to the **Network** tab
-
-3. Refresh the page
-
-4. Filter by **JS** or **CSS** and look at the file URLs
-
-**You should see**:
-```
-https://main--nycmasterclass--cloudadoption.aem.page/blocks/hero/hero.js
-https://main--nycmasterclass--cloudadoption.aem.page/scripts/scripts.js  
-https://main--nycmasterclass--cloudadoption.aem.page/styles/styles.css
+┌─────────────────────────────────────────────────┐
+│       Experience Workspace Editor               │
+│                                                 │
+│  ┌───────────────────┐  ┌──────────────────┐  │
+│  │  Document Editor  │  │  Library Palette │  │
+│  │                   │  │                  │  │
+│  │  [Your Content]   │  │  [Plugin loads   │  │
+│  │                   │  │   in iframe]     │  │
+│  └────────┬──────────┘  └────────┬─────────┘  │
+│           │                      │             │
+│           │ PostMessage API      │             │
+│           │ (via DA App SDK)     │             │
+│           └──────────────────────┘             │
+└─────────────────────────────────────────────────┘
+                       │
+                       │ Loads plugin from:
+                       │ https://jsmith--labs--edsmasterclass.aem.page/
+                       │         tools/plugins/embedwidget/embedwidget.html
+                       ▼
+           ┌───────────────────────────┐
+           │   Your Plugin (iframe)    │
+           │                           │
+           │  • HTML + JavaScript      │
+           │  • Uses DA App SDK        │
+           │  • Sends content via SDK  │
+           └───────────────────────────┘
 ```
 
-**KEY OBSERVATION**: URLs say `nycmasterclass`, NOT `jsmith-mc`!
+**How it works**:
+1. Plugin is an **HTML page** on your Edge Delivery site
+2. Plugin loads in **iframe** within the Experience Workspace library palette
+3. Plugin uses **DA App SDK** (imported from da.live)
+4. SDK provides **PostMessage API** for secure communication
+5. SDK gives you: **context** (document info), **token** (auth), **actions** (insert content)
+6. Plugin calls `actions.sendText()` or `actions.sendHTML()` to insert content
+7. Experience Workspace receives the message and inserts it into the document
 
-**This proves**:
-- Your **content** comes from `cloudadoption/jsmith-mc` (your DA.live project)
-- Your **code** comes from `cloudadoption/nycmasterclass` (shared GitHub repo)
-- **Repoless is working!**
+**URL Structure**:
+- **Your codebase**: `https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html`
+- **Experience Workspace plugin URL**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>`
+- **Local development**: `https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local`
 
----
+**Key concept**: Experience Workspace loads your plugin HTML from your AEM site into an iframe, then uses PostMessage for secure cross-origin communication.
 
-## Step 6: Customize Your Content
-
-Now make the site yours by editing content. This proves that each site's content is independent.
-
-1. In DA.live, navigate to your site: [https://da.live/#/cloudadoption/jsmith-mc](https://da.live/#/cloudadoption/jsmith-mc)
-
-2. Open the homepage (`index`)
-
-3. Change the `<h1>` to: **Jsmith's Masterclass** (use your name)
-
-4. **Preview** the page
-
-**Verify**:
-- Your site (`jsmith-mc`) shows YOUR heading
-- NYC site (`nycmasterclass`) still shows the original heading
-- Both sites have identical styling, blocks, and functionality
-
-**This proves**: Content is completely independent between sites while all code is shared.
+**Reference**: [Developing Apps and Plugins](https://docs.da.live/developers/guides/developing-apps-and-plugins)
 
 ---
 
-## Step 7: Multi-Brand Theming
+## Understanding the DA App SDK
 
-Your site works, but it looks identical to NYC Masterclass. In a real multi-brand setup, each site needs its own visual identity. You'll add a custom theme using **body class selectors** — one of the simplest approaches to multi-brand theming.
+The DA App SDK is the bridge between your plugin and Experience Workspace. It provides three key objects:
 
-**Reference**: [Multi-Brand EDS Implementation Using Repoless](https://main--helix-website--adobe.aem.page/drafts/ravuthu/multi-brand-eds-implementation-using-repoless#option-1-single-file-with-body-class-selectors)
+### 1. **context** - Document Information
 
-### How Themes Work
+Information about the current document being edited:
 
-1. Authors set a `theme` value in page metadata (e.g., `theme: masterclass`)
-2. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds it as a class on `<body>`
-3. CSS rules scoped to `body.masterclass` apply the visual identity
-4. Different sites set different theme values → different visual identities from the same CSS file
+```javascript
+const { context } = await DA_SDK;
 
-The NYC Masterclass site currently uses `theme: masterclass`, which produces the orange/purple gradient. You'll create your own theme.
+console.log(context.org);      // "edsmasterclass"
+console.log(context.repo);     // "labs"
+console.log(context.ref);      // "main" or branch name
+console.log(context.path);     // "/drafts/<your-name>/my-page"
+```
 
-### 7a: Set Your Theme via the Metadata Sheet
+**Use cases**:
+- Branch-aware plugins (behave differently on main vs feature branches)
+- Path-based logic (different templates for different paths)
+- Org/repo-aware plugins (multi-tenant plugins)
 
-In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata values for all pages on a site using a spreadsheet. This is how you apply a theme site-wide without editing every page individually.
+### 2. **token** - Authentication Token
 
-1. In DA.live, navigate to your site: [https://da.live/#/cloudadoption/jsmith-mc](https://da.live/#/cloudadoption/jsmith-mc)
+Authentication token for making authenticated API calls to the Experience Workspace Admin API:
 
-2. Open the **sheet** called `metadata` at the root of your site
+```javascript
+const { token } = await DA_SDK;
 
-3. Set up the sheet with these columns and values:
+// Use for authenticated API calls
+const response = await fetch('https://admin.da.live/source/org/repo/path', {
+  headers: {
+    'Authorization': `Bearer ${token}`
+  }
+});
+```
 
-| URL | theme |
-|-----|-------|
-| `/**` | `jsmith` |
+### 3. **actions** - Document Interaction Methods
 
-- The `URL` column uses glob patterns to match pages — `/**` matches every page on the site
-- The `theme` column sets the metadata value that `decorateTemplateAndTheme()` reads
+Methods to insert content into the active document:
 
-4. **Preview** the metadata sheet so it becomes available as JSON
+```javascript
+const { actions } = await DA_SDK;
 
-**What this does**: Every page on your site now has `theme: jsmith` in its metadata. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds `class="jsmith"` to the `<body>` element. No page-level editing needed — one sheet controls the entire site.
+// Insert plain text (markdown)
+await actions.sendText('# Heading\n\nParagraph text');
 
-> **Tip**: Bulk metadata is a powerful tool beyond theming. You can set any metadata key (title, description, og:image, template, etc.) for groups of pages using URL patterns like `/blog/**` or `/events/**`.
+// Insert HTML
+await actions.sendHTML('<div><h1>Heading</h1><p>Paragraph</p></div>');
 
-### 7b: Add Your Theme CSS
+// Close library palette
+await actions.closeLibrary();
+```
 
-On your branch, add a new theme in `styles/styles.css`. Add this **after** the existing `body.masterclass` rule:
+**Key insight**: You don't manipulate the document directly. You send content to Experience Workspace, and Experience Workspace inserts it.
+
+**Why PostMessage?**: Your plugin runs in an iframe (different origin). PostMessage is the secure way to communicate across origins.
+
+---
+
+## Plugin Architecture
+
+For this exercise, you'll build an **EmbedWidget plugin** with three files:
+
+### Required Files:
+
+1. **HTML file** (`embedwidget.html`)
+   - Imports DA App SDK from `https://da.live/nx/utils/sdk.js`
+   - Imports your plugin JavaScript
+   - Defines UI (embed textarea + insert button)
+   - Includes styles
+
+2. **CSS file** (`embedwidget.css`)
+   - Styles plugin layout and form controls
+   - Keeps the authoring UI clear and readable
+
+3. **JavaScript file** (`embedwidget.js`)
+   - Imports DA App SDK
+   - Waits for SDK initialization (`await DA_SDK`)
+   - Parses and validates supported embed HTML
+   - Handles clicks → sends structured block HTML → closes library
+
+### Plugin Structure:
+
+```
+tools/
+  plugins/
+    embedwidget/
+      embedwidget.html   ← Loaded by Experience Workspace in iframe
+      embedwidget.js     ← Your plugin logic
+```
+
+**URL accessed by authors**:
+```
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>
+```
+
+This loads your HTML from:
+```
+https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html
+```
+
+</details>
+
+---
+
+## Step 1: Create Plugin HTML
+
+**File**: `tools/plugins/embedwidget/embedwidget.html`
+
+**NOTE**: You can copy the `embedwidget` plugin from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/tools/plugins/embedwidget).
+ branch in github
+
+Copy this code:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>EmbedWidget</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/tools/plugins/embedwidget/embedwidget.css">
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <script src="/tools/plugins/embedwidget/embedwidget.js" type="module"></script>
+  </head>
+  <body>
+    <main class="plugin-shell">
+      <h1>EmbedWidget</h1>
+      <p class="plugin-intro">
+        Paste a supported embed snippet. The plugin converts it into structured block content
+        so no raw custom HTML is inserted into the document.
+      </p>
+
+      <label for="embed-code-input">Embed Code</label>
+      <textarea
+        id="embed-code-input"
+        rows="14"
+        placeholder="Paste full embed HTML here"
+        aria-label="Embed code"
+      ></textarea>
+
+      <div class="plugin-actions">
+        <button id="insert-block-btn" type="button">Insert Widget Block</button>
+      </div>
+
+      <p id="plugin-status" class="plugin-status" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>
+```
+
+---
+
+## Step 1.5: Create Plugin CSS
+
+**File**: `tools/plugins/embedwidget/embedwidget.css`
+
+Copy this code:
 
 ```css
-body.jsmith {
-  --brand-1: #06b6d4;
-  --brand-2: #2563eb;
-  background: radial-gradient(1200px 600px at 80% -10%, #06b6d4 0%, transparent 60%),
-              radial-gradient(900px 600px at 10% 10%, #2563eb 0%, transparent 60%),
-              linear-gradient(180deg, var(--masterclass-bg-2), var(--masterclass-bg-1) 55%);
-  background-attachment: fixed;
-  color: var(--ink);
+.plugin-shell {
+  box-sizing: border-box;
+  padding: 16px;
+  margin: 0;
+  font-family: adobe-clean, "Segoe UI", sans-serif;
+  color: #2c2c2c;
+}
+
+.plugin-shell h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.plugin-intro {
+  margin: 0 0 14px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.plugin-shell label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+#embed-code-input {
+  box-sizing: border-box;
+  width: 100%;
+  border: 1px solid #c6c6c6;
+  border-radius: 8px;
+  padding: 10px 12px;
+  resize: vertical;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  font-size: 13px;
+  line-height: 1.4;
 }
 ```
 
-> **Use your name** as the class name (e.g., `body.sjohnson`, `body.kwang`). Pick any colors you like!
+---
 
-**What this does**:
-- Overrides `--brand-1` (accent color used in cards, links, eyebrows) from orange to cyan
-- Overrides `--brand-2` (secondary accent) from purple to blue
-- Changes the background gradient to match the new brand colors
-- All blocks that use `var(--brand-1)` and `var(--brand-2)` automatically pick up the new colors
+## Step 2: Create Plugin JavaScript
 
-### 7c: Test Locally
+**File**: `tools/plugins/embedwidget/embedwidget.js`
 
-Before pushing, test your theme locally. Use the `--pagesUrl` flag to tell the local dev server to load **content** from your new site while using your **local code**:
+Copy this code:
 
-```bash
-aem up --pagesUrl https://main--jsmith-mc--cloudadoption.aem.page/
+```javascript
+import DA_SDK from 'https://da.live/nx/utils/sdk.js';
+
+const TRADINGVIEW_HOST = 's3.tradingview.com';
+const SCRIPT_PREFIX = 'embed-widget-';
+const DEFAULT_HEIGHT = '500px';
+
+function setStatus(statusEl, message, type = '') {
+  statusEl.textContent = message;
+  statusEl.className = `plugin-status ${type}`.trim();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function normalizeHeight(config) {
+  const { height } = config;
+  if (typeof height === 'number' && Number.isFinite(height)) return `${height}px`;
+  if (typeof height === 'string' && height.trim()) return height.trim();
+  return DEFAULT_HEIGHT;
+}
+
+function parseTradingViewEmbedCode(rawEmbedCode) {
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(rawEmbedCode, 'text/html');
+  const scripts = [...doc.querySelectorAll('script[src]')];
+  const tradingViewScript = scripts.find((script) => script.src.includes(TRADINGVIEW_HOST));
+
+  if (!tradingViewScript) throw new Error('No supported widget script found. Paste the full embed snippet.');
+
+  const scriptURL = new URL(tradingViewScript.src);
+  if (scriptURL.host !== TRADINGVIEW_HOST) throw new Error('Unsupported script source in embed code.');
+
+  const scriptFilename = scriptURL.pathname.split('/').pop();
+  if (!scriptFilename || !scriptFilename.startsWith(SCRIPT_PREFIX)) {
+    throw new Error('Unsupported widget type in script URL.');
+  }
+
+  const scriptConfigText = tradingViewScript.textContent.trim();
+  if (!scriptConfigText) throw new Error('Widget configuration is empty.');
+
+  let config;
+  try {
+    config = JSON.parse(scriptConfigText);
+  } catch {
+    throw new Error('Widget config must be valid JSON.');
+  }
+
+  if (typeof config !== 'object' || config === null || Array.isArray(config)) {
+    throw new Error('Widget config must be a JSON object.');
+  }
+
+  return { script: scriptFilename, height: normalizeHeight(config), config };
+}
+
+function toTradingViewBlockHTML({ script, height, config }) {
+  const safeScript = escapeHtml(script);
+  const safeHeight = escapeHtml(height);
+  const safeConfig = escapeHtml(JSON.stringify(config, null, 2));
+
+  return `
+<table>
+  <tbody>
+    <tr><td colspan="2"><p>tradingview</p></td></tr>
+    <tr><td><p>script</p></td><td><p>${safeScript}</p></td></tr>
+    <tr><td><p>height</p></td><td><p>${safeHeight}</p></td></tr>
+    <tr><td><p>config</p></td><td><pre><code>${safeConfig}</code></pre></td></tr>
+  </tbody>
+</table>`.trim();
+}
+
+(async function init() {
+  const { actions } = await DA_SDK;
+  const inputEl = document.getElementById('embed-code-input');
+  const insertButton = document.getElementById('insert-block-btn');
+  const statusEl = document.getElementById('plugin-status');
+
+  insertButton.addEventListener('click', async () => {
+    const rawEmbedCode = inputEl.value.trim();
+    if (!rawEmbedCode) {
+      setStatus(statusEl, 'Paste an embed snippet first.', 'error');
+      return;
+    }
+
+    try {
+      const parsed = parseTradingViewEmbedCode(rawEmbedCode);
+      await actions.sendHTML(toTradingViewBlockHTML(parsed));
+      setStatus(statusEl, 'Widget block inserted.', 'success');
+      await actions.closeLibrary();
+    } catch (error) {
+      setStatus(statusEl, error.message || 'Unable to convert embed code.', 'error');
+    }
+  });
+}());
 ```
 
-Replace `jsmith-mc` with your site name.
+**What this does**:
+- Imports DA App SDK
+- Waits for SDK initialization
+- Validates and parses supported embed HTML
+- Converts parsed values into structured block table markup
+- Uses `actions.sendHTML()` to insert into document
+- Uses `actions.closeLibrary()` to close palette
 
-Open `http://localhost:3000/` and **you should see**:
-- Your site's content (your custom heading from Step 6)
-- Your new theme colors applied (cyan/blue instead of orange/purple)
-- The full site running with your local code + your remote content
+---
 
-**This is a key repoless development pattern**: run local code against any site's content for testing.
+## Step 2.5: Create TradingView Block Decorator
 
-> **Pro tip**: You can run both sites in parallel by using the `--port` flag. In one terminal run the original site (`aem up`) on the default port 3000, and in another run your new site on a different port:
-> ```bash
-> aem up --port 3001 --pagesUrl https://main--jsmith-mc--cloudadoption.aem.page/
-> ```
-> Now compare `http://localhost:3000/` (original) and `http://localhost:3001/` (your theme) side by side.
+The plugin inserts a structured `tradingview` block table, so your site also needs a `tradingview` block to render it.
 
-### 7d: Push Your Changes
+Create:
+
+- `blocks/tradingview/tradingview.js`
+- `blocks/tradingview/tradingview.css`
+
+**NOTE**: You can copy the `tradingview` block from the [answers branch](https://github.com/edsmasterclass/labs/tree/answers/blocks/tradingview).
+
+Use the same pattern you implemented in this repo:
+- read block config with `readBlockConfig(block)`
+- parse `config` JSON from `<pre><code>`
+- inject the TradingView widget script lazily with `IntersectionObserver`
+- apply `height` from block config
+
+---
+
+## Step 3: Commit Plugin Files
 
 ```bash
-git add styles/styles.css
-git commit -m "feat: add personal theme for jsmith-mc"
+# Run linting (HTML files don't need linting)
+npm run lint
+
+# Add changes
+git add tools/plugins/embedwidget/
+git add blocks/tradingview/
+
+# Commit
+git commit -m "feat: add DA embedwidget plugin"
+
+# Push
 git push origin jsmith
 ```
 
 Replace `jsmith` with your branch name.
 
-### 7e: Verify Your Theme
+---
 
-Open your site: `https://jsmith--jsmith-mc--cloudadoption.aem.page/`
+## Step 4: Test Plugin Locally First
 
-**You should see**:
-- Your custom heading ("Jsmith's Masterclass")
-- Your custom brand colors (cyan/blue instead of orange/purple)
-- Same blocks, same layout, same functionality — your content with your visual identity
+Before pushing to your branch, test the plugin loads correctly from localhost.
 
-**Compare with NYC**: Open `https://main--nycmasterclass--cloudadoption.aem.page/` side by side. Same codebase, different content, different brand.
+**With your dev server running** (`aem up` or `npx @adobe/aem-cli up`):
 
-If this was a real project, at this point, you'd raise a pull request to merge `jsmith` into `main` and once completed, you'd have a basic multi-brand setup powered by a singular codebase.
-
-### Why This Approach Works
-
-From the [multi-brand theming guide](https://main--helix-website--adobe.aem.page/drafts/ravuthu/multi-brand-eds-implementation-using-repoless#option-1-single-file-with-body-class-selectors):
-
-> The simplest approach is to define all brand variables in one file, scoped by body class.
-
+**Plugin URL for local testing**:
 ```
-styles/styles.css
-├── :root { ... }              ← Shared base variables
-├── body.masterclass { ... }   ← NYC Masterclass theme (orange/purple)
-├── body.jsmith { ... }        ← Your theme (cyan/blue)
-├── body.sjohnson { ... }      ← Another participant's theme
-└── ...                        ← Add more themes as needed
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=local
 ```
 
-Each site's metadata controls which theme class is applied. **No code changes needed** to launch a new brand — just set the metadata and add a CSS rule.
+**To test EmbedWidget plugin and TradingView block**:
+1. **Open Experience Workspace**: Go to `https://da.live/canvas#/edsmasterclass/labs/drafts/<your-name>/`
+2. **Open any existing page** (or create `/drafts/<your-name>/plugin-test`)
+3. **Open library**: Click the library icon in the left sidebar (puzzle piece icon)
+4. **Load your plugin**: In a new browser tab, navigate to `https://da.live/canvas?ref=local#/edsmasterclass/labs/drafts/<your-name>/plugin-test`
+
+5. **Think like an author**: Open the TradingView Company Profile widget page:
+   - `https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/`
+6. **Copy the generated embed HTML** from TradingView
+7. **Return to EmbedWidget**: You should see a textarea for embed code and an "Insert Widget Block" button
+8. **Paste and insert**: A structured `tradingview` block table should be inserted
+9. **Library should close** automatically
+10. **Preview** the Experience Workspace page to see the rendered TradingView widget
+
+**Debugging local issues**:
+- Verify `http://localhost:3000` is running
+- Check browser console for errors
+- Verify file paths: `/tools/plugins/embedwidget/embedwidget.html`
+- Check Network tab for failed requests
+
+**How `?ref=local` works**: Experience Workspace fetches your plugin HTML from `http://localhost:3000` instead of the published site. This lets you develop without committing/pushing every change.
 
 ---
 
-## Step 8: Explore Other Participants' Sites
+## Step 5: Access Plugin on Your Branch
 
-Ask other participants to share their site URLs and compare.
+Once local testing works, access your plugin from your pushed branch.
 
-**What you'll notice**:
-- All sites have different content (names, headings)
-- All sites have different brand colors (if they completed the theming step)
-- All sites use the same blocks and functionality
-- All sites load code from `nycmasterclass` (check DevTools Network tab)
+**Your plugin URL** (replace `<your-branch>` with your branch name):
+```
+https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?ref=<your-branch>
+```
 
-**Result**: Multiple unique branded sites from one codebase!
+**To test on your branch**:
+1. **Ensure you've pushed** to GitHub (`git push origin jsmith`)
+2. **Wait 1-2 minutes** for AEM Code Sync to deploy
+3. **Open Experience Workspace** and navigate to any page
+4. **Load your plugin URL** with `?ref=<your-branch>` in a new tab
+5. **Plugin loads from**:
+   ```
+   https://jsmith--labs--edsmasterclass.aem.page/tools/plugins/embedwidget/embedwidget.html
+   ```
+6. **Test valid and invalid embed snippets** to verify parsing and validation behavior
+
+**Testing checklist**:
+- [ ] Valid embed inserts a structured `tradingview` block table
+- [ ] Invalid embed shows an error message
+- [ ] Library palette closes after successful insertion
+- [ ] Inserted table includes `script`, `height`, and `config` rows
+
+## Step 6: Preview the Page and Verify Widget Rendering
+
+After inserting the block in Experience Workspace, validate that the `tradingview` block decorator renders the actual widget on the page.
+
+1. **Preview** your Experience Workspace document containing the inserted block (Experience Workspace auto-saves)
+2. **Open the preview URL** in your browser (branch or local)
+3. **Test on desktop and mobile**: Use Chrome DevTools responsive view (F12 → device toolbar Cmd+Shift+M / Ctrl+Shift+M) to verify the widget layout at different widths.
+4. **Verify rendered output**:
+   - widget container is visible (not just a raw table)
+   - TradingView widget loads in that section
+   - configured height is applied
+5. **If widget does not render**, check DevTools Console/Network for blocked script or JSON parsing issues
 
 ---
 
-## Key Benefits of Repoless
+## Step 7: Optional - Register Plugin in Library
 
-**For developers**:
-- Fix bug once → all sites get fix instantly
-- Add feature once → all sites get feature immediately
-- One codebase to maintain (not 10 or 100)
-- Centralized testing and quality control
-- No code duplication or version drift
 
-**For content authors**:
-- Each site has own DA.live project (zero conflicts)
-- No code complexity (pure content authoring)
-- Full editorial control per site
-- Site-specific branding via metadata
+For production use, plugins should be registered in the site configuration so authors can discover them automatically.
 
-**For organizations**:
-- Launch new sites in minutes (not days or weeks)
-- Consistent functionality and quality across all sites
-- Reduced maintenance overhead (1x effort, Nx sites)
-- Scale to hundreds or thousands of sites effortlessly
+**Note**: For this lab exercise, the plugin has already been added to the DA Library.
+
+**To register your plugin** (instructor may do this):
+
+1. **Edit site config**: Open `https://da.live/config#/edsmasterclass/labs/`
+2. **Add to library sheet**:
+   | title | path | experience |
+   |-------|------|------------|
+   | EmbedWidget | https://content.da.live/edsmasterclass/labs/tools/plugins/embedwidget |  |
+
+3. Config auto-saves; **publish** the config when ready.
+
+**Once registered**:
+- Plugin appears automatically in library palette
+- Authors don't need to know the URL
+- Works on main branch for production use
+
 
 ---
 
-## Real-World Applications
+<details>
+<summary><strong>After the steps</strong> (please read — troubleshooting, examples, and takeaways)</summary>
 
-**Use Case 1: Multi-Region Events (Like This Masterclass!)**
-- Code: Event site template (blocks, navigation, forms)
-- Sites: NYC, Boston, Austin, London, Tokyo, Dubai
-- Theme: City-specific colors and branding per site
-- Content: Local speakers, sessions, sponsors per site
-- Result: Launch 6 events in 6 cities in 1 hour
+## Troubleshooting Common Issues
 
-**Use Case 2: Multi-Brand E-Commerce**
-- Code: E-commerce platform (product display, cart, checkout)
-- Sites: Brand A, Brand B, Brand C (3 fashion brands)
-- Theme: Colors, logo, typography per brand via body class selectors
-- Content: Products, categories, campaigns per brand
-- Result: Consistent shopping experience, brand-specific identity
+### Plugin doesn't load (blank iframe)
 
-**Use Case 3: Department Microsites**
-- Code: Company template (hero, cards, forms)
-- Sites: Marketing, Sales, Engineering, HR, Legal
-- Theme: Department colors and style via metadata
-- Content: Department-specific pages, resources, team
-- Result: Cohesive company presence, departmental autonomy
+**Problem**: Plugin URL shows blank page or 404
 
-**Use Case 4: Franchise Network**
-- Code: Restaurant template (menu, locations, reservations)
-- Sites: 500+ franchise locations (each has own site)
-- Theme: Regional variations (shared base, local overrides)
-- Content: Local photos, events, staff bios per location
-- Result: Consistent brand experience, local customization at scale
+**Fixes**:
+1. **Check file paths**: Verify files exist at `/tools/plugins/embedwidget/embedwidget.html`
+2. **Check dev server**: Ensure `aem up` is running for `?ref=local`
+3. **Check branch deployment**: Wait 1-2 minutes after `git push` for Code Sync
+4. **Check URL**: Verify `?ref=<your-branch>` matches your branch name exactly
+5. **Open plugin URL directly**: Visit the .aem.page URL in a new tab to see errors
+
+### SDK import fails
+
+**Problem**: Console error: "Failed to import DA_SDK"
+
+**Fixes**:
+1. **Check SDK URL**: Must be `https://da.live/nx/utils/sdk.js` (exact case)
+2. **Check script type**: Must have `type="module"` in both HTML script tags
+3. **Check CORS**: Experience Workspace must be able to load your plugin (check browser console)
+
+### Content doesn't insert
+
+**Problem**: Clicking "Insert Widget Block" does nothing
+
+**Fixes**:
+1. **Check console**: Look for JavaScript errors
+2. **Verify SDK initialization**: `await DA_SDK` must complete before using `actions`
+3. **Verify embed source**: Ensure script host is `s3.tradingview.com`
+4. **Verify config JSON**: Ensure the pasted embed contains valid JSON inside the script
+5. **Test HTML insertion path**: Try `await actions.sendHTML('<p>test</p>')` first
+
+### Library doesn't close
+
+**Problem**: Library stays open after insertion
+
+**Fixes**:
+1. **Check call**: Ensure `await actions.closeLibrary()` is called
+2. **Check await**: Must use `await` (it's async)
+3. **Check errors**: Look for JavaScript errors preventing execution
+
+### Plugin loads but shows errors
+
+**Problem**: Plugin UI broken or shows JavaScript errors
+
+**Fixes**:
+1. **Open browser DevTools**: Check Console tab for errors
+2. **Check file paths**: Verify JavaScript import path matches file location
+3. **Check pasted embed**: Validate JSON in the embed script body
+4. **Test locally first**: Use `?ref=local` to debug before pushing
+
+### Can't access plugin in Experience Workspace
+
+**Problem**: Experience Workspace doesn't let you load plugin URL
+
+**Fixes**:
+1. **Check permissions**: Ensure you have access to edsmasterclass/labs
+2. **Check URL format**: Must start with `https://da.live/app/`
+3. **Check ref parameter**: Must include `?ref=<your-branch>` or `?ref=local`
+4. **Try main branch**: Test with `?ref=main` to isolate branch issues
+
+**Debugging with Browser DevTools**:
+1. Open plugin URL in new tab
+2. Right-click → Inspect
+3. Check Console tab for JavaScript errors
+4. Check Network tab for failed requests (SDK, JavaScript files)
+5. Check Elements tab to verify HTML structure
+
+---
+
+## Real-World Plugin Examples
+
+### Use Case 1: Speaker Directory Plugin
+- **Fetch speaker data** from `/speakers.json` or external API
+- **Display list** of speakers with photos and names
+- **Click to insert**: Selected speaker bio as formatted table
+- **Bonus**: Use `token` to fetch authenticated data from Experience Workspace Admin API
+
+**Example flow**:
+```javascript
+const { token, actions } = await DA_SDK;
+
+// Fetch speakers with auth
+const response = await fetch('/speakers.json', {
+  headers: { 'Authorization': `Bearer ${token}` }
+});
+const { data } = await response.json();
+
+// Display in plugin UI, insert on click
+speakers.forEach(speaker => {
+  button.onclick = async () => {
+    await actions.sendText(`## ${speaker.Name}\n${speaker.Bio}`);
+    await actions.closeLibrary();
+  };
+});
+```
+
+### Use Case 2: Section Library Plugin
+- **Pre-formatted section layouts**: Hero, CTA, Testimonials, FAQ
+- **Click to insert**: Full section markup (with blocks)
+- **Variant support**: Multiple designs per section type
+- **Use case**: Ensure consistent design system compliance
+
+**Example templates**:
+- Hero with centered text + background image
+- CTA with button + icon
+- Testimonial with quote + photo + name
+- FAQ accordion with expandable items
+
+### Use Case 3: DAM Asset Browser
+- **Browse DAM** or external asset library (Cloudinary, Bynder)
+- **Search and filter** images by tags, categories
+- **Insert with proper markdown**: Optimized image syntax
+- **Auto-generate alt text**: From asset metadata
+
+**Example flow**:
+```javascript
+// Fetch assets from DAM
+const assets = await fetchFromDAM(token);
+
+// Display thumbnails
+assets.forEach(asset => {
+  thumbnail.onclick = async () => {
+    const markdown = `![${asset.alt}](${asset.url})`;
+    await actions.sendText(markdown);
+    await actions.closeLibrary();
+  };
+});
+```
+
+### Use Case 4: Product Catalog Plugin
+- **Fetch products** from PIM (Product Information Management system)
+- **Search by SKU**, name, category
+- **Insert as table**: Product specs, price, images
+- **E-commerce sites**: Consistent product page structure
+
+### Use Case 5: Form Builder Plugin
+- **Select form type**: Contact, Registration, Survey
+- **Configure fields**: Name, email, message, etc.
+- **Generate markup**: Form block with proper structure
+- **Validation rules**: Built into generated code
+
+### Use Case 6: Legal Snippets Library
+- **Pre-approved legal text**: Privacy policies, disclaimers, copyright
+- **Version controlled**: Always use latest approved version
+- **Compliance**: Ensure legal requirements met
+- **Multi-language support**: Insert in author's language
+
+### Use Case 7: AI Content Generator
+- **Generate content** via OpenAI, Claude, etc.
+- **Input**: Title, keywords, tone
+- **Output**: Generated paragraphs, summaries
+- **Insert directly**: Author can edit after insertion
+
+**Common pattern**:
+```javascript
+// 1. Fetch/generate data
+const data = await fetchData(context, token);
+
+// 2. Display in UI
+renderUI(data);
+
+// 3. Handle clicks
+buttons.forEach(btn => {
+  btn.onclick = async () => {
+    const content = formatContent(data);
+    await actions.sendText(content);
+    await actions.closeLibrary();
+  };
+});
+```
 
 ---
 
 ## Key Takeaways
 
-- **Repoless** separates code from content — one codebase, many sites
-- **Site Admin** clones site configurations to launch new sites in minutes
-- **DA.live tools** (Traverse + Import) copy content between sites instantly
-- **Configuration Service** manages which code each site uses
-- **Multi-brand theming** uses body class selectors + CSS custom properties
-- **Theme metadata** controls which visual identity a site uses — no code changes needed
-- **Code updates** apply to all sites automatically
-- **Scale** from 1 site to 1000+ sites with the same codebase
+- **Experience Workspace plugins** are HTML + JavaScript applications hosted on your Edge Delivery site
+- **DA App SDK** (`https://da.live/nx/utils/sdk.js`) provides the interface to Experience Workspace
+- **PostMessage API** enables secure cross-origin communication (plugin in iframe)
+- **Three SDK objects**: `context` (document info), `token` (auth), `actions` (insert content)
+- **Two insertion methods**: `actions.sendText()` (markdown) and `actions.sendHTML()` (HTML)
+- **Plugin URL pattern**: `https://da.live/app/{org}/{repo}/{path}?ref={branch}`
+- **Local development**: Use `?ref=local` to load from `localhost:3000`
+- **Branch testing**: Use `?ref=<your-branch>` to load from your feature branch
+- **Production use**: Register plugins in site config for automatic library discovery
+- **Plugin architecture**: HTML (UI) + JavaScript (logic) + SDK (communication)
+
+**Why plugins?**
+- **Consistency** - Same conversion rules across all pages
+- **Speed** - One-click insertion vs manual copy-paste
+- **Integration** - Pull from external systems (APIs, DAMs, PIMs)
+- **Automation** - Generate content programmatically
+- **Validation** - Enforce structure and rules
+
+**The pattern**: UI → Paste Embed → Parse + Validate → `actions.sendHTML()` → Experience Workspace inserts → `actions.closeLibrary()`
+
+</details>
 
 ---
 
 ## Verification Checklist
 
-- [ ] Cloned `nycmasterclass` site config to create `jsmith-mc` (Site Admin)
-- [ ] Created content folder in DA.live (`cloudadoption/jsmith-mc`)
-- [ ] Copied content using Traverse and Import tools
-- [ ] Previewed your site and saw it working
-- [ ] Verified code loading from `nycmasterclass` (DevTools Network tab)
-- [ ] Customized the homepage heading (content independence)
-- [ ] Created metadata sheet in DA.live to set theme site-wide
-- [ ] Added theme CSS in `styles/styles.css` with body class selector
-- [ ] Pushed changes and previewed your custom brand colors
-- [ ] Compared your site with other participants' sites
-- [ ] Understand how one codebase serves many branded sites
+- [ ] **Created plugin files**:
+  - `/tools/plugins/embedwidget/embedwidget.html`
+  - `/tools/plugins/embedwidget/embedwidget.css`
+  - `/tools/plugins/embedwidget/embedwidget.js`
+- [ ] **Created block files**:
+  - `/blocks/tradingview/tradingview.js`
+  - `/blocks/tradingview/tradingview.css`
+- [ ] **Tested locally** with `?ref=local` (dev server running)
+- [ ] **Plugin loads** in library palette (no errors)
+- [ ] **Conversion works**:
+  - valid embed inserts the `tradingview` block table
+  - invalid embed is rejected with clear messaging
+- [ ] **Content inserts correctly** as structured HTML table
+- [ ] **Preview rendering works**: inserted block decorates and widget loads on the page
+- [ ] **Tested in Chrome DevTools responsive view** (desktop and mobile)
+- [ ] **Library closes** automatically after insertion
+- [ ] **Committed and pushed** to feature branch (`git push origin jsmith`)
+- [ ] **Tested on branch** with `?ref=<your-branch>` parameter
+- [ ] **Understand DA App SDK**:
+  - `context` provides document info
+  - `token` provides auth for API calls
+  - `actions.sendHTML()` inserts block markup
+  - `actions.closeLibrary()` closes palette
+- [ ] **Understand PostMessage pattern** - Secure iframe communication
+- [ ] **Understand URL structure** - `da.live/app/{org}/{repo}/{path}?ref={branch}`
+- [ ] **Know how to debug** - Browser DevTools, Console, Network tab
+- [ ] **Optional: Understand plugin registration** in site config
 
 ---
 
-## Reference Implementation
+## Optional Enhancements
 
-A working implementation of this exercise is available for the site `ukhalid-mc`.
+If you finish early, try these enhancements to your plugin:
 
-- Site: [https://main--ukhalid-mc--cloudadoption.aem.page/](https://main--ukhalid-mc--cloudadoption.aem.page/)
-- Metadata sheet: [https://da.live/sheet#/cloudadoption/ukhalid-mc/metadata](https://da.live/sheet#/cloudadoption/ukhalid-mc/metadata)
+### Enhancement 1: Support More Widget Types
+
+Expand the parser to support additional embed providers and widget classes:
+- Additional TradingView widget families
+- Other approved providers
+- Provider-specific validation rules
+
+```javascript
+if (scriptURL.host === 's3.tradingview.com') {
+  // current parser branch
+}
+```
+
+### Enhancement 2: Use Context-Aware Defaults
+
+Use `context` to make inserted config smarter:
+
+```javascript
+const { context } = await DA_SDK;
+
+const pageName = context.path.split('/').pop();
+config.container_id = `widget-${pageName}`;
+```
+
+### Enhancement 3: Fetch Provider Metadata
+
+Fetch supported widget definitions from a JSON file:
+
+```javascript
+const response = await fetch('/tools/plugins/embedwidget/supported-widgets.json');
+const widgets = await response.json();
+// Validate against dynamically fetched definitions
+```
+
+### Enhancement 4: Better UI
+
+- Add search/filter for provider and widget type
+- Add preview of generated block table
+- Add form inputs for customization
+- Add validation before insertion
+
+### Enhancement 5: Use `sendHTML()` for Rich Content
+
+Instead of markdown tables, insert rich HTML:
+
+```javascript
+const html = `
+<div class="widget-preview">
+  <table>
+    <tr><td>script</td><td>${script}</td></tr>
+    <tr><td>height</td><td>${height}</td></tr>
+  </table>
+</div>
+`;
+await actions.sendHTML(html);
+```
 
 ---
 
 ## References
 
-- [Repoless Architecture](https://www.aem.live/docs/repoless)
-- [Configuration Service Setup](https://www.aem.live/docs/config-service-setup)
-- [Multi-Brand Theming (Option 1)](https://main--helix-website--adobe.aem.page/drafts/ravuthu/multi-brand-eds-implementation-using-repoless#option-1-single-file-with-body-class-selectors)
-- [Site Admin Tool](https://tools.aem.live/tools/site-admin/index.html)
-- [Admin API](https://www.aem.live/docs/admin.html)
+- **[Developing Apps and Plugins](https://docs.da.live/developers/guides/developing-apps-and-plugins)** - Official guide
+- **[DA App SDK Source](https://da.live/nx/utils/sdk.js)** - SDK code (inspect for advanced usage)
+- **[Experience Workspace Documentation](https://docs.da.live/)** - Complete documentation
+- **[TradingView Widgets Collection](https://www.tradingview.com/widget-docs/widgets/)** - Sample widget catalog
+- **[TradingView Company Profile Widget](https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/)** - Example widget used in this lab
+- **[da-blog-tools TradingView README](https://raw.githubusercontent.com/aemsites/da-blog-tools/refs/heads/main/tools/plugins/tradingview/README.md)** - Source pattern for embed conversion
+- **[PostMessage API](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage)** - Understanding cross-origin communication
 
 ---
 
-## Congratulations!
+## Solution
 
-You've completed all 8 exercises of the NYC Masterclass 2026 lab.
-
-You now know how to:
-- Author content in DA.live
-- Build blocks with enhancements and variations
-- Fetch data from external sources
-- Use query index with auto-blocking
-- Generate pages from JSON templates
-- Handle form submissions via Workers
-- Build DA.live plugins for content insertion
-- Architect multi-site solutions with shared code
-- Apply multi-brand theming from a single codebase
-
-**Next steps**:
-- Review your work
-- Run `npm run lint` one final time
-- Create pull request with before/after URLs
-- Share Lighthouse scores (target: 100)
-
-Thank you for participating in NYC Masterclass 2026!
+The complete solution for this exercise (embedwidget plugin, tradingview block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.

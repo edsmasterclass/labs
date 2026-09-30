@@ -1,0 +1,2 @@
+# Store and check out text files as LF so ESLint linebreak-style (unix) passes on Windows.
+* text=auto eol=lf

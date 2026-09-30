@@ -4,18 +4,51 @@
 
 ---
 
-## Prerequisites
+<details>
+<summary><strong>Quick navigation</strong></summary>
 
-**Complete [SETUP.md](../SETUP.md) if not already done.**
+- [Prerequisites](#prerequisites)
+- **Background** (please read — expand below, or jump: [What you'll learn](#what-youll-learn) · [Why this matters](#why-this-matters) · [How Query Index works](#how-query-index-works))
+- **Exercise steps**
+  - [Step 1: Verify query-index.json](#step-1-verify-query-indexjson)
+  - [Step 2: Look at the Block Collection Reference](#step-2-look-at-the-block-collection-reference)
+  - [Step 3: Create Block Files](#step-3-create-block-files)
+  - [Step 4: Implement JavaScript](#step-4-implement-javascript)
+  - [Step 5: Implement Styles](#step-5-implement-styles)
+  - [Step 6: Create Test Page in Experience Workspace](#step-6-create-test-page-in-experience-workspace)
+  - [Step 7: Test the Search Block](#step-7-test-the-search-block)
+  - [Step 8: Test Edge Cases](#step-8-test-edge-cases)
+  - [Step 9: Commit Your Changes](#step-9-commit-your-changes)
+- **After the steps** (please read — [Key takeaways](#key-takeaways))
+- [Verification Checklist](#verification-checklist)
+- [References](#references)
+- [Solution](#solution)
+- [Next Exercise](#next-exercise)
 
-Required:
-- On your feature branch (`jsmith` - your first initial + last name)
-- Local dev server running at `http://localhost:3000`
-- Exercises 1–3 completed
-- Exercise 1 page published to `/labs/jsmith/` (done at end of Exercise 3)
-- DA.live access
+</details>
 
 ---
+
+## Prerequisites
+
+**Complete [SETUP.md](../SETUP.md) if not already done.** Exercises can be done in sequence or independently; if independent, ensure SETUP is done and you have the items below.
+
+**Required:**
+- **Feature branch** — From the repository root, run `git branch`. The line with `*` should be your personal branch: first initial + last name, all lowercase (e.g. `jsmith`). If you are on `main` or any other branch, create and switch to yours:
+  ```bash
+  git checkout -b jsmith
+  ```
+  Replace `jsmith` with your branch name. See [SETUP.md — Step 2: Create Feature Branch](../SETUP.md#step-2-create-feature-branch).
+- Verify the local dev server is accessible at [http://localhost:3000](http://localhost:3000); if not, start it with `aem up` from the project root in a terminal ([SETUP Step 6](../SETUP.md#step-6-start-development-server)).
+- Code editor open with the repository
+- Exercises 1–3 completed (if doing in sequence)
+- **Indexed page** — Your Exercise 1 lab or session page must be **published** under **`/labs/<your-name>/`** or **`/sessions/<your-name>/`** on **`.aem.live`** so it appears in `query-index.json`. If you have not done this yet, complete [Exercise 3 — Step 10](../exercise3/instructions.md#step-10-before-you-move-on-for-exercise-4) (copy from `/drafts/<your-name>/` to the matching tree, publish). Pages under `/drafts/**` are **not** indexed.
+- Experience Workspace access
+
+---
+
+<details>
+<summary><strong>Background</strong> (please read — concepts before the hands-on steps)</summary>
 
 ## What You'll Learn
 
@@ -64,78 +97,94 @@ The index for this site is configured with the following `query.yaml`:
 
 ```yaml
 version: 1
-
 indices:
   default:
+    target: /query-index.json
     include:
       - /sessions/**
       - /labs/**
+    properties:
+      presenter:
+        value: attribute(el, "content")
+        select: head > meta[name="presenter"]
+      category:
+        value: attribute(el, "content")
+        select: head > meta[name="category"]
+      tags:
+        value: attribute(el, "content")
+        select: head > meta[property="article:tag"]
+      published-date:
+        value: parseTimestamp(attribute(el, "content"), "MM/DD/YYYY")
+        select: head > meta[name="published-date"]
+      level:
+        value: attribute(el, "content")
+        select: head > meta[name="level"]
+      time:
+        value: attribute(el, "content")
+        select: head > meta[name="time"]
+      duration:
+        value: attribute(el, "content")
+        select: head > meta[name="duration"]
+      title:
+        value: textContent(el)
+        select: head > title
+      description:
+        value: attribute(el, "content")
+        select: head > meta[name="description"]
+      image:
+        value: attribute(el, "content")
+        select: head > meta[property="og:image"]
     exclude:
       - /drafts/**
-    target: /query-index.json
-    properties:
-      speaker-name:
-        select: head > meta[name="speaker-name"]
-        value: attribute(el, "content")
-      instructor:
-        select: head > meta[name="instructor"]
-        value: attribute(el, "content")
-      category:
-        select: head > meta[name="category"]
-        value: attribute(el, "content")
-      tags:
-        select: head > meta[name="tags"]
-        value: attribute(el, "content")
-      published-date:
-        select: head > meta[name="published-date"]
-        value: parseTimestamp(attribute(el, "content"), "MM/DD/YYYY")
-      session-level:
-        select: head > meta[name="session-level"]
-        value: attribute(el, "content")
-      session-time:
-        select: head > meta[name="session-time"]
-        value: attribute(el, "content")
-      difficulty-level:
-        select: head > meta[name="difficulty-level"]
-        value: attribute(el, "content")
-      duration:
-        select: head > meta[name="duration"]
-        value: attribute(el, "content")
 ```
 
 **What this tells you**:
 - **Only `/sessions/**` and `/labs/**` are indexed** — other paths (including `/drafts/**`) are excluded
 - **Custom properties** are extracted from `<meta>` tags in the page `<head>` — these are the same metadata fields you set in Exercise 1
 - **`parseTimestamp`** converts the `MM/DD/YYYY` date string authors write into a Unix timestamp for sorting
-- The built-in fields (`path`, `title`, `description`, `image`, `lastModified`) are always included automatically
+- Include `title`, `description`, and `image` in your index output so search cards can render a strong result preview (title text, summary, thumbnail)
 
 **Reference**: [Indexing Reference](https://www.aem.live/docs/indexing-reference)
+
+</details>
 
 ---
 
 ## Step 1: Verify query-index.json
 
-Verify your `/labs/jsmith/` page from the end of Exercise 3 appears in the index:
+Verify your published page under **`/labs/<your-name>/`** or **`/sessions/<your-name>/`** (from [Exercise 3 — Step 10](../exercise3/instructions.md#step-10-before-you-move-on-for-exercise-4)) appears in the index:
 
 ```
 http://localhost:3000/query-index.json
 ```
 
-Look for your `/labs/jsmith/my-session` path in the `data` array.
+Look for your page path in the `data` array (e.g. `/labs/<your-name>/my-session` or whatever you named the copied Exercise 1 page).
+
+**Validate index definition**: [Index Admin](https://tools.aem.live/tools/index-admin/index.html?org=edsmasterclass&site=labs) — use this tool to fetch and validate the index configuration (include/exclude paths, properties) for this org/site.
+
+  ![Query Index Example](images/query-index.png)
 
 > **Note**: Index updates can take a few minutes after publishing. If you don't see your page yet, continue — it will be there by the time you test.
+
 
 ---
 
 ## Step 2: Look at the Block Collection Reference
 
-The search block we're extending lives at:
+The search block we’re extending lives in the **[AEM Block Collection](https://github.com/adobe/aem-block-collection)** repo. You won’t edit that repo in this lab — skim it on GitHub or clone it to a sibling folder and open it in your editor. **From that repository’s root**, the files that we will focus on are for the search block:
 
 ```
-https://github.com/adobe/aem-block-collection/tree/main/blocks/search
+blocks/
+  search/
+    search.js
+    search.css
 ```
 
-Open it and take a quick look. The Block Collection version has two variants:
+On GitHub: [tree/main/blocks/search](https://github.com/adobe/aem-block-collection/tree/main/blocks/search).
+
+**In Step 3**, you will create `blocks/search/` under **this** project (labs) — same relative layout as upstream, but your own files to extend.
+
+Take a quick look at the upstream files. The Block Collection version has two variants:
 - **Default** — full search box with results rendered as cards
 - **Minimal** — search box only (results handled externally)
 
@@ -145,7 +194,8 @@ Open it and take a quick look. The Block Collection version has two variants:
 - Render results via the **Cards block** (block composition) instead of custom card markup
 - Restyle CSS to match the masterclass dark theme
 - Configure default data source to `/query-index.json`
-- Expand search fields to include `instructor`, `speaker-name`, `category`, and `tags`
+- Expand search fields to include canonical metadata: `presenter`, `category`, `tags`, `level`, `time`, and `duration`
+- Ensure index rows include `title`, `description`, and `image` so result cards show more than just links
 
 ---
 
@@ -166,7 +216,9 @@ blocks/
 
 **File**: `blocks/search/search.js`
 
-Copy this code:
+> **Tip**: The full implementation is also available on the [answers branch on GitHub](https://github.com/edsmasterclass/labs/tree/answers/blocks/search) if you prefer to copy from there.
+
+Copy/Replace the contents of the file with this code:
 
 ```javascript
 import {
@@ -280,6 +332,10 @@ function buildCardsBlock(results, searchTerms) {
     if (result.image) {
       const imageDiv = document.createElement('div');
       const pic = createOptimizedPicture(result.image, result.title || '', false, [{ width: '750' }]);
+      const img = pic.querySelector('img');
+      if (img) {
+        img.addEventListener('error', () => imageDiv.remove(), { once: true });
+      }
       imageDiv.append(pic);
       row.append(imageDiv);
     }
@@ -350,10 +406,12 @@ function filterData(searchTerms, data) {
     const metaContents = [
       result.title,
       result.description,
-      result.instructor,
-      result['speaker-name'],
+      result.presenter,
       result.category,
       result.tags,
+      result.level,
+      result.time,
+      result.duration,
       pathSuffix,
     ].filter(Boolean).join(' ').toLowerCase();
     searchTerms.forEach((term) => {
@@ -460,7 +518,7 @@ export default async function decorate(block) {
 
 - **`ensureCardsCSS()`** — loads `cards.css` on demand the first time results render. The Cards block stylesheet may not be present if there's no Cards block on the page, so we load it ourselves
 - **`buildCardsBlock(results, searchTerms)`** — block composition: builds the pre-decoration DOM that `cards.decorate()` expects, with `<mark>` highlighting applied to titles and descriptions *before* Cards transforms the DOM (marks survive the transformation)
-- **`filterData(searchTerms, data)`** — two-pass ranking: title/header matches rank first, then `title + description + instructor + speaker-name + category + tags + path` matches. Custom fields from the index config are all searchable
+- **`filterData(searchTerms, data)`** — two-pass ranking: title/header matches rank first, then `title + description + presenter + category + tags + level + time + duration + path` matches. Custom fields from the index config are all searchable
 - **`handleSearch()`** — fires on every `input` event (live search, no submit button). Updates `?q=` URL param so searches are bookmarkable. Skips fetch for queries under 3 characters
 - **`decorate(block)`** — reads optional data source URL from the block's first link, defaults to `/query-index.json`. Restores search from `?q=` param on page load
 
@@ -472,7 +530,9 @@ export default async function decorate(block) {
 
 **File**: `blocks/search/search.css`
 
-Copy this code:
+> **Tip**: Also available on the [answers branch on GitHub](https://github.com/edsmasterclass/labs/tree/answers/blocks/search).
+
+Copy/Replace the contents of the file with this code:
 
 ```css
 /* Search block — extended from AEM Block Collection */
@@ -561,33 +621,27 @@ Copy this code:
 
 ---
 
-## Step 6: Create Test Page in DA.live
+## Step 6: Create Test Page in Experience Workspace
 
-In [DA.live](https://da.live), create page: `/drafts/jsmith/search-test` (use your name)
+**In Experience Workspace**, create a page at **`/drafts/<your-name>/search-test`** (same **`<your-name>`** folder as Exercises 1–3).
 
-Add this content:
+1. Open the project’s **drafts** folder: [da.live/#/edsmasterclass/labs/drafts](https://da.live/#/edsmasterclass/labs/drafts)
+2. Open your personal subfolder **`<your-name>`** (first initial + last name, lowercase).
+3. **New** → **Page**, name it **`search-test`**.
+4. Switch to **Content** mode and add a **level-1 heading**: **Search**.
+5. Open **Outline**, then choose **Blocks** (available in both Content and Layout modes).
+6. In **Outline** → **Blocks**, find **Search** and click the **+** to insert it.
+7. If the block has a row for the data source URL, set it to **`/query-index.json`**. If you leave that row empty or omit it, the block still defaults to **`/query-index.json`**. (You can point it at any JSON endpoint that returns `{ data: [...] }` if you experiment later.)
 
-```
-# Search
-
-| Search |
-|--------|
-| /query-index.json |
-```
-
-**What you're authoring**:
-- Block name: `Search`
-- Row 1: URL of the data source (`/query-index.json`)
-
-The URL row is optional — if omitted, the block defaults to `/query-index.json`. Authors can point the block at any JSON endpoint that returns `{ data: [...] }`.
-
-**Save** the page in DA.live.
+Experience Workspace auto-saves. Click **Preview** to see the page on localhost.
 
 ---
 
 ## Step 7: Test the Search Block
 
-Open: `http://localhost:3000/drafts/jsmith/search-test`
+Open: `http://localhost:3000/drafts/<your-name>/search-test`
+
+**Test on desktop and mobile**: Use Chrome DevTools responsive view — open DevTools (F12 or Cmd+Option+I), toggle the device toolbar (Cmd+Shift+M / Ctrl+Shift+M) to switch to responsive mode, then resize the viewport or pick a device preset to verify layout at different widths. Use this for all test steps in this exercise.
 
 **You should see**:
 - A search icon + input field with placeholder "Search sessions and labs..."
@@ -595,15 +649,18 @@ Open: `http://localhost:3000/drafts/jsmith/search-test`
 
 **Run these searches**:
 
-| Query | Expected |
-|-------|----------|
-| `session` | Pages with "session" in title/description/tags |
-| `lab` | Pages with "lab" in title/description |
-| An instructor name | Pages where that instructor is listed |
-| A speaker name | Pages where that speaker is listed |
-| A category (e.g. `infrastructure`) | Pages tagged with that category |
-| Your session title (or part of it) | Your `/labs/jsmith/` page |
-| `xyz123` | No results message |
+
+| Query                                     | Expected                                                                                         |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `technical`                               | All session pages that contain `technical` (matches `category` field)                            |
+| `lab`                                     | All lab pages + your `/labs/<your-name>/` page (matches title and path)                          |
+| `stefan`                                  | 2 sessions by Stefan Seifert (matches `presenter` field)                                         |
+| Your first name (e.g. `sagar`)            | Your `/labs/<your-name>/` page (matches `presenter` field — requires your page to be published) |
+| `development`                             | Lab pages in the development category                                                            |
+| Your session or lab title (or part of it) | Your `/labs/<your-name>/` page                                                                   |
+| `xyz123`                                  | "No results found." message                                                                      |
+| `edge`                                    | All pages matching `edge` in title or description                                                |
+
 
 Results render as Cards block cards — same dark cards with hover effect you saw in Exercise 2.
 
@@ -611,16 +668,20 @@ Results render as Cards block cards — same dark cards with hover effect you sa
 
 **Escape key**: Press Escape while the input is focused to clear the search and results.
 
+  ![Search demo](images/search_demo.gif)
+
 ---
 
 ## Step 8: Test Edge Cases
 
-| Scenario | Expected behavior |
-|----------|-------------------|
-| Query shorter than 3 chars | Results cleared, no fetch |
-| Query with no matches (`xyz123`) | "No results found." |
-| Escape key | Results cleared, URL param removed |
-| Page load with `?q=session` in URL | Search runs automatically |
+
+| Scenario                           | Expected behavior                  |
+| ---------------------------------- | ---------------------------------- |
+| Query shorter than 3 chars         | Results cleared, no fetch          |
+| Query with no matches (`xyz123`)   | "No results found."                |
+| Escape key                         | Results cleared, URL param removed |
+| Page load with `?q=session` in URL | Search runs automatically          |
+
 
 ---
 
@@ -644,6 +705,9 @@ Replace `jsmith` with your branch name.
 
 ---
 
+<details>
+<summary><strong>After the steps</strong> (please read — takeaways)</summary>
+
 ## Key Takeaways
 
 - **Block Collection** is a library of reference blocks — not boilerplate, but a starting point to extend
@@ -656,20 +720,23 @@ Replace `jsmith` with your branch name.
 - **URL state** (`?q=`) makes searches bookmarkable and shareable
 - **No `innerHTML` for user input** — `DocumentFragment` + `createElement` prevents XSS
 
+</details>
+
 ---
 
 ## Verification Checklist
 
-- [ ] `/labs/jsmith/my-session` visible in `query-index.json`
+- [ ] `/labs/<your-name>/<your-page-name>` visible in `query-index.json`
 - [ ] `blocks/search/search.js` and `blocks/search/search.css` created
-- [ ] Search input renders on `http://localhost:3000/drafts/jsmith/search-test`
+- [ ] Search input renders on `http://localhost:3000/drafts/<your-name>/search-test`
 - [ ] Typing at least 3 characters triggers a search
 - [ ] Results render as Cards block cards
-- [ ] Your own `/labs/jsmith/` page is findable by searching its title
+- [ ] Your own `/labs/<your-name>/` page is findable by searching its title
 - [ ] Matched terms are highlighted in brand color
 - [ ] "No results found" message shows for unmatched query
 - [ ] URL updates with `?q=` param as you type
 - [ ] Escape key clears the search
+- [ ] Tested in Chrome DevTools responsive view (desktop and mobile)
 - [ ] `npm run lint` passes
 
 ---
@@ -678,8 +745,14 @@ Replace `jsmith` with your branch name.
 
 - [AEM Block Collection — Search](https://github.com/adobe/aem-block-collection/tree/main/blocks/search)
 - [Indexing Reference](https://www.aem.live/docs/indexing-reference)
-- [Index Admin Tool](https://tools.aem.live/tools/index-admin)
+- [Index Admin Tool](https://tools.aem.live/tools/index-admin/index.html?org=edsmasterclass&site=labs) — fetch and validate the index definition for this site
 - [EDS Indexing Concepts](https://www.aem.live/developer/indexing)
+
+---
+
+## Solution
+
+The complete solution for this exercise (search block) is on the [answers branch](https://github.com/edsmasterclass/labs/tree/answers). The same branch contains solutions for all lab exercises.
 
 ---
 

@@ -168,15 +168,15 @@
   transform: translateY(0);
 }
 
+.mc-register .button:focus-visible {
+  outline: 2px solid var(--link-color);
+  outline-offset: 2px;
+}
+
 .mc-register .button:disabled {
   background-color: #6c757d;
   cursor: not-allowed;
   transform: none;
-}
-
-.mc-register .button:focus-visible {
-  outline: 2px solid var(--link-color);
-  outline-offset: 2px;
 }
 
 .mc-register .button:disabled:hover {

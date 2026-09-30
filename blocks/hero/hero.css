@@ -22,10 +22,8 @@
   margin-right: auto;
   margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #f97316 0%, #c026d3 100%);
-  /* stylelint-disable-next-line property-no-vendor-prefix */
-  -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
+  color: transparent;
 }
 
 .hero picture {

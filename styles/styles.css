@@ -108,8 +108,8 @@ body.ukhalid {
   --brand-2: #2563eb;
 
   background: radial-gradient(1200px 600px at 80% -10%, #06b6d4 0%, transparent 60%),
-              radial-gradient(900px 600px at 10% 10%, #2563eb 0%, transparent 60%),
-              linear-gradient(180deg, var(--masterclass-bg-2), var(--masterclass-bg-1) 55%);
+    radial-gradient(900px 600px at 10% 10%, #2563eb 0%, transparent 60%),
+    linear-gradient(180deg, var(--masterclass-bg-2), var(--masterclass-bg-1) 55%);
   background-attachment: fixed;
   color: var(--ink);
 }
@@ -222,7 +222,7 @@ button {
   line-height: 1.25;
   text-align: center;
   text-decoration: none;
-  background: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+  background: linear-gradient(135deg, #f97316 0%, #c026d3 100%);
   color: white;
   cursor: pointer;
   overflow: hidden;
@@ -264,39 +264,16 @@ button.secondary:hover {
   box-shadow: none;
 }
 
-/* schedule section - table links as text links, not buttons */
-.section.schedule .table a {
-  color: var(--brand-1);
-  text-decoration: none;
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-  transform: none !important;
-  box-shadow: none !important;
-  font-weight: 500;
-  transition: color 0.2s ease;
-}
-
-.section.schedule .table a:hover {
-  color: var(--brand-2);
-  background: none !important;
-  transform: none !important;
-  box-shadow: none !important;
-  text-decoration: underline;
-}
-
-/* Featured sections - reusable pattern for cards with centered buttons and arrow links */
-
-/* Add top margin to cards in featured sections */
 .section.featured .cards {
   margin-top: 2rem;
 }
 
-/* Right-align paragraph with link after cards wrapper in featured sections */
 .section.featured .cards-wrapper + .default-content-wrapper p {
   text-align: right;
+}
+
+.section.featured .cards .cards-card-body > p:has(a) {
+  text-align: center;
 }
 
 /* Style links that come after cards wrapper in featured sections - make them arrow links */
@@ -309,14 +286,14 @@ button.secondary:hover {
   gap: 0.5em;
   transition: gap 0.2s ease;
 
-  /* Override button styles */
-  background: none !important;
-  border: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
-  transform: none !important;
-  box-shadow: none !important;
+  /* Override button styles - specificity from selector wins over generic button rules */
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  transform: none;
+  box-shadow: none;
 }
 
 .section.featured .cards-wrapper + .default-content-wrapper p a::after {
@@ -328,18 +305,13 @@ button.secondary:hover {
 .section.featured .cards-wrapper + .default-content-wrapper p a:hover {
   color: var(--brand-2);
   gap: 0.75em;
-  background: none !important;
-  transform: none !important;
-  box-shadow: none !important;
+  background: none;
+  transform: none;
+  box-shadow: none;
 }
 
 .section.featured .cards-wrapper + .default-content-wrapper p a:hover::after {
   transform: translateX(4px);
-}
-
-/* Center buttons in cards within featured sections */
-.section.featured .cards .cards-card-body > p:has(a) {
-  text-align: center;
 }
 
 main img {
@@ -357,6 +329,32 @@ main img {
 .icon img {
   height: 100%;
   width: 100%;
+}
+
+/* Schedule section - table links as text links, not buttons */
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.schedule .table a {
+  color: var(--brand-1);
+  text-decoration: none;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 0;
+  transform: none;
+  box-shadow: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+.section.schedule .table a:hover {
+  color: var(--brand-2);
+  background: none;
+  transform: none;
+  box-shadow: none;
+  text-decoration: underline;
 }
 
 /* sections */

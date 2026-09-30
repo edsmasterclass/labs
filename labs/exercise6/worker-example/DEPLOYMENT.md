@@ -12,7 +12,7 @@
 
 1. Go to https://api.slack.com/apps
 2. Click "Create New App" → "From scratch"
-3. Name: "NYC Masterclass Feedback"
+3. Name: "EDS Masterclass Labs Feedback"
 4. Select your workspace
 5. Click "Incoming Webhooks" in left sidebar
 6. Toggle "Activate Incoming Webhooks" to ON

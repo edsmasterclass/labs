@@ -1,14 +1,13 @@
-# NYC Masterclass
+# EDS Masterclass Labs
 Training materials and exercises for AEM Edge Delivery Services masterclass sessions.
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.aem.page/
-- Live: https://main--{repo}--{owner}.aem.live/
+- Preview: https://main--labs--edsmasterclass.aem.page/
+- Live: https://main--labs--edsmasterclass.aem.live/
 
 ## Labs & Exercises
 - [Labs Overview](labs/README.md) - Complete guide to all exercises
 - [Setup Instructions](labs/SETUP.md) - Get started with the labs
-- [Instructor Setup](labs/INSTRUCTOR_SETUP.md) - Setup guide for instructors
 
 ## Documentation
 
@@ -37,3 +36,4 @@ npm run lint
 1. Install the [AEM CLI](https://github.com/adobe/helix-cli): `npm install -g @adobe/aem-cli`
 1. Start AEM Proxy: `aem up` (opens your browser at `http://localhost:3000`)
 1. Open the `{repo}` directory in your favorite IDE and start coding :)
+
