@@ -70,7 +70,7 @@ Traditional commerce setups require separate systems for product data, page rend
 
 - **One path** is the product's identity. `/labs/<your-branch>/products/swag/masterclass-hoodie` is both the API address and the page URL.
 - **Two sources** merge automatically. Product Bus provides structured data; Experience Workspace provides editorial voice. Neither team steps on the other.
-- **Three output formats** are generated for free. Every catalog root gets an index JSON, a sitemap, and a Merchant Center feed — no extra work.
+- **Three output formats** from one index. Register an index for a catalog root and you get an index JSON, a sitemap, and a Merchant Center feed.
 
 ---
 
@@ -147,6 +147,8 @@ Product pages (may take 30–60 s for feeds to populate):
   ...
 ```
 
+> **Note**: If you run the ingest again, the index step prints a `⚠ ... (continuing anyway)` warning because the index already exists. That's expected — products are still updated.
+
 ### 1c. Verify one product was stored
 
 Open these URLs in your browser (replace `<your-branch>` with your branch name):
@@ -179,14 +181,14 @@ https://main--labs--edsmasterclass.aem.network/config.json
 
 Look for two sections:
 
-- **`mixerConfig`** — the routing rule that sends `/products-*/**` requests to the Product Bus pipeline worker. One pattern covers every student namespace.
-- **`productIndexerConfig`** — tells the indexer which fields to include in the generated feeds, and which catalog roots to watch.
+- **`mixerConfig`** — the routing rules that send `/labs/*/products/*/*` (product pages) plus each namespace's `index.json`, `sitemap.xml`, and `merchant-center-feed.xml` to the Product Bus pipeline worker. The `*` wildcard covers every student namespace.
+- **`productIndexerConfig`** — maps product fields to the columns of the generated index (e.g. `name` → `title`, `price.final` → `price`).
 
 This is the entire infrastructure configuration for Product Bus on this site. No per-student setup required — your namespace was covered the moment you picked a branch name.
 
 ### 2b. Open the auto-generated feeds
 
-Indexing happens automatically after ingest — no action required. Open each of these in your browser (replace `<your-branch>` with your branch):
+The script registered your index in Step 1b; from here on, indexing runs automatically whenever products change. Open each of these in your browser (replace `<your-branch>` with your branch):
 
 **Query index** — power product listing grids (one per scope):
 ```
@@ -205,7 +207,7 @@ https://main--labs--edsmasterclass.aem.network/labs/<your-branch>/products/merch
 
 > **Note**: Feeds may take 30–60 seconds to generate after ingest. If you see a 404, wait a moment and refresh.
 
-**Key concept**: You get scoped indexes, a sitemap, and a Merchant Center feed from a single ingest. The indexer scopes itself to your namespace — and to sub-paths like `/swag` — automatically.
+**Key concept**: One index registration gives you a query index, a sitemap, and a Merchant Center feed scoped to your namespace. You don't need a separate index per category — the listing pages in Step 3 filter the one index by path.
 
 ---
 
@@ -350,7 +352,7 @@ Marketing authors product stories in Experience Workspace without ever touching 
 
 - **Path = identity** — In Product Bus, where a product lives *is* its address. The SKU is just an attribute.
 - **Namespace prefixes scale** — The same pattern that gives 30 students isolation today gives a global brand locale isolation in production.
-- **Indexing is free** — Every catalog root auto-generates index JSON, sitemap, and Merchant Center feed. Zero configuration per namespace.
+- **Indexing is nearly free** — One API call registers an index; the index JSON, sitemap, and Merchant Center feed stay up to date automatically.
 - **Two-source pages** — Product Bus data and Experience Workspace authored content merge at the same path. Neither system owns the page exclusively.
 - **Buy is an API layer** — The commerce funnel (cart, checkout, orders) integrates below the product pages you built. The pages are the top of the funnel.
 
@@ -362,7 +364,7 @@ Marketing authors product stories in Experience Workspace without ever touching 
 
 - [ ] Dry-run shows correct prefix (`<your-branch>`) for all 6 products
 - [ ] Ingest succeeds: index created, `6 saved, 0 failed`
-- [ ] `GET` one product from the API returns full JSON
+- [ ] Product `.json` URL returns full product JSON
 - [ ] `/labs/<your-branch>/products/index.json` shows all 6 products
 - [ ] `sitemap.xml` lists all 6 product URLs
 - [ ] `merchant-center-feed.xml` is present
@@ -392,6 +394,7 @@ Or override the prefix manually:
 ```bash
 node labs/product-bus/generate-products.mjs --dry-run --prefix <your-branch>
 ```
+The prefix is lowercased and any character other than `a-z`, `0-9`, or `-` becomes `-` (e.g. `labs/JSmith` → `labs-jsmith`), matching how AEM names branch hostnames. Use the normalized value everywhere you see `<your-branch>`.
 
 **Ingest returns HTTP 401**
 
@@ -407,8 +410,8 @@ The indexer runs asynchronously. Wait 30–60 seconds and refresh. If still miss
 
 **Product page shows 404**
 
-- Confirm the mixer routing is active: `/products-*/**` should be in the site's `config.json`
-- Confirm you're using your branch URL: `https://<your-branch>--labs--edsmasterclass.aem.page/...`
+- Confirm the mixer routing is active: `/labs/*/products/*/*` should be in the site's `config.json`
+- Confirm you're using an `aem.network` URL (e.g. `https://<your-branch>--labs--edsmasterclass.aem.network/...`). `aem.page` doesn't route to Product Bus, so product pages 404 there unless authored content exists at that path.
 - Confirm the product was successfully ingested (check the API GET in Step 1c)
 
 **Product page renders but authored enrichment doesn't appear**
