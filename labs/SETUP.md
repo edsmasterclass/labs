@@ -161,6 +161,8 @@ npm run lint
 
 Expected output: No errors (warnings are OK for boilerplate)
 
+**Windows PowerShell:** If PowerShell blocks `npm.ps1`, use `npm.cmd run lint` instead. The repository uses LF line endings on all platforms, enforced by ESLint, `.gitattributes`, and `.editorconfig`; do not convert files to CRLF to resolve lint errors.
+
 **What this checks**:
 - ESLint (Airbnb JavaScript style)
 - Stylelint (CSS standards)
