@@ -18,6 +18,7 @@
   box-shadow: var(--shadow);
   color: var(--ink);
   text-align: center;
+  scroll-margin-top: calc(var(--nav-height) + 16px);
 }
 
 .speakers .speakers-headshot {

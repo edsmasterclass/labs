@@ -1,4 +1,4 @@
-import { createOptimizedPicture } from '../../scripts/aem.js';
+import { createOptimizedPicture, toClassName } from '../../scripts/aem.js';
 
 function isNameElement(el) {
   if (/^H[1-6]$/.test(el.tagName)) return true;
@@ -72,6 +72,8 @@ export default function decorate(block) {
 
     const li = document.createElement('li');
     li.className = 'speakers-card';
+    // link target for the schedule block
+    if (name) li.id = `speaker-${toClassName(name)}`;
     li.append(decorateHeadshot(imageCell?.querySelector('picture'), name), body);
     ul.append(li);
   });
