@@ -11,7 +11,7 @@
 
 .cards > ul > li {
   background-color: var(--card);
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 0;
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
