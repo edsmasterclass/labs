@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Masterclass Events</title>
+    <meta name="description" content="Browse upcoming Edge Delivery Services masterclass events in cities worldwide.">
+</head>
+<body>
+    <header></header>
+    <main>
+      <div>
+        <h1>Upcoming Masterclass Events</h1>
+        <p>Join us in 2026 for Edge Delivery Services training in cities worldwide. Select an event below to learn more and register.</p>
+      </div>
+
+      <div>
+        {{#data}}
+        <div class="event">
+          <div>
+            <div>
+              <picture>
+                <img src="{{image}}" alt="{{city}} skyline">
+              </picture>
+            </div>
+          </div>
+          <div>
+            <div>
+              <h3><a href="{{URL}}">{{city}} Masterclass</a></h3>
+              <p><strong>{{date}}</strong></p>
+              <p>{{venue}}, {{country}}</p>
+              <p>{{description}}</p>
+              <p><a href="{{URL}}">View Details</a></p>
+            </div>
+          </div>
+        </div>
+        {{/data}}
+      </div>
+
+    </main>
+    <footer></footer>
+</body>
+</html>
