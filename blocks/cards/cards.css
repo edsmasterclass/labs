@@ -113,21 +113,23 @@
 .cards-toolbar {
   display: inline-flex;
   align-self: flex-start;
-  padding: 0.25rem;
+  padding: 0.18rem;
   border-radius: 999px;
-  background: rgb(15 23 42 / 80%);
-  border: 1px solid rgb(255 255 255 / 10%);
-  box-shadow: 0 8px 24px rgb(0 0 0 / 20%);
+  background: rgb(10 12 18 / 92%);
+  box-shadow: 0 10px 28px rgb(0 0 0 / 30%);
+  border: 1px solid rgb(255 255 255 / 8%);
 }
 
 .cards-toolbar-btn {
   appearance: none;
   border: 0;
   background: transparent;
-  color: rgb(255 255 255 / 80%);
-  font-weight: 600;
-  font-size: 0.9rem;
-  padding: 0.55rem 1.2rem;
+  color: rgb(255 255 255 / 85%);
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.2;
+  padding: 0.7rem 1.5rem;
+  min-width: 6rem;
   border-radius: 999px;
   cursor: pointer;
   transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
@@ -140,7 +142,7 @@
 .cards-toolbar-btn.active {
   background: var(--brand-1);
   color: white;
-  box-shadow: 0 4px 12px rgb(249 115 22 / 35%);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 8%);
 }
 
 .cards.list > ul {
