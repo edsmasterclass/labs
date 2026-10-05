@@ -65,7 +65,7 @@
 .cards h3,
 .cards .cards-card-body > p:first-child,
 .cards .cards-card-body > p > strong {
-  color: white;
+  color: red;
   font-size: 1.4rem;
   font-weight: 700;
   margin-top: 0;
