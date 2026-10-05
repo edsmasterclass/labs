@@ -4,6 +4,7 @@
  * Author provides (in block):
  * - Row 1: Data source URL (sheet.json endpoint)
  */
+
 export default async function decorate(block) {
   const dataSource = block.querySelector('a')?.href;
 
