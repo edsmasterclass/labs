@@ -1,0 +1,122 @@
+.schedule[aria-busy='true'] {
+  min-height: 200px;
+  opacity: 0.5;
+}
+
+.schedule .schedule-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.schedule .schedule-item {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  padding: 1rem 1.25rem;
+  background-color: var(--card);
+  border: 1px solid rgb(255 255 255 / 5%);
+  border-left: 4px solid var(--brand-1);
+  border-radius: 12px;
+}
+
+.schedule .schedule-item p {
+  margin: 0;
+}
+
+.schedule .schedule-time {
+  color: var(--brand-1);
+  font-size: var(--body-font-size-xs);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.schedule .schedule-title {
+  margin: 0;
+  color: white;
+  font-size: var(--heading-font-size-xs);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.schedule .schedule-title a:any-link {
+  color: inherit;
+}
+
+.schedule .schedule-title a:hover {
+  color: var(--brand-1);
+}
+
+.schedule .schedule-speakers {
+  margin-top: 0.25rem;
+  color: var(--ink);
+  font-size: var(--body-font-size-s);
+  line-height: 1.4;
+}
+
+.schedule .schedule-description {
+  margin-top: 0.25rem;
+  color: var(--muted);
+  font-size: var(--body-font-size-xs);
+  line-height: 1.5;
+}
+
+.schedule .schedule-track {
+  justify-self: start;
+  padding: 0.2rem 0.75rem;
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.schedule .schedule-item.schedule-break {
+  background-color: transparent;
+  border-style: dashed;
+  border-color: rgb(255 255 255 / 20%);
+}
+
+.schedule .schedule-break .schedule-time {
+  color: var(--muted);
+}
+
+.schedule .schedule-break .schedule-title {
+  color: var(--muted);
+  font-size: var(--body-font-size-s);
+  font-weight: 600;
+}
+
+.schedule .schedule-message {
+  margin: 0;
+  padding: 2rem 1rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+@media (width >= 600px) {
+  .schedule .schedule-item {
+    grid-template-columns: 9rem 1fr;
+    gap: 0.5rem 1.5rem;
+    align-items: baseline;
+  }
+
+  .schedule .schedule-track {
+    grid-column: 2;
+  }
+}
+
+@media (width >= 900px) {
+  .schedule .schedule-item {
+    grid-template-columns: 10rem 1fr auto;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .schedule .schedule-track {
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
