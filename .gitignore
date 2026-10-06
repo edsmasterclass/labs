@@ -24,3 +24,7 @@ masterclass-products.json
 
 content
 
+# Cloudflare Wrangler local secrets and build output
+.dev.vars
+.wrangler/
+

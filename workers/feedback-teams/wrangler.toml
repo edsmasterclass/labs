@@ -1,0 +1,16 @@
+name = "feedback-teams"
+main = "feedback-teams.js"
+compatibility_date = "2025-09-01"
+
+[vars]
+ALLOWED_ORIGINS = "http://localhost:3000,https://*--labs--edsmasterclass.aem.page,https://*--labs--edsmasterclass.aem.live"
+
+# The Teams Workflows webhook URL is a secret; never put it in this file:
+#   wrangler secret put TEAMS_WEBHOOK_URL
+#
+# Local development: put TEAMS_WEBHOOK_URL=... in .dev.vars (git-ignored), then:
+#   wrangler dev
+#
+# Deploy:
+#   wrangler login
+#   wrangler deploy
