@@ -643,3 +643,14 @@ body.rockstar {
 .rockstar .cards .cards-card-image img {
   border-radius: 0;
 }
+
+/* small screens: the CTA moves into the expanded menu so the bar never overflows */
+.rockstar header nav[aria-expanded="false"] .nav-tools {
+  display: none;
+}
+
+@media (width >= 600px) {
+  .rockstar header nav[aria-expanded="false"] .nav-tools {
+    display: block;
+  }
+}
