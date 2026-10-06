@@ -1,0 +1,26 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Watch block folders",
+      "type": "shell",
+      "command": "node",
+      "args": ["scripts/watch-blocks.js"],
+      "isBackground": true,
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "problemMatcher": {
+        "owner": "block-scaffolder",
+        "pattern": {
+          "regexp": "^$"
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": "Block scaffold watcher starting",
+          "endsPattern": "Block scaffold watcher ready"
+        }
+      }
+    }
+  ]
+}
