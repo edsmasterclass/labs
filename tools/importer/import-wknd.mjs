@@ -9,9 +9,13 @@
  * Usage (jsdom is not a project dependency, install it without saving):
  *   npm install --no-save jsdom
  *   node tools/importer/import-wknd.mjs [--source=https://wknd-adventures.com] [--root=/drafts/rockstar]
+ *     [--media-url=https://content.da.live/<org>/<site>]
  *
  * --root is the site path the pages live under (links, images, nav and footer use it);
  * output goes to content/<root>. Preview with the dev server at http://localhost:3000/<root>/
+ * --media-url prefixes image src with an absolute origin. Required for content pushed to DA,
+ * which cannot resolve root-relative image paths. `aem content push` does not upload binaries,
+ * so upload media/ separately (DA admin API: POST /source/<org>/<site>/<root>/media/<file>).
  */
 /* eslint-disable no-console, import/no-extraneous-dependencies, no-use-before-define */
 import { mkdir, writeFile, access } from 'node:fs/promises';
@@ -24,6 +28,8 @@ const args = Object.fromEntries(process.argv.slice(2)
 const SOURCE = (args.source || 'https://wknd-adventures.com').replace(/\/$/, '');
 const SITE_ROOT = (args.root || '/drafts/rockstar').replace(/\/$/, '');
 const OUT_DIR = path.resolve(args.out || `content${SITE_ROOT}`);
+// DA can only resolve images by absolute URL, e.g. https://content.da.live/<org>/<site>
+const MEDIA_URL = (args['media-url'] || '').replace(/\/$/, '');
 const SOURCE_HOSTS = ['wknd-adventures.com', 'www.wknd-adventures.com', 'wkndadventures.com'];
 
 /* ---------- rebranding ---------- */
@@ -86,7 +92,7 @@ function mediaPath(src, pageUrl) {
     const name = url.pathname.replace(/^\/images\//, '').replace(/^\//, '').replace(/\//g, '-').toLowerCase();
     images.set(url.href, `${SITE_ROOT}/media/${name}`);
   }
-  return images.get(url.href);
+  return `${MEDIA_URL}${images.get(url.href)}`;
 }
 
 const picture = (img, ctx) => (img
