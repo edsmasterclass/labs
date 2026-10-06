@@ -1,0 +1,55 @@
+.accordion .accordion-item {
+  border-bottom: 1px solid rgb(255 255 255 / 15%);
+}
+
+.accordion .accordion-item:first-child {
+  border-top: 1px solid rgb(255 255 255 / 15%);
+}
+
+.accordion .accordion-item-label {
+  position: relative;
+  padding: 20px 48px 20px 0;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion .accordion-item-label > p {
+  display: inline;
+  margin: 0;
+}
+
+.accordion .accordion-item-label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  width: 10px;
+  height: 10px;
+  border: solid var(--brand-1);
+  border-width: 0 2px 2px 0;
+  transform: translateY(-75%) rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.accordion .accordion-item[open] > .accordion-item-label::after {
+  transform: translateY(-25%) rotate(-135deg);
+}
+
+.accordion .accordion-item-label:focus-visible {
+  outline: 3px solid var(--brand-1);
+  outline-offset: 2px;
+}
+
+.accordion .accordion-item-body {
+  padding: 0 0 20px;
+  color: var(--muted);
+}
+
+.accordion .accordion-item-body > *:first-child {
+  margin-top: 0;
+}

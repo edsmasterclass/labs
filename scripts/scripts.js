@@ -12,7 +12,13 @@ import {
   readBlockConfig,
   toClassName,
   toCamelCase,
+  getMetadata,
 } from './aem.js';
+
+/**
+ * Themes that ship an extra stylesheet in /styles/themes/, opted into via `Theme` page metadata.
+ */
+const THEMES = ['rockstar'];
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -71,6 +77,50 @@ async function loadFonts() {
 }
 
 /**
+ * Groups consecutive sections that have `Tab` section metadata into a single tabs block.
+ * Each section becomes one tab panel, labelled with its `Tab` value.
+ * @param {Element} main The container element
+ */
+function buildTabsBlocks(main) {
+  const groups = [];
+  let current = null;
+  [...main.querySelectorAll(':scope > div')].forEach((section) => {
+    // section metadata may already be rendered server-side as data attributes
+    const meta = section.querySelector(':scope > .section-metadata');
+    const label = section.dataset.tab || (meta && readBlockConfig(meta).tab);
+    if (!label) {
+      current = null;
+      return;
+    }
+    if (!current) {
+      current = [];
+      groups.push(current);
+    }
+    current.push({ section, meta, label });
+  });
+
+  groups.forEach((group) => {
+    const rows = group.map(({ section, meta, label }) => {
+      // keep remaining section metadata (e.g. style) for the section hosting the tabs
+      delete section.dataset.tab;
+      if (meta) {
+        [...meta.children]
+          .filter((row) => toClassName(row.children[0]?.textContent) === 'tab')
+          .forEach((row) => row.remove());
+        if (!meta.children.length) meta.remove();
+      }
+      const elems = [...section.children].filter((child) => !child.matches('.section-metadata'));
+      return [label, { elems }];
+    });
+    const [host, ...rest] = group.map(({ section }) => section);
+    const hostMeta = host.querySelector(':scope > .section-metadata');
+    host.replaceChildren(buildBlock('tabs', rows));
+    if (hostMeta) host.append(hostMeta);
+    rest.forEach((section) => section.remove());
+  });
+}
+
+/**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
@@ -94,6 +144,7 @@ function buildAutoBlocks(main) {
       });
     }
 
+    buildTabsBlocks(main);
     buildHeroBlock(main);
   } catch (error) {
     // eslint-disable-next-line no-console
@@ -137,6 +188,36 @@ function decorateButtons(element) {
       }
     }
   });
+}
+
+/**
+ * Marks eyebrow/kicker text: a paragraph containing only italic text placed
+ * directly before a heading, e.g. "*Start Here*" followed by "## Not sure where to start?".
+ * @param {Element} element container element
+ */
+function decorateKickers(element) {
+  element.querySelectorAll('p').forEach((p) => {
+    const next = p.nextElementSibling;
+    if (!next || !/^H[1-6]$/.test(next.tagName)) return;
+    // an italic line right after an image in default content is a caption, not a kicker
+    const prev = p.previousElementSibling;
+    if (prev?.querySelector('picture, img') && p.parentElement.parentElement?.tagName === 'MAIN') return;
+    const [only, ...more] = [...p.childNodes]
+      .filter((n) => n.nodeType === Node.ELEMENT_NODE || n.textContent.trim());
+    if (only && !more.length && only.tagName === 'EM' && !only.querySelector('a')) {
+      p.classList.add('kicker');
+    }
+  });
+}
+
+/**
+ * Loads the stylesheet for the page theme, if the theme ships one.
+ */
+async function loadThemeStyles() {
+  const theme = toClassName(getMetadata('theme'));
+  if (THEMES.includes(theme)) {
+    await loadCSS(`${window.hlx.codeBasePath}/styles/themes/${theme}.css`);
+  }
 }
 
 /**
@@ -197,6 +278,7 @@ function decorateSections(main) {
 export function decorateMain(main) {
   // hopefully forward compatible button decoration
   decorateButtons(main);
+  decorateKickers(main);
   decorateIcons(main);
   buildAutoBlocks(main);
   decorateSections(main);
@@ -212,6 +294,7 @@ async function loadEager(doc) {
   decorateTemplateAndTheme();
   const main = doc.querySelector('main');
   if (main) {
+    await loadThemeStyles();
     decorateMain(main);
     document.body.classList.add('appear');
     await loadSection(main.querySelector('.section'), waitForFirstImage);

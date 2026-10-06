@@ -7,7 +7,7 @@ export default function decorate(block) {
     const li = document.createElement('li');
     while (row.firstElementChild) li.append(row.firstElementChild);
     [...li.children].forEach((div) => {
-      if (div.children.length === 1 && div.querySelector('picture')) {
+      if (div.children.length === 1 && div.querySelector('picture, img')) {
         div.className = 'cards-card-image';
       } else {
         div.className = 'cards-card-body';
