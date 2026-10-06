@@ -1,0 +1,81 @@
+main .speakers > ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+main .speakers > ul > li {
+  min-width: 0;
+}
+
+main .speakers .speakers-card {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid rgb(255 255 255 / 8%);
+  border-radius: 16px;
+  background-color: var(--card);
+  box-shadow: var(--shadow);
+  text-align: center;
+}
+
+main .speakers .speakers-card-image {
+  width: 10rem;
+  aspect-ratio: 1;
+  margin: 0 0 1.5rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand-3), var(--brand-1));
+}
+
+main .speakers .speakers-card-image picture,
+main .speakers .speakers-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+main .speakers .speakers-card-image img {
+  object-fit: cover;
+}
+
+main .speakers .speakers-card-content {
+  width: 100%;
+}
+
+main .speakers .speakers-card-name {
+  margin: 0 0 0.5rem;
+  color: var(--ink);
+  font-size: var(--heading-font-size-m);
+}
+
+main .speakers .speakers-card-role {
+  margin: 0 0 1rem;
+  color: var(--brand-1);
+  font-size: 1rem;
+}
+
+main .speakers .speakers-card-bio {
+  margin: 0.75rem 0 0;
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (width >= 600px) {
+  main .speakers > ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2rem;
+  }
+}
+
+@media (width >= 1200px) {
+  main .speakers > ul {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
