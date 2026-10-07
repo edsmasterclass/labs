@@ -542,10 +542,10 @@ https://da.live/app/edsmasterclass/labs/tools/plugins/embedwidget/embedwidget?re
 ```
 
 **To test EmbedWidget plugin and TradingView block**:
-1. **Open Experience Workspace**: Go to `https://da.live/edit#/edsmasterclass/labs/drafts/<your-name>/`
+1. **Open Experience Workspace**: Go to `https://da.live/canvas#/edsmasterclass/labs/drafts/<your-name>/`
 2. **Open any existing page** (or create `/drafts/<your-name>/plugin-test`)
 3. **Open library**: Click the library icon in the left sidebar (puzzle piece icon)
-4. **Load your plugin**: In a new browser tab, navigate to `https://da.live/edit?ref=local#/edsmasterclass/labs/drafts/<your-name>/plugin-test`
+4. **Load your plugin**: In a new browser tab, navigate to `https://da.live/canvas?ref=local#/edsmasterclass/labs/drafts/<your-name>/plugin-test`
 
 5. **Think like an author**: Open the TradingView Company Profile widget page:
    - `https://www.tradingview.com/widget-docs/widgets/symbol-details/company-profile/`
@@ -619,7 +619,7 @@ For production use, plugins should be registered in the site configuration so au
 2. **Add to library sheet**:
    | title | path | experience |
    |-------|------|------------|
-   | EmbedWidget | https://content.da.live/edsmasterclass/labs/tools/plugins/embedwidget | dialog |
+   | EmbedWidget | https://content.da.live/edsmasterclass/labs/tools/plugins/embedwidget |  |
 
 3. Config auto-saves; **publish** the config when ready.
 

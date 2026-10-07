@@ -59,7 +59,7 @@ The instructor has pre-configured the entire JSON2HTML pipeline so you can focus
 
 1. **Open in browser**:
    ```
-   https://main--labs--edsmasterclass.aem.page/future-events.json
+   https://main--labs--edsmasterclass.aem.live/future-events.json
    ```
 
 2. **You should see**: JSON with event records (Sydney, London, Bangalore, Berlin, Singapore, Dubai) including city, date, venue, highlights, images, etc.
