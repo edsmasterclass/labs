@@ -2,8 +2,8 @@
  * Generate Product Bus PUT payloads for the EDS NYC Masterclass lab site.
  *
  * Two categories, 3 products each:
- *   /products/swag/*    — branded merchandise (physical, open access)
- *   /products/guides/*  — developer reference guides (PDF + print)
+ *   /labs/<prefix>/products/swag/*    — branded merchandise (physical, open access)
+ *   /labs/<prefix>/products/guides/*  — developer reference guides (PDF + print)
  *
  * Usage:
  *   node generate-products.mjs [options]
@@ -13,7 +13,7 @@
  *   --org <org>             Organization slug          (default: edsmasterclass)
  *   --site <site>           Site slug                  (default: labs)
  *   --prefix <prefix>       Catalog root prefix        (default: current git branch)
- *                           Products land at /products-<prefix>/<category>/<slug>
+ *                           Products land at /labs/<prefix>/products/<category>/<slug>
  *   --dry-run               Write JSON and print payloads, but skip the API call
  *                           (this is the default when --api is omitted)
  *
@@ -34,7 +34,13 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const apiToken = (() => {
   const i = process.argv.indexOf('--api');
-  return i !== -1 ? process.argv[i + 1] : null;
+  if (i === -1) return null;
+  const value = process.argv[i + 1];
+  if (!value || value.startsWith('--')) {
+    console.error('Error: --api requires a token value.');
+    process.exit(1);
+  }
+  return value;
 })();
 
 const org = (() => {
@@ -51,16 +57,26 @@ const dryRun = process.argv.includes('--dry-run') || !apiToken;
 
 const prefix = (() => {
   const i = process.argv.indexOf('--prefix');
-  if (i !== -1) return process.argv[i + 1];
-  try {
-    return execFileSync('git', ['branch', '--show-current'], { encoding: 'utf-8' }).trim();
-  } catch {
-    return 'main';
+  let raw = i !== -1 ? process.argv[i + 1] : '';
+  if (i === -1) {
+    try {
+      raw = execFileSync('git', ['branch', '--show-current'], { encoding: 'utf-8' }).trim();
+    } catch {
+      raw = '';
+    }
   }
+  // Must be a single URL segment that is also valid in a <branch>--site--org hostname.
+  const sanitized = (raw || '').toLowerCase().replace(/[^a-z0-9-]+/g, '-').replace(/^-+|-+$/g, '');
+  if (!sanitized) {
+    console.error('Error: could not determine a prefix. Check out your personal branch or pass --prefix <name>.');
+    process.exit(1);
+  }
+  if (sanitized !== raw) {
+    console.warn(`Note: prefix "${raw}" normalized to "${sanitized}".`);
+  }
+  return sanitized;
 })();
 
-// Images — replace with actual hosted assets before going live.
-// Using placehold.co for lab/demo purposes.
 const IMG = {
   hoodie:   'https://content.da.live/edsmasterclass/labs/media/masterclass-hoodie.png',
   stickers: 'https://content.da.live/edsmasterclass/labs/media/developer-sticker-pack.png',
@@ -70,7 +86,8 @@ const IMG = {
   complete: 'https://content.da.live/edsmasterclass/labs/media/complete-reference.png',
 };
 
-const SITE_BASE_URL = `https://${prefix}--labs--edsmasterclass.aem.page`;
+// Product pages are served via the mixer on aem.network; aem.page only has authored content.
+const SITE_BASE_URL = `https://main--${site}--${org}.aem.network`;
 const API_BASE_URL = 'https://api.adobecommerce.live';
 
 // ---------------------------------------------------------------------------
@@ -86,7 +103,6 @@ const catalog = [
         sku: 'masterclass-hoodie',
         image: IMG.hoodie,
         name: 'Masterclass Hoodie',
-        shortDescription: 'Limited-edition pullover hoodie from the Adobe EDS Masterclass 2026.',
         description: `
 <h2>Wear the Build</h2>
 <p>The official Masterclass 2026 hoodie. Midweight French terry, pre-shrunk, with the Adobe Edge Delivery Services wordmark embroidered on the chest and a city skyline graphic on the back.</p>
@@ -112,7 +128,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'Masterclass Hoodie — Adobe EDS Masterclass 2026 Limited Edition',
         metaDescription: 'Official limited-edition hoodie from the Adobe Edge Delivery Services Masterclass 2026. Embroidered chest logo, city skyline back print. Unisex XS–3XL.',
-        metaKeyword: 'Adobe EDS hoodie, Masterclass swag, Edge Delivery Services merch, developer hoodie 2026',
         prices: { regular: { amount: 59.00, currency: 'USD' }, final: { amount: 59.00, currency: 'USD' } },
         attributes: [
           { name: 'material', label: 'Material', value: '80% cotton / 20% polyester' },
@@ -125,7 +140,6 @@ const catalog = [
         sku: 'developer-sticker-pack',
         image: IMG.stickers,
         name: 'Developer Sticker Pack',
-        shortDescription: '20-sticker set covering EDS, Cloudflare Workers, DA.live, and the full AEM stack.',
         description: `
 <h2>Sticker Your Stack</h2>
 <p>A curated set of 20 die-cut vinyl stickers for developers who build on Adobe Edge Delivery Services. Laptop-safe, weatherproof, and just the right amount of nerdy.</p>
@@ -153,7 +167,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'Developer Sticker Pack — Adobe EDS, Cloudflare Workers & AEM Stack (20 Stickers)',
         metaDescription: '20 die-cut vinyl stickers for EDS developers. Covers Adobe Edge Delivery Services, Cloudflare Workers, DA.live, Lighthouse 100 badge, and more. Matte, UV-resistant.',
-        metaKeyword: 'Adobe EDS stickers, developer sticker pack, Cloudflare Workers sticker, AEM sticker, laptop stickers developer',
         prices: { regular: { amount: 12.00, currency: 'USD' }, final: { amount: 12.00, currency: 'USD' } },
         attributes: [
           { name: 'count', label: 'Count', value: '20 stickers' },
@@ -166,7 +179,6 @@ const catalog = [
         sku: 'masterclass-desk-kit',
         image: IMG.deskkit,
         name: 'Masterclass Desk Kit',
-        shortDescription: 'Ceramic mug, softcover notebook, and pen — all in a branded gift box.',
         description: `
 <h2>Equip Your Build Station</h2>
 <p>Everything you need to fuel a long coding session, all in one box. The Masterclass Desk Kit is a curated set of everyday essentials with the EDS aesthetic — minimal, fast, built to last.</p>
@@ -191,7 +203,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'Masterclass Desk Kit — Mug, Notebook & Pen for Adobe EDS Developers',
         metaDescription: 'Adobe EDS Masterclass desk gift set: 12 oz ceramic mug, A5 dot-grid notebook, ballpoint pen, and 3 exclusive stickers. Packaged in a branded gift box.',
-        metaKeyword: 'Adobe developer gift set, EDS desk kit, masterclass merch, developer mug notebook, masterclass gift',
         prices: { regular: { amount: 39.00, currency: 'USD' }, final: { amount: 39.00, currency: 'USD' } },
         attributes: [
           { name: 'includes', label: 'Includes', value: 'Mug, notebook, pen, 3 stickers' },
@@ -209,7 +220,6 @@ const catalog = [
         sku: 'eds-block-development-field-guide',
         image: IMG.blocks,
         name: 'EDS Block Development Field Guide',
-        shortDescription: 'The practitioner\'s handbook for building, testing, and shipping EDS blocks.',
         description: `
 <h2>Everything You Need to Build Better Blocks</h2>
 <p>The EDS Block Development Field Guide is a compact, no-fluff reference for developers who build on Adobe Edge Delivery Services. Whether you're writing your first block or refactoring a block library for a large enterprise site, this guide covers the patterns and pitfalls that matter.</p>
@@ -237,7 +247,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'EDS Block Development Field Guide — Adobe Edge Delivery Services 2026 Edition',
         metaDescription: 'The practitioner\'s handbook for building EDS blocks. Covers block anatomy, content modeling, Core Web Vitals, CSS patterns, Playwright testing, and AI-assisted development.',
-        metaKeyword: 'EDS block development, Adobe Edge Delivery guide, AEM block patterns, EDS developer handbook, block collection guide',
         prices: { regular: { amount: 29.00, currency: 'USD' }, final: { amount: 29.00, currency: 'USD' } },
         attributes: [
           { name: 'format', label: 'Format', value: 'PDF & print (perfect bound)' },
@@ -250,7 +259,6 @@ const catalog = [
         sku: 'cloudflare-workers-for-aem-developers',
         image: IMG.workers,
         name: 'Cloudflare Workers for AEM Developers',
-        shortDescription: 'Build edge functions, form handlers, and API middleware for EDS sites with Cloudflare Workers.',
         description: `
 <h2>Extend EDS at the Edge</h2>
 <p>Cloudflare Workers are the natural extension point for Adobe Edge Delivery Services — and this guide teaches you to use them well. From your first <code>wrangler deploy</code> to production-grade middleware patterns, every concept is grounded in real EDS use cases.</p>
@@ -279,7 +287,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'Cloudflare Workers for AEM Developers — Edge Functions for Adobe EDS Sites',
         metaDescription: 'Build edge functions, API middleware, and form handlers for EDS with Cloudflare Workers. Covers Wrangler CLI, KV, R2, Durable Objects, and helix-mixer routing.',
-        metaKeyword: 'Cloudflare Workers AEM, EDS edge functions, helix-mixer guide, Wrangler CLI tutorial, Adobe EDS Cloudflare',
         prices: { regular: { amount: 24.00, currency: 'USD' }, final: { amount: 24.00, currency: 'USD' } },
         attributes: [
           { name: 'format', label: 'Format', value: 'PDF & print (perfect bound)' },
@@ -292,7 +299,6 @@ const catalog = [
         sku: 'edge-delivery-services-complete-reference',
         image: IMG.complete,
         name: 'Edge Delivery Services: The Complete Reference',
-        shortDescription: 'The definitive desk reference for the full Adobe EDS platform — authoring to delivery.',
         description: `
 <h2>One Book. The Whole Platform.</h2>
 <p>Edge Delivery Services: The Complete Reference is the most comprehensive resource available for teams building on Adobe EDS. It covers every layer of the stack — from DA.live authoring to Cloudflare edge delivery — in a format designed for daily use by developers, architects, and content leads alike.</p>
@@ -319,7 +325,6 @@ const catalog = [
         `.trim(),
         metaTitle: 'Edge Delivery Services: The Complete Reference — Adobe EDS 2026 Edition',
         metaDescription: 'The definitive 480-page reference for Adobe Edge Delivery Services. Covers DA.live authoring, block development, Product Bus, helix-mixer, Cloudflare Workers, and operations.',
-        metaKeyword: 'Adobe Edge Delivery Services book, EDS complete guide, AEM EDS reference 2026, helix developer handbook, Product Bus guide',
         prices: { regular: { amount: 49.00, currency: 'USD' }, final: { amount: 49.00, currency: 'USD' } },
         attributes: [
           { name: 'format', label: 'Format', value: 'PDF & print (hardcover)' },
@@ -455,8 +460,9 @@ if (dryRun) {
   console.log(`\nDone. ${successCount} saved, ${failCount} failed.`);
 
   if (successCount > 0) {
-    const mainBase = `https://main--${site}--${org}.aem.network`;
     console.log('\nProduct pages (may take 30–60 s for feeds to populate):');
-    products.forEach((p) => console.log(`  ${mainBase}${p.path}`));
+    products.forEach((p) => console.log(`  ${p.url}`));
   }
+
+  if (failCount > 0) process.exitCode = 1;
 }

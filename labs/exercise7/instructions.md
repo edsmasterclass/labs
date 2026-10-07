@@ -190,7 +190,7 @@ If an Org Admin created the site for you, they should grant you the access you n
 
 1. Open **Site Admin**: [https://tools.aem.live/tools/site-admin/index.html](https://tools.aem.live/tools/site-admin/index.html)
 
-2. **IMPORTANT**: You must be logged in via AEM Sidekick extension first.
+2. **IMPORTANT**: You must login using the profile icon and the login flow will prompt if not logged in.
 
 3. In the form:
    - **Organization**: `edsmasterclass`
@@ -201,7 +201,7 @@ If an Org Admin created the site for you, they should grant you the access you n
 
 5. Confirm the clone.
 
-6. Ensure **participants who requested the clone** receive **admin permissions on the cloned site** (not only on the org) so they can complete the exercise.
+6. Ensure **participants who requested the clone** receive **admin permissions on the cloned site**  so they can complete the exercise.
 
 **What this step achieves**: A new site entry in the Configuration Service that inherits from `labs`, including the **code** source pointed at the shared **`labs`** repository. After you or an admin align **content** with your DA folder (see high-level flow above), your previews load your content with shared code — the repoless pattern used in the rest of this exercise.
 
@@ -215,11 +215,11 @@ Now create a place for your site's content in Experience Workspace.
 
 2. You should see the `edsmasterclass` org with its existing sites (including `labs`)
 
-3. Create a new folder called `<your-site>` (your name)
+3. Create a new folder called `<your-site>`
 
 **Result**: You now have an empty content folder at `edsmasterclass/<your-site>`.
 
-**If your site was cloned by an Org Admin**: In Site Admin, open **your** site’s configuration and confirm **content** resolves to this content path (`edsmasterclass/<your-site>` — same as your site name in the exercise). **Leave the code source** pointed at the shared **`labs`** repository; do not repoint code to a fork unless an instructor tells you to.
+**If your site was cloned by an Org Admin**: In Site Admin, open **your** site’s configuration and confirm **content** resolves to this content path (`edsmasterclass/<your-site>` — same as your site name in the exercise). **Leave the code source** pointed at the shared **`labs`** repository
 
 ---
 
@@ -280,7 +280,7 @@ Imported content needs to be previewed and published before it's available on yo
 **What's happening**:
 - **Content** is coming from `/edsmasterclass/<your-site>` (your Experience Workspace folder)
 - **Code** is coming from `/edsmasterclass/labs` (shared GitHub repo)
-- The site looks identical to NYC because you copied the content and share the code
+- The site looks identical to labs because you copied the content and share the code
 
 ---
 
@@ -320,7 +320,7 @@ Now make the site yours by editing content. This proves that each site's content
 
 2. Open the homepage (`index`)
 
-3. Change the `<h1>` to: **Jsmith's Masterclass** (use your name)
+3. Change the `<h1>` to: **My Masterclass** (or use your name)
 
 4. Experience Workspace auto-saves. Click **Preview** to see the page.
 
@@ -337,16 +337,16 @@ Now make the site yours by editing content. This proves that each site's content
 
 Your site works, but it looks identical to NYC Masterclass. In a real multi-brand setup, each site needs its own visual identity. You'll add a custom theme using **body class selectors** — one of the simplest approaches to multi-brand theming.
 
-**Reference**: [Multi-Brand EDS Implementation Using Repoless](https://main--helix-website--adobe.aem.page/drafts/ravuthu/multi-brand-eds-implementation-using-repoless#option-1-single-file-with-body-class-selectors)
+**Reference**: [Building Multi-Brand Sites](https://www.aem.live/developer/multi-brand-sites)
 
 ### How Themes Work
 
 1. Authors set a `theme` value in page metadata (e.g., `theme: masterclass`)
-2. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds it as a class on `<body>`
+2. As part of `loadEager()` in `scripts.js` the `decorateTemplateAndTheme()` function reads this value and adds it as a class on `<body>`
 3. CSS rules scoped to `body.masterclass` apply the visual identity
 4. Different sites set different theme values → different visual identities from the same CSS file
 
-The NYC Masterclass site currently uses `theme: masterclass`, which produces the orange/purple gradient. You'll create your own theme.
+The  edsmasterclass/labs site currently uses `theme: masterclass`, which produces the orange/purple gradient. You'll create your own theme.
 
 ### 7a: Set Your Theme via the Metadata Sheet
 
@@ -360,14 +360,14 @@ In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata v
 
 | URL | theme |
 |-----|-------|
-| `/**` | `jsmith` |
+| `/**` | `my-theme` |
 
 - The `URL` column uses glob patterns to match pages — `/**` matches every page on the site
 - The `theme` column sets the metadata value that `decorateTemplateAndTheme()` reads
 
 4. Experience Workspace auto-saves. **Preview** the metadata sheet so it becomes available as JSON.
 
-**What this does**: Every page on your site now has `theme: jsmith` in its metadata. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds `class="jsmith"` to the `<body>` element. No page-level editing needed — one sheet controls the entire site.
+**What this does**: Every page on your site now has `theme: my-theme` in its metadata. The `decorateTemplateAndTheme()` function in `aem.js` reads this value and adds `class="my-theme"` to the `<body>` element. No page-level editing needed — one sheet controls the entire site.
 
 > **Tip**: Bulk metadata is a powerful tool beyond theming. You can set any metadata key (title, description, og:image, template, etc.) for groups of pages using URL patterns like `/blog/**` or `/events/**`.
 
@@ -376,7 +376,7 @@ In AEM Edge Delivery Services, **bulk metadata** lets you set default metadata v
 On your branch, add a new theme in `styles/styles.css`. Add this **after** the existing `body.masterclass` rule:
 
 ```css
-body.jsmith {
+body.my-theme {
   --brand-1: #06b6d4;
   --brand-2: #2563eb;
   background: radial-gradient(1200px 600px at 80% -10%, #06b6d4 0%, transparent 60%),
@@ -387,7 +387,6 @@ body.jsmith {
 }
 ```
 
-> **Use your name** as the class name (e.g., `body.sjohnson`, `body.kwang`). Pick any colors you like!
 
 **What this does**:
 - Overrides `--brand-1` (accent color used in cards, links, eyebrows) from orange to cyan
@@ -433,17 +432,17 @@ Replace `jsmith` with your branch name.
 Open your site: `https://<your-branch>--<your-site>--edsmasterclass.aem.page/`
 
 **You should see**:
-- Your custom heading ("Jsmith's Masterclass")
+- Your custom heading ("My Masterclass")
 - Your custom brand colors (cyan/blue instead of orange/purple)
 - Same blocks, same layout, same functionality — your content with your visual identity
 
-**Compare with NYC**: Open `https://main--labs--edsmasterclass.aem.page/` side by side. Same codebase, different content, different brand.
+**Compare with Main Site**: Open `https://main--labs--edsmasterclass.aem.page/` side by side. Same codebase, different content, different brand.
 
 If this was a real project, at this point, you'd raise a pull request to merge `jsmith` into `main` and once completed, you'd have a basic multi-brand setup powered by a singular codebase.
 
 ### Why This Approach Works
 
-From the [multi-brand theming guide](https://main--helix-website--adobe.aem.page/drafts/ravuthu/multi-brand-eds-implementation-using-repoless#option-1-single-file-with-body-class-selectors):
+From the [multi-brand theming guide](https://www.aem.live/developer/multi-brand-sites#option-1-body-class-selectors-in-shared-css):
 
 > The simplest approach is to define all brand variables in one file, scoped by body class.
 
