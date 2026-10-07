@@ -265,14 +265,14 @@ Create three pages in Experience Workspace (replace `<your-branch>` with your br
 h1: All Products
 | product-grid |
 |---|
-| /labs/<your-branch>/products/index.json |
+| `/labs/<your-branch>/products/index.json` |
 
 **`/labs/<your-branch>/products/swag`** — swag only:
 
 h1: Swag
 | product-grid |
 |---|
-| /labs/<your-branch>/products/index.json |
+| `/labs/<your-branch>/products/index.json` |
 | swag |
 
 **`/labs/<your-branch>/products/guides`** — guides only:
@@ -280,7 +280,7 @@ h1: Swag
 h1: Guides
 | product-grid |
 |---|
-| /labs/<your-branch>/products/index.json |
+| `/labs/<your-branch>/products/index.json` |
 | guides |
 
 Preview and publish all three. Open them on your branch:
