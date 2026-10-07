@@ -76,6 +76,5 @@ export default async function decorate(block) {
     errorMessage.className = 'error';
     errorMessage.textContent = `Error loading speakers: ${error.message}`;
     block.replaceChildren(errorMessage);
-    console.error('Dynamic Cards error:', error);
   }
 }
