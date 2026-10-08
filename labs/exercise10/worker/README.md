@@ -27,16 +27,18 @@ From the repository root:
 cd labs/exercise10/worker
 wrangler login
 wrangler whoami
-unset CLOUDFLARE_ACCOUNT_ID
+cp wrangler.toml wrangler.local.toml
 ```
 
-[wrangler.toml](wrangler.toml) pins deployment to Blackbird (`ac7ee4615628005dc5ba0a22f0aae2a6`) and the existing D1 database. **Do not recreate the database for normal redeployments.** Redeployment preserves bookings. Worker and EDS code deployments are separate; do not deploy automatically from learner branches.
+[wrangler.toml](wrangler.toml) is a template with placeholder account and database IDs. Keep deployment-specific values in `wrangler.local.toml`, which the repository's root `.gitignore` excludes along with local Wrangler state and environment files. Do not commit account/database IDs or credentials.
+
+For the shared instructor deployment, set `account_id` and `database_id` in `wrangler.local.toml` to the intended account and existing D1 database. **Do not recreate the database for normal redeployments.** Redeployment preserves bookings. Worker and EDS code deployments are separate; do not deploy automatically from learner branches. Ensure any `CLOUDFLARE_ACCOUNT_ID` environment variable matches the intended account, or unset it.
 
 ### Own Cloudflare account (optional)
 
-1. Log in with your own Cloudflare user and check the account name/ID in `wrangler whoami`. **Before creating resources or deploying**, replace `account_id` in [wrangler.toml](wrangler.toml) with your account ID; do not leave the shared Blackbird ID.
-2. Run `wrangler d1 create eds-labs-service-booking`. Replace the existing `database_id` with the returned ID, keeping `binding = "DB"`. Do not reuse the shared account's database ID.
-3. Run `wrangler d1 migrations apply eds-labs-service-booking --remote` to create the tables from `schema/`.
+1. Log in with your own Cloudflare user and check the account name/ID in `wrangler whoami`. **Before creating resources or deploying**, replace `YOUR_ACCOUNT_ID` in `wrangler.local.toml` with your account ID.
+2. Run `wrangler d1 create eds-labs-service-booking --config wrangler.local.toml`. Replace `YOUR_DATABASE_ID` in `wrangler.local.toml` with the returned ID, keeping `binding = "DB"`.
+3. Run `wrangler d1 migrations apply eds-labs-service-booking --remote --config wrangler.local.toml` to create the tables from `schema/`.
 4. If using another EDS repository, set `EDS_SITE` to `<repo>--<owner>` and add any custom-domain origins to `ALLOWED_ORIGINS`. Optionally change the Worker `name` if that name is already in use in your account.
 5. Run the deployment commands below. Copy **your** deployed HTTPS URL into the `widgets/service-booking/config.js` file you create using the [exercise instructions](../instructions.md); it will use your account's Workers subdomain, not `aem-poc-lab.workers.dev`.
 
@@ -45,8 +47,8 @@ unset CLOUDFLARE_ACCOUNT_ID
 Once the intended account and database are configured:
 
 ```bash
-wrangler deploy --dry-run
-wrangler deploy
+wrangler deploy --dry-run --config wrangler.local.toml
+wrangler deploy --config wrangler.local.toml
 ```
 
 For later schema changes, apply pending migrations before redeploying. If you change the database name, update both configuration and commands. Keep `binding = "DB"` to match the Worker.
@@ -91,7 +93,7 @@ A daily midnight-UTC cron deletes bookings whose appointment date is in the past
 To reset availability **between class sessions**, notify learners and explicitly clear the demo bookings:
 
 ```bash
-wrangler d1 execute eds-labs-service-booking --remote --command "DELETE FROM bookings"
+wrangler d1 execute eds-labs-service-booking --remote --config wrangler.local.toml --command "DELETE FROM bookings"
 ```
 
 This clears current demo reservations and retry history in the active database. Do not reset during testing of idempotency or persistence.
