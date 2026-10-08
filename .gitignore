@@ -3,11 +3,11 @@ coverage/*
 logs/*
 node_modules/
 
-# Local Exercise 10 Worker deployment files
-labs/exercise10/worker/.wrangler/
-labs/exercise10/worker/.dev.vars
-labs/exercise10/worker/.env
-labs/exercise10/worker/wrangler.local.toml
+# Local Worker deployment files
+.wrangler/
+.dev.vars
+.env
+wrangler.local.toml
 
 helix-importer-ui
 .DS_Store

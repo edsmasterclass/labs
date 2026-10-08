@@ -59,6 +59,8 @@ cd feedback-worker
 # - wrangler.toml (configuration)
 ```
 
+If deploying from inside this repository, the root `.gitignore` excludes local Wrangler state (`.wrangler/`), local environment files (`.dev.vars` and `.env`), and `wrangler.local.toml`. If you copy the Worker into a separate Git repository, add the same ignore rules there. Never commit the Slack webhook URL or other credentials.
+
 ---
 
 ## Step 5: Deploy Worker
