@@ -1,0 +1,54 @@
+<div class="service-booking-confirmation" hidden>
+  <p class="service-booking-confirmation-message" role="status" aria-live="polite" aria-atomic="true"></p>
+  <button type="button" class="service-booking-dismiss" aria-label="Dismiss booking confirmation">&times;</button>
+</div>
+<div class="service-booking-heading">
+  <p class="service-booking-eyebrow">APPOINTMENTS</p>
+  <h3>Find a time that works for you</h3>
+  <p>We're here to help. Choose a time that works for you.</p>
+</div>
+<form class="service-booking-form">
+  <fieldset disabled>
+    <legend class="service-booking-sr-only">Book an appointment</legend>
+    <label class="service-booking-service">Service
+      <select name="service" required><option value="">Loading services...</option></select>
+    </label>
+    <!-- Calendar buttons store the local date here without showing a second date picker.
+         The booking payload later uses the selected slot's UTC date. -->
+    <input type="hidden" name="date">
+    <div class="service-booking-schedule">
+      <div class="service-booking-calendar">
+        <div class="service-booking-calendar-header">
+          <button type="button" class="service-booking-prev" aria-label="Previous month" disabled>&lsaquo;</button>
+          <p class="service-booking-month" aria-live="polite">Loading calendar...</p>
+          <button type="button" class="service-booking-next" aria-label="Next month" disabled>&rsaquo;</button>
+        </div>
+        <div class="service-booking-weekdays" aria-hidden="true">
+          <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+        </div>
+        <div class="service-booking-days" role="group" aria-label="Appointment date (local time)"></div>
+        <p class="service-booking-calendar-note">Select a highlighted date. Use arrow keys to move between dates.</p>
+      </div>
+      <fieldset class="service-booking-availability">
+        <legend>Available times</legend>
+        <p class="service-booking-selected-date">Choose a date from the calendar</p>
+        <p class="service-booking-slot-count" role="status" aria-live="polite"></p>
+        <div class="service-booking-times" aria-busy="false"></div>
+        <button class="service-booking-retry" type="button" hidden>Retry loading availability</button>
+      </fieldset>
+    </div>
+    <div class="service-booking-contact">
+      <label><span>Name <span class="service-booking-required" aria-hidden="true">*</span></span>
+        <input type="text" name="name" autocomplete="name" maxlength="100" required>
+      </label>
+      <label><span>Email <span class="service-booking-required" aria-hidden="true">*</span></span>
+        <input type="email" name="email" autocomplete="email" maxlength="254" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="Enter an email with a dotted domain, such as name@example.com." required>
+      </label>
+    </div>
+    <div class="service-booking-footer">
+      <button type="submit" disabled>Book Appointment</button>
+    </div>
+  </fieldset>
+</form>
+<button class="service-booking-initialize-retry" type="button" hidden>Retry connecting to booking API</button>
+<p class="service-booking-status" role="status" aria-live="polite">Loading appointment services...</p>

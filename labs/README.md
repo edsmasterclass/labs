@@ -161,6 +161,23 @@
 
 ---
 
+**Exercise 10**: [Service-Booking Widget Development](exercise10/instructions.md)
+
+**What you'll learn**:
+- How widgets differ from authored blocks and bring their own HTML
+- How a single authored link loads an application feature
+- How to fetch availability, validate input, and submit bookings to a hosted API
+
+**What you'll build**:
+- A service-booking widget with a local-time calendar, available times, and demo booking confirmation
+- Integration with a pre-deployed Cloudflare Worker API and D1 persistence; own-account deployment is optional
+
+**Setup**: Use the pre-deployed [booking Worker](exercise10/worker/README.md). Learners create their own widget and authored test page using the copy-paste examples and complete demo reference in the instructions; no Cloudflare login, local booking server, or author-supplied API URL is needed.
+
+**Key takeaway**: Keep content-focused blocks in the authoring library and self-contained application features in widgets. See [Exercise 10](exercise10/instructions.md) for the service-booking workflow and hosted demo limitations.
+
+---
+
 **Go-Live Discussion**: Production readiness checklist
 
 ---
@@ -176,6 +193,7 @@
 - [Experience Workspace Docs](https://www.aem.live/docs/ew/authoring)
 - [AEM.live Docs](https://www.aem.live/)
 - [Repoless](https://www.aem.live/docs/repoless)
+- [Widgets](https://www.aem.live/docs/widgets)
 - [Integrations](https://www.aem.live/developer/integrations)
 - [Indexing Reference](https://www.aem.live/docs/indexing-reference)
 - [JSON2HTML](https://www.aem.live/developer/json2html)
