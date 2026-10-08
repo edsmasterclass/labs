@@ -1,0 +1,21 @@
+name = "eds-labs-service-booking"
+account_id = "ac7ee4615628005dc5ba0a22f0aae2a6"
+main = "worker.js"
+compatibility_date = "2026-10-07"
+workers_dev = true
+
+[vars]
+ALLOWED_ORIGINS = "http://localhost:3000"
+EDS_SITE = "labs--edsmasterclass"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "eds-labs-service-booking"
+database_id = "6d7a9d0e-b87b-4795-b575-3b20e01712a5"
+migrations_dir = "schema"
+
+[triggers]
+crons = ["0 0 * * *"]
+
+[observability]
+enabled = true
