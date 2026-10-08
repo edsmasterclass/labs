@@ -1,7 +1,13 @@
 .hlx/*
 coverage/*
 logs/*
-node_modules/*
+node_modules/
+
+# Local Worker deployment files
+.wrangler/
+.dev.vars
+.env
+wrangler.local.toml
 
 helix-importer-ui
 .DS_Store
@@ -23,4 +29,3 @@ masterclass-products.json
 .hlx/.da-token.json
 
 content
-
