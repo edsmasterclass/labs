@@ -319,14 +319,14 @@ The JSON2HTML worker has been configured with two path rules. Here's the configu
   {
     "path": "/events/list",
     "endpoint": "https://main--labs--edsmasterclass.aem.page/future-events.json",
-    "template": "/labs/exercise5/events-template"
+    "template": "/labs/exercise5/events-template.html"
   },
   {
     "path": "/events/",
     "endpoint": "https://main--labs--edsmasterclass.aem.page/future-events.json",
     "arrayKey": "data",
     "pathKey": "URL",
-    "template": "/labs/exercise5/event-template"
+    "template": "/labs/exercise5/event-template.html"
   }
 ]
 ```
