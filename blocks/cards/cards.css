@@ -1,5 +1,38 @@
 /* Cards block - masterclass theme with dark cards */
 
+.cards .cards-view-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+.cards .cards-view-button {
+  appearance: none;
+  border: 1px solid rgb(255 255 255 / 25%);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.5rem 0.875rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.cards .cards-view-button:hover {
+  border-color: rgb(255 255 255 / 40%);
+  color: white;
+}
+
+.cards .cards-view-button.is-active {
+  background: var(--brand-1);
+  border-color: var(--brand-1);
+  color: var(--background-color);
+}
+
 .cards > ul {
   list-style: none;
   margin: 0;
@@ -89,6 +122,29 @@
   text-decoration: underline;
 }
 
+.cards .cards-card-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+  color: var(--brand-1);
+}
+
+.cards.list-view > ul {
+  grid-template-columns: 1fr;
+}
+
+.cards.list-view > ul > li {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+.cards.list-view .cards-card-image {
+  height: 180px;
+}
+
 /* Responsive adjustments */
 @media (width >= 600px) {
   .cards > ul {
@@ -97,6 +153,11 @@
 
   .cards .cards-card-image {
     height: 220px;
+  }
+
+  .cards.list-view .cards-card-image {
+    height: 200px;
+    min-height: 200px;
   }
 }
 
