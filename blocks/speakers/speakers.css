@@ -1,0 +1,109 @@
+.speakers > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 1fr;
+}
+
+.speakers > ul > li {
+  background-color: var(--card);
+  border-radius: 16px;
+  padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: var(--shadow);
+  border: 1px solid rgb(255 255 255 / 5%);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.speakers > ul > li:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgb(0 0 0 / 60%);
+  border-color: rgb(255 255 255 / 10%);
+}
+
+.speakers .speakers-headshot {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-bottom: 1.25rem;
+  border: 3px solid var(--brand-1);
+}
+
+.speakers .speakers-headshot picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.speakers .speakers-headshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.speakers .speakers-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.speakers .speakers-body h3 {
+  color: var(--ink);
+  font-size: var(--heading-font-size-s);
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.speakers .speakers-role {
+  color: var(--brand-1);
+  font-size: var(--body-font-size-s);
+  margin: 0;
+  font-style: normal;
+}
+
+.speakers .speakers-role em {
+  font-style: normal;
+}
+
+.speakers .speakers-bio {
+  color: var(--muted);
+  font-size: var(--body-font-size-s);
+  line-height: 1.6;
+  margin: 0.25rem 0 0;
+  text-align: left;
+}
+
+@media (width >= 600px) {
+  .speakers > ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .speakers .speakers-headshot {
+    width: 130px;
+    height: 130px;
+  }
+}
+
+@media (width >= 900px) {
+  .speakers > ul {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .speakers .speakers-headshot {
+    width: 140px;
+    height: 140px;
+  }
+
+  .speakers .speakers-body h3 {
+    font-size: var(--heading-font-size-m);
+  }
+}
