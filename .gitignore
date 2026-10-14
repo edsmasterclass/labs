@@ -29,3 +29,5 @@ masterclass-products.json
 .hlx/.da-token.json
 
 content
+
+.hlx/.da-token*.json
