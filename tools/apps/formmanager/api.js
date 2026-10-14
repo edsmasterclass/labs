@@ -59,6 +59,34 @@ export async function listFolders(org, site, path = '/') {
   }
 }
 
+async function listFolderItems(org, site, path) {
+  const response = await daFetch(`${DA_ADMIN}/list/${org}/${site}${path}`);
+  if (!response.ok) {
+    throw new Error(`Unable to list folder contents (HTTP ${response.status}).`);
+  }
+  const items = await response.json();
+  if (!Array.isArray(items)) {
+    throw new Error('Unable to list folder contents: unexpected response.');
+  }
+  return items;
+}
+
+export async function listDocuments(org, site, path) {
+  const items = await listFolderItems(org, site, path);
+  const documents = items
+    .filter((item) => typeof item.ext === 'string' && item.ext.replace(/^\./, '').toLowerCase() === 'html')
+    .map((item) => {
+      const { ext: extension } = item;
+      const filename = `${item.name}${extension.startsWith('.') ? extension : `.${extension}`}`;
+      return { name: filename, path: `${path}${filename}` };
+    });
+  const folders = items.filter((item) => !item.ext);
+  const nestedDocuments = await Promise.all(
+    folders.map((folder) => listDocuments(org, site, `${path}${folder.name}/`)),
+  );
+  return [...documents, ...nestedDocuments.flat()];
+}
+
 export async function fetchSiteList(org) {
   try {
     const response = await daFetch(`${DA_ADMIN}/list/${org}/`);

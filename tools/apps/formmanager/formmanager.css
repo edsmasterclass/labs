@@ -89,7 +89,7 @@ sl-button.pw-quiet-danger::part(base):hover:not(:disabled) {
   border-radius: 50%;
   border: 3px solid var(--s2-gray-200);
   border-top-color: var(--pw-accent);
-  animation: da-perm-spin 0.85s linear infinite;
+  animation: formmanager-spin 0.85s linear infinite;
 }
 
 .loading-label {
@@ -97,7 +97,7 @@ sl-button.pw-quiet-danger::part(base):hover:not(:disabled) {
   color: var(--s2-gray-700);
 }
 
-@keyframes da-perm-spin {
+@keyframes formmanager-spin {
   to {
     transform: rotate(360deg);
   }
@@ -124,15 +124,23 @@ sl-button.pw-quiet-danger::part(base):hover:not(:disabled) {
 
 .da-org-form {
   display: flex;
+  flex-wrap: wrap;
   align-items: flex-end;
   gap: 12px;
 }
 
-.da-org-field {
+.da-org-field,
+.da-folder-field {
   flex: 1;
+  min-width: 160px;
 }
 
-.da-org-field sl-input {
+.da-folder-field {
+  position: relative;
+}
+
+.da-org-field sl-input,
+.da-folder-field sl-input {
   display: block;
   width: 100%;
 }
@@ -249,6 +257,50 @@ sl-button.pw-quiet-danger::part(base):hover:not(:disabled) {
   margin: 0;
 }
 
+.folder-dropdown {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 200px;
+  background: var(--s2-gray-25);
+  border: 1px solid var(--s2-gray-100);
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / 14%);
+  max-height: 260px;
+  overflow-y: auto;
+  z-index: 200;
+  padding: 4px 0;
+}
+
+.folder-dropdown-item {
+  display: block;
+  width: 100%;
+  padding: 8px 14px;
+  background: none;
+  border: none;
+  border-radius: 0;
+  text-align: left;
+  font-size: 14px;
+  font-family: var(--s2-font-family, sans-serif);
+  line-height: 1.4;
+  color: var(--s2-gray-800);
+  cursor: pointer;
+  box-sizing: border-box;
+}
+
+.folder-dropdown-item:hover,
+.folder-dropdown-item.is-active {
+  background: var(--s2-gray-50);
+  color: var(--pw-accent, #0265dc);
+}
+
+.folder-dropdown-item.is-selected {
+  color: var(--pw-accent, #0265dc);
+  font-weight: 600;
+  background: #e8f0ff;
+}
+
 /* ---- Messages ---- */
 
 .message {
@@ -277,6 +329,72 @@ sl-button.pw-quiet-danger::part(base):hover:not(:disabled) {
 
 .da-content {
   padding-top: var(--s2-spacing-200);
+}
+
+/* ---- Folder documents ---- */
+
+.documents-panel {
+  border: 1px solid var(--s2-gray-200);
+  border-radius: var(--s2-corner-radius-700);
+  overflow: hidden;
+}
+
+.documents-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s2-spacing-200);
+  padding: var(--s2-spacing-200) var(--s2-spacing-300);
+  background: var(--s2-gray-75, #f8f8f8);
+  border-bottom: 1px solid var(--s2-gray-200);
+}
+
+.documents-header h2 {
+  margin: 0;
+  font-size: var(--s2-body-size-l, 16px);
+  font-weight: 700;
+  color: var(--s2-gray-800);
+  overflow-wrap: anywhere;
+}
+
+.documents-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.documents-list-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: var(--s2-spacing-150) var(--s2-spacing-300);
+  border-bottom: 1px solid var(--s2-gray-100);
+}
+
+.documents-list-item:last-child {
+  border-bottom: 0;
+}
+
+.document-name {
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.document-path,
+.documents-status,
+.documents-empty {
+  color: var(--s2-gray-600);
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+
+.documents-status,
+.documents-empty {
+  margin: 0;
+  padding: var(--s2-spacing-300);
 }
 
 /* ---- Context back bar (site view) ---- */

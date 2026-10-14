@@ -1,23 +1,23 @@
-# DA Permissions
+# Form Manager
 
-A standalone DA app for managing organization, site, and folder permissions.
-Displays the organization's permissions sheet as Read/Write member lists,
-with email addresses or Adobe IMS group IDs identifying members.
+A standalone DA app for listing forms pages by organization and site, with
+permissions management available for administrators.
 
 See the [DA permissions guide](https://docs.da.live/administrators/guides/permissions)
 for permission evaluation and Adobe IMS setup.
 
 ## How to Use
 
-1. Enter an **Organization**, then **Load**. Your DA session must have access
-   to that organization's configuration; modifying permissions requires write
-   access to it and an existing permissions sheet.
+1. Enter an **Organization**, then **Load**.
 2. With no site selected, manage **DA Configurations** and **All Sites**
    permissions at the organization level.
 3. Select a site using the searchable site picker to manage **Site
    Configurations**, **All Site Content**, and existing folder rules. Clear
    the site selection or click the organization breadcrumb to return to the
-   organization view.
+   organization view. Once a site is selected, the app automatically lists
+   all HTML pages recursively inside its `forms/` folder. Use the **Folder**
+   picker to inspect a different folder; administrators can choose **Back to
+   permissions** to return to permission management.
 4. Click **+ Add** under **Read** or **Write**, enter an email address or IMS
    group ID, then press **Enter**. **Escape** cancels.
 5. To remove a member, click its close button and confirm **Remove?**.
@@ -36,7 +36,7 @@ Register the app in a site's DA config sheet, **apps** tab (`title` /
 
 | title | description | image | path |
 | --- | --- | --- | --- |
-| `DA Permissions` | Manage organization, site, and folder permissions | *(an icon URL)* | `/app/adobe-rnd/aem-apps/tools/apps/da-permissions/da-permissions?org={org}&site={site}` |
+| `Form Manager` | List form pages for an organization and site | *(an icon URL)* | `/app/adobe-rnd/aem-apps/tools/apps/formmanager/formmanager?org={org}&site={site}` |
 
 Omit `&site={site}` to open at the organization level.
 
@@ -93,10 +93,11 @@ If the organization configuration cannot be loaded, the app displays
 
 | File | Purpose |
 | --- | --- |
-| `da-permissions.html` | App shell, importmap, DA SDK, and nx2 styles |
-| `da-permissions.js` | `<da-permissions-app>` Lit component: navigation, member editing, and folder browser |
-| `da-permissions.css` | App styles |
+| `formmanager.html` | App shell, importmap, DA SDK, and nx2 styles |
+| `formmanager.js` | `<formmanager-app>` Lit component: form page listing and permission management |
+| `formmanager.css` | App styles |
 | `api.js` | Authenticated configuration reads/writes and site/folder listing |
+| `icons.js` | SVG icons used by the app |
 
 ## Dependencies
 

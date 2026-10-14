@@ -21,6 +21,7 @@ import {
   updateOrgConfig,
   fetchSiteList,
   listFolders,
+  listDocuments,
 } from './api.js';
 import { icon } from './icons.js';
 
@@ -87,7 +88,7 @@ const actionsToLevel = (actions) => (actions === 'write' || actions === 'read' ?
 
 // ---- Component ----
 
-class DaPermissionsApp extends LitElement {
+class FormManagerApp extends LitElement {
   static properties = {
     context: { attribute: false },
     token: { attribute: false },
@@ -106,6 +107,16 @@ class DaPermissionsApp extends LitElement {
     _siteDropdownOpen: { state: true },
     _siteSearchQuery: { state: true },
     _siteActiveIndex: { state: true },
+    // Folder picker
+    _folderList: { state: true },
+    _folderValue: { state: true },
+    _folderDropdownOpen: { state: true },
+    _folderSearchQuery: { state: true },
+    _folderActiveIndex: { state: true },
+    _folderListLoading: { state: true },
+    _documents: { state: true },
+    _documentsLoading: { state: true },
+    _documentsError: { state: true },
     // path+level currently showing the inline add input
     _addingToPath: { state: true },
     _addingToLevel: { state: true },
@@ -137,6 +148,16 @@ class DaPermissionsApp extends LitElement {
     this._siteDropdownOpen = false;
     this._siteSearchQuery = '';
     this._siteActiveIndex = -1;
+    this._folderList = [];
+    this._folderValue = '';
+    this._folderDropdownOpen = false;
+    this._folderSearchQuery = '';
+    this._folderActiveIndex = -1;
+    this._folderListLoading = false;
+    this._documents = [];
+    this._documentsLoading = false;
+    this._documentsError = '';
+    this._documentsRequestId = 0;
     this._addingToPath = null;
     this._addingToLevel = null;
     this._newScopeOpen = false;
@@ -144,16 +165,20 @@ class DaPermissionsApp extends LitElement {
     this._folderColumns = [];
     this._folderLoading = false;
     this._selectedFolderPath = '';
-    this._infoDismissed = localStorage.getItem('da-permissions-info-dismissed') === 'true';
+    this._infoDismissed = localStorage.getItem('formmanager-info-dismissed') === 'true';
     this._confirmRemove = null;
     this._readOnly = false;
 
     this._handleDocMousedown = (e) => {
-      if (!this._siteDropdownOpen) return;
-      const field = this.shadowRoot?.querySelector('.da-site-field');
-      if (field && !e.composedPath().includes(field)) {
+      const siteField = this.shadowRoot?.querySelector('.da-site-field');
+      const folderField = this.shadowRoot?.querySelector('.da-folder-field');
+      if (this._siteDropdownOpen && siteField && !e.composedPath().includes(siteField)) {
         this._siteDropdownOpen = false;
         this._siteSearchQuery = '';
+      }
+      if (this._folderDropdownOpen && folderField && !e.composedPath().includes(folderField)) {
+        this._folderDropdownOpen = false;
+        this._folderSearchQuery = '';
       }
     };
     document.addEventListener('mousedown', this._handleDocMousedown);
@@ -191,7 +216,7 @@ class DaPermissionsApp extends LitElement {
       }
       window.history.replaceState(null, '', url);
     } catch (e) {
-      console.warn('[da-permissions] updateUrl failed:', e);
+      console.warn('[formmanager] updateUrl failed:', e);
     }
   }
 
@@ -315,6 +340,7 @@ class DaPermissionsApp extends LitElement {
   }
 
   async loadOrg(org, site = null) {
+    this._documentsRequestId += 1;
     this._org = org;
     this._orgValue = org;
     this._site = site;
@@ -329,13 +355,25 @@ class DaPermissionsApp extends LitElement {
     this._folderLoading = false;
     this._selectedFolderPath = '';
     this._readOnly = false;
+    this._folderList = [];
+    this._folderValue = site ? 'forms' : '';
+    this._folderDropdownOpen = false;
+    this._folderSearchQuery = '';
+    this._folderActiveIndex = -1;
+    this._folderListLoading = Boolean(site);
+    this._documents = [];
+    this._documentsLoading = false;
+    this._documentsError = '';
 
-    const [orgResult, siteList] = await Promise.all([
+    const [orgResult, siteList, folders] = await Promise.all([
       fetchOrgConfig(org),
       fetchSiteList(org),
+      site ? listFolders(org, site, '/') : Promise.resolve([]),
     ]);
 
     this._siteList = siteList;
+    this._folderList = folders.map((item) => item.name);
+    this._folderListLoading = false;
     this.updateUrl(org, site);
 
     if (orgResult.canAccess) {
@@ -344,12 +382,19 @@ class DaPermissionsApp extends LitElement {
     } else {
       this._state = 'user';
     }
+    if (site) this.loadDocuments(org, site, 'forms');
   }
 
   // ---- Context navigation ----
 
   navigateToSite(site) {
+    const org = this._org;
     this._site = site;
+    this._folderList = [];
+    this._folderValue = 'forms';
+    this._folderDropdownOpen = false;
+    this._folderSearchQuery = '';
+    this._folderListLoading = true;
     this._addingToPath = null;
     this._addingToLevel = null;
     this._newScopeOpen = false;
@@ -358,10 +403,26 @@ class DaPermissionsApp extends LitElement {
     this._selectedFolderPath = '';
     this._message = null;
     this.updateUrl(this._org, site);
+    listFolders(org, site, '/').then((folders) => {
+      if (this._org === org && this._site === site) {
+        this._folderList = folders.map((item) => item.name);
+        this._folderListLoading = false;
+      }
+    });
+    this.loadDocuments(org, site, 'forms');
   }
 
   navigateToOrg() {
+    this._documentsRequestId += 1;
     this._site = null;
+    this._folderList = [];
+    this._folderValue = '';
+    this._folderDropdownOpen = false;
+    this._folderSearchQuery = '';
+    this._folderListLoading = false;
+    this._documents = [];
+    this._documentsLoading = false;
+    this._documentsError = '';
     this._addingToPath = null;
     this._addingToLevel = null;
     this._newScopeOpen = false;
@@ -601,13 +662,107 @@ class DaPermissionsApp extends LitElement {
     }
   }
 
+  get filteredFolders() {
+    const query = this._folderSearchQuery.toLowerCase();
+    return query
+      ? this._folderList.filter((folder) => folder.toLowerCase().includes(query))
+      : this._folderList;
+  }
+
+  handleFolderInputFocus() {
+    this._folderDropdownOpen = true;
+    this._folderSearchQuery = '';
+    this._folderActiveIndex = -1;
+  }
+
+  handleFolderInputTyped(e) {
+    this._folderSearchQuery = e.target.value;
+    this._folderDropdownOpen = true;
+    this._folderActiveIndex = -1;
+  }
+
+  handleFolderInputKey(e) {
+    const { filteredFolders } = this;
+    if (e.key === 'Escape') {
+      this._folderDropdownOpen = false;
+      this._folderSearchQuery = '';
+      this._folderActiveIndex = -1;
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      this._folderDropdownOpen = true;
+      this._folderActiveIndex = Math.min(this._folderActiveIndex + 1, filteredFolders.length - 1);
+      this.scrollActiveFolderItem();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      this._folderActiveIndex = Math.max(this._folderActiveIndex - 1, -1);
+      this.scrollActiveFolderItem();
+    } else if (e.key === 'Enter' && this._folderDropdownOpen && this._folderActiveIndex >= 0) {
+      e.preventDefault();
+      this.handleFolderItemSelect(filteredFolders[this._folderActiveIndex]);
+    }
+  }
+
+  scrollActiveFolderItem() {
+    requestAnimationFrame(() => {
+      this.shadowRoot?.querySelector('.folder-dropdown-item.is-active')
+        ?.scrollIntoView({ block: 'nearest' });
+    });
+  }
+
+  handleFolderInputBlur() {
+    requestAnimationFrame(() => {
+      this._folderDropdownOpen = false;
+      this._folderSearchQuery = '';
+      this._folderActiveIndex = -1;
+    });
+  }
+
+  handleFolderItemSelect(folder) {
+    this._folderDropdownOpen = false;
+    this._folderSearchQuery = '';
+    this._folderActiveIndex = -1;
+    if (folder) this.loadDocuments(this._org, this._site, folder);
+    else {
+      this._documentsRequestId += 1;
+      this._folderValue = '';
+      this._documents = [];
+      this._documentsLoading = false;
+      this._documentsError = '';
+    }
+  }
+
+  async loadDocuments(org, site, folder) {
+    this._documentsRequestId += 1;
+    const requestId = this._documentsRequestId;
+    this._folderValue = folder;
+    this._documents = [];
+    this._documentsLoading = true;
+    this._documentsError = '';
+    try {
+      const documents = await listDocuments(org, site, `/${folder}/`);
+      if (requestId === this._documentsRequestId
+        && this._org === org && this._site === site && this._folderValue === folder) {
+        this._documents = documents;
+        this._documentsLoading = false;
+      }
+    } catch (error) {
+      if (requestId === this._documentsRequestId
+        && this._org === org && this._site === site && this._folderValue === folder) {
+        this._documentsError = error.message;
+        this._documentsLoading = false;
+      }
+    }
+  }
+
   renderToolbar() {
     const orgLoaded = this._state === 'admin' || this._state === 'user';
     const inputVal = this._siteDropdownOpen ? this._siteSearchQuery : (this._site || '');
+    const folderInputVal = this._folderDropdownOpen
+      ? this._folderSearchQuery : this._folderValue;
     return html`
       <div class="da-toolbar">
         <header class="da-toolbar-header">
-          <h1 class="da-title">DA Permissions</h1>
+          <h1 class="da-title">Form Manager</h1>
         </header>
         <div class="da-org-form">
           <div class="da-org-field">
@@ -653,6 +808,39 @@ class DaPermissionsApp extends LitElement {
                   `)}
                   ${this.filteredSites.length === 0 ? html`
                     <p class="site-dropdown-empty">No sites match</p>
+                  ` : nothing}
+                </div>
+              ` : nothing}
+            </div>
+          ` : nothing}
+          ${this._site ? html`
+            <div class="da-folder-field">
+              <sl-input
+                type="text"
+                placeholder="Select folder"
+                aria-label="Folder"
+                aria-expanded=${this._folderDropdownOpen}
+                aria-haspopup="listbox"
+                .value=${folderInputVal}
+                @focus=${this.handleFolderInputFocus}
+                @input=${this.handleFolderInputTyped}
+                @keydown=${this.handleFolderInputKey}
+                @sl-blur=${this.handleFolderInputBlur}
+              ></sl-input>
+              ${this._folderDropdownOpen ? html`
+                <div class="folder-dropdown" role="listbox" aria-label="Folders in site">
+                  ${this._folderListLoading ? html`
+                    <p class="site-dropdown-empty">Loading folders…</p>
+                  ` : this.filteredFolders.map((folder, i) => html`
+                    <button
+                      class="folder-dropdown-item ${this._folderValue === folder ? 'is-selected' : ''} ${this._folderActiveIndex === i ? 'is-active' : ''}"
+                      role="option"
+                      aria-selected=${this._folderValue === folder}
+                      @click=${() => this.handleFolderItemSelect(folder)}
+                    >${folder}</button>
+                  `)}
+                  ${!this._folderListLoading && this.filteredFolders.length === 0 ? html`
+                    <p class="site-dropdown-empty">${this._folderSearchQuery ? 'No folders match' : 'No folders in this site'}</p>
                   ` : nothing}
                 </div>
               ` : nothing}
@@ -867,24 +1055,67 @@ class DaPermissionsApp extends LitElement {
     `;
   }
 
+  renderDocuments() {
+    const folderPath = `/${this._folderValue}/`;
+    const documents = this._documents.map((document) => {
+      const relativePath = document.path.slice(folderPath.length);
+      const pathParts = relativePath.split('/');
+      return {
+        ...document,
+        parentPath: pathParts.length > 1 ? pathParts.slice(0, -1).join('/') : '',
+      };
+    });
+    return html`
+      <section class="documents-panel" aria-labelledby="documents-title">
+        <div class="documents-header">
+          <h2 id="documents-title">Pages in ${this._site}/${this._folderValue}</h2>
+          <sl-button
+            class="pw-quiet-secondary pw-action-sm"
+            @click=${() => this.handleFolderItemSelect('')}
+          >Back to permissions</sl-button>
+        </div>
+        ${this._documentsLoading ? html`
+          <div class="documents-status" role="status" aria-live="polite">Loading documents…</div>
+        ` : nothing}
+        ${this._documentsError ? html`
+          <div class="message error" role="alert">${this._documentsError}</div>
+        ` : nothing}
+        ${!this._documentsLoading && !this._documentsError && this._documents.length === 0 ? html`
+          <p class="documents-empty">No documents in this folder.</p>
+        ` : nothing}
+        ${this._documents.length > 0 ? html`
+          <ul class="documents-list">
+            ${documents.map((document) => html`
+              <li class="documents-list-item">
+                <span class="document-name">${document.name}</span>
+                ${document.parentPath ? html`<span class="document-path">${document.parentPath}/</span>` : nothing}
+              </li>
+            `)}
+          </ul>
+        ` : nothing}
+      </section>
+    `;
+  }
+
   // ---- Render: top-level ----
 
   renderContent() {
     switch (this._state) {
       case 'loading': return this.renderLoading();
-      case 'admin': return this.renderAdmin();
-      case 'user': return html`<p class="empty-note">You don't have admin access to this org.</p>`;
+      case 'admin': return this._folderValue ? this.renderDocuments() : this.renderAdmin();
+      case 'user': return this._folderValue
+        ? this.renderDocuments() : html`<p class="empty-note">You don't have admin access to this org.</p>`;
       default: return nothing;
     }
   }
 
   dismissInfo() {
     this._infoDismissed = true;
-    localStorage.setItem('da-permissions-info-dismissed', 'true');
+    localStorage.setItem('formmanager-info-dismissed', 'true');
   }
 
   renderInfoPanel() {
-    if (this._infoDismissed || this._state !== 'admin') return nothing;
+    if (this._infoDismissed || this._state !== 'admin' || this._folderValue) return nothing;
     return html`
       <div class="info-panel" role="note">
         <div class="info-panel-body">
@@ -930,11 +1161,11 @@ class DaPermissionsApp extends LitElement {
   }
 }
 
-customElements.define('da-permissions-app', DaPermissionsApp);
+customElements.define('formmanager-app', FormManagerApp);
 
 (async function init() {
   const { context, token } = await DA_SDK;
-  const cmp = document.createElement('da-permissions-app');
+  const cmp = document.createElement('formmanager-app');
   cmp.context = context;
   cmp.token = token;
   document.body.append(cmp);
