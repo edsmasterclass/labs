@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Form Picker</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="/tools/apps/formpicker/formpicker.css">
+    <script src="https://da.live/nx/utils/sdk.js" type="module"></script>
+    <script src="/tools/apps/formpicker/formpicker.js" type="module"></script>
+  </head>
+  <body>
+    <main class="picker">
+      <h1>Form Picker</h1>
+      <p class="intro">Choose a form definition to add it to this document.</p>
+
+      <form id="context-form">
+        <div class="context-fields">
+          <label>
+            Organization
+            <input id="org-input" name="org" required autocomplete="organization">
+          </label>
+          <label>
+            Site
+            <input id="site-input" name="site" required autocomplete="off">
+          </label>
+        </div>
+        <button id="load-button" type="submit">Load forms</button>
+      </form>
+
+      <label for="folder-select">Folder</label>
+      <select id="folder-select" disabled>
+        <option value="">Load an organization and site first</option>
+      </select>
+
+      <label for="form-select">Form</label>
+      <select id="form-select" disabled>
+        <option value="">Select a folder first</option>
+      </select>
+
+      <p id="form-url" class="form-url" aria-live="polite"></p>
+      <button id="insert-button" type="button" disabled>Insert Form Block</button>
+      <p id="status" class="status" role="status" aria-live="polite"></p>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,128 @@
+:root {
+  color: #292929;
+  font-family: adobe-clean, "Segoe UI", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+.picker {
+  max-width: 520px;
+  padding: 20px;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.intro {
+  margin: 0 0 20px;
+  color: #505050;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+#context-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.context-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+label {
+  display: block;
+  margin: 14px 0 6px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.context-fields label {
+  margin: 0;
+}
+
+input,
+select {
+  width: 100%;
+  min-height: 38px;
+  padding: 8px 10px;
+  border: 1px solid #b8b8b8;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  font: inherit;
+}
+
+button {
+  min-height: 38px;
+  padding: 8px 14px;
+  border: 0;
+  border-radius: 20px;
+  background: #1473e6;
+  color: #fff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #1473e6;
+  outline-offset: 2px;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+#insert-button {
+  display: block;
+  width: 100%;
+  margin-top: 18px;
+}
+
+.form-url {
+  min-height: 18px;
+  margin: 8px 0 0;
+  color: #656565;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
+.status {
+  min-height: 20px;
+  margin: 10px 0 0;
+  font-size: 13px;
+}
+
+.status.error {
+  color: #c9252d;
+}
+
+.status.success {
+  color: #12805c;
+}
+
+@media (width <= 420px) {
+  .picker {
+    padding: 16px;
+  }
+
+  .context-fields {
+    grid-template-columns: 1fr;
+  }
+}
